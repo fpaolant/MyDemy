@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+
+		<!-- MENU UTENTE -->
+		<li class="nav-item" th:fragment="menu_utente"
+			th:classappend="${#request.getRequestURI().contains('/utente/') ? 'menu-is-opening menu-open' : ''}">
+			<a href="#" class="nav-link"> <i
+					class="nav-icon fas fa-screen-users"></i>
+					<p>
+						<th:block th:text="#{menu.user.title}"></th:block> <i class="right fas fa-angle-left"></i>
+					</p>
+			</a>
+			<ul class="nav nav-treeview">
+				<li class="nav-item">
+					<a href="#" th:href="@{/iscrizioni}"
+					th:classappend="${#request.getRequestURI().contains('/utente/utenti/list') ? 'active' : ''}"
+					class="nav-link">
+						<i class="far fa-circle nav-icon"></i>
+						<p th:text="#{menu.iscrizioni}">I miei corsi</p>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a href="#" th:href="@{/common/profilo/diventaCreatore}"
+					   th:classappend="${#request.getRequestURI().contains('/common/profilo/diventaCreatore') ? 'active' : ''}"
+					   class="nav-link">
+						<i class="far fa-circle nav-icon"></i>
+						<p th:text="#{menu.becreator}">Diventa creatoreInfo</p>
+					</a>
+				</li>
+			</ul>
+		</li>
+
+</body>
+</html>

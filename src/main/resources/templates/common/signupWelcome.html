@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layout/layout}">
+<body>
+<div layout:fragment="content">
+<link th:href="@{/plugins/bootstrap-switch/css/bootstrap-switch.min.css}" rel="stylesheet" />
+<!-- Bootstrap Switch -->
+<script th:src="@{/plugins/bootstrap-switch/js/bootstrap-switch.min.js}"></script>
+<script th:inline="javascript">
+$(document).ready(function() {
+
+});
+</script>
+<div class="row mb-2">
+	<div class="col-sm-6">
+		<h1 class="m-0" th:text="#{common.welcome}">benvenuto</h1>
+	</div>
+	<div class="col-sm-6">
+		<ol class="breadcrumb float-sm-right">
+			<li class="breadcrumb-item"><a href="/" th:href="@{/}">Home</a></li>
+			<li class="breadcrumb-item active" th:text="#{common.welcome}">Benvenuto</li>
+		</ol>
+	</div>
+</div>
+<div class="row">
+<div class="col-12">
+	<div class="card card-info">
+		<div class="card-header">
+			<h3 class="card-title" th:text="#{common.welcome}">Benvenuto</h3>
+		</div>
+
+		  <div class="card-body">
+		  	Grazie per esserti iscritto a Mydemy
+		  </div>
+		  <div class="card-footer">
+			<a href="#" th:href="@{/loginstart.html}" class="btn btn-default float-right" th:text="#{common.login}"></a>
+		  </div>
+	</div>
+</div>
+</div>
+</div>
+</body>
+</html>
+

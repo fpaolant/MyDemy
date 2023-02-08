@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layout/layout}">
+<body>
+  <div layout:fragment="content">
+    <script th:inline="javascript">
+      $(document).ready(function() {
+        $('#iscritti_table').DataTable({
+          "searchDelay": 350,
+          "columns":[
+            {"data":"id"},
+            {"data":"utente",
+              "className": "center",
+              "searchable": false,
+              "sortable": false,
+              "defaultContent": "",
+              "render": function ( data, type, row, meta ) {
+                return row.utente.nome + " " + row.utente.cognome;
+              }
+            },
+            {"data":"data",
+              "render": function ( data, type, row, meta ) {
+                return moment(row.data).format("D MMMM YYYY");
+              }
+            },
+            {"data": "superato",
+              "className": "center",
+              "render": function ( data, type, row, meta ) {
+                return (row.superato)? "<span class='badge bg-success'>superato</span>": "<span class='badge bg-danger'>non superato</span>";
+              }
+            },
+            {"data":"action",
+              "searchable": false,
+              "sortable": false,
+              "defaultContent": "",
+              "className": "center",
+              "render": function ( data, type, row, meta ) {
+                if(!row.superato) return "<a href='[(@{/creatore/setSuperato})]?iscrizioneId=" + row.id + "'>concludi iscrizione</a>"
+              }
+            }
+          ],
+          "ajax": {
+            "url": "[(@{/creatore/findallIscrizioniByCorsoPaginated})]?id=[(${corso.id})]"
+          },
+        });
+      });
+    </script>
+
+
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="m-0" th:text="#{creatore.iscritti.titolo(${corso.titolo})}">Iscritti corso di</h1>
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="" th:href="@{/}">Home</a></li>
+          <li class="breadcrumb-item"><a href="" th:href="@{/creatore/index}">Creatore</a></li>
+          <li class="breadcrumb-item"><a href="" th:href="@{/creatore/corsi/list}">I miei corsi</a></li>
+          <li class="breadcrumb-item active" th:text="#{creatore.iscritti.titolo(${corso.titolo})}">Iscritti corso di</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <div class="card card-info">
+          <div class="card-header"><h3 class="card-title" th:text="#{creatore.iscritti.sottotitolo}"></h3></div>
+          <div class="card-body">
+            <table id="iscritti_table" class="table table-bordered table-striped">
+              <thead>
+              <tr>
+                <th th:text="#{common.id}"></th>
+                <th th:text="#{iscrizione.utente}"></th>
+                <th th:text="#{iscrizione.data}"></th>
+                <th></th>
+                <th th:text="#{common.action}"></th>
+              </tr>
+              </thead>
+              <tbody>
+              </tbody>
+              <tfoot>
+              <tr>
+                <th th:text="#{common.id}"></th>
+                <th th:text="#{iscrizione.utente}"></th>
+                <th th:text="#{iscrizione.data}"></th>
+                <th></th>
+                <th th:text="#{common.action}"></th>
+              </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+  </div>
+</body>
+</html>

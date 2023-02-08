@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+
+		<!-- MENU CREATORE -->
+		<li class="nav-item" th:fragment="menu_creatore"
+			th:classappend="${#request.getRequestURI().contains('/creatore') ? 'menu-is-opening menu-open' : ''}">
+			<a href="#" class="nav-link"> <i
+					class="nav-icon fas fa-person-chalkboard"></i>
+					<p>
+						<th:block th:text="#{menu.creator.title}"></th:block> <i class="right fas fa-angle-left"></i>
+					</p>
+			</a>
+			<ul class="nav nav-treeview">
+				<li class="nav-item">
+					<a href="#" th:href="@{/creatore/index}"
+						th:classappend="${#request.getRequestURI().contains('/creatore/index') ? 'active' : ''}"
+						class="nav-link">
+						<i class="far fa-circle nav-icon"></i>
+						<p th:text="#{menu.creator.dashboard}"></p>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a href="#" th:href="@{/creatore/profilo}"
+					th:classappend="${#request.getRequestURI().contains('/creatore/profilo') ? 'active' : ''}"
+					class="nav-link">
+						<i class="far fa-circle nav-icon"></i>
+						<p th:text="#{menu.creator.profilo}"></p>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a href="#" th:href="@{/creatore/corsi/proponi}"
+					   th:classappend="${#request.getRequestURI().contains('/creatore/corsi/proponi') ? 'active' : ''}"
+					   class="nav-link">
+						<i class="far fa-circle nav-icon"></i>
+						<p th:text="#{menu.creator.creacorso}"></p>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a href="#" th:href="@{/creatore/corsi/list}"
+					   th:classappend="${#request.getRequestURI().contains('/creatore/corsi/list') ? 'active' : ''}"
+					   class="nav-link">
+						<i class="far fa-circle nav-icon"></i>
+						<p th:text="#{menu.creator.corsi}"></p>
+					</a>
+				</li>
+			</ul>
+		</li>
+
+</body>
+</html>

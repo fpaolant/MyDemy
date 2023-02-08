@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layout/layout}">
+<body>
+<div layout:fragment="content">
+    <link th:href="@{/plugins/bootstrap-switch/css/bootstrap-switch.min.css}" rel="stylesheet"/>
+    <link th:href="@{/plugins/daterangepicker/daterangepicker.css}" rel="stylesheet"/>
+    <!-- Bootstrap Switch -->
+    <script th:src="@{/plugins/bootstrap-switch/js/bootstrap-switch.min.js}"></script>
+    <!-- DataRangePicker -->
+    <script th:src="@{/plugins/daterangepicker/daterangepicker.js}"></script>
+    <script th:inline="javascript">
+        $(document).ready(function () {
+            var update = [[${#request.getRequestURI().endsWith('update')? true : false}]];
+            if (!update) {
+                $('#data-inizio').val(moment().format("DD/MM/YYYY hh:mm:ss"));
+                $('#data-fine').val(moment().add(2, 'days').format("DD/MM/YYYY hh:mm:ss"));
+            }
+
+            //Initialize Select2 Elements
+            $('.select2').select2({
+                allowClear: true
+            });
+            //Initialize Select2 Elements
+            $('#creatore').select2({
+                theme: 'bootstrap4'
+            });
+            $('#tags').select2({
+                theme: 'bootstrap4'
+            });
+            $('#categorie').select2({
+                theme: 'bootstrap4'
+            });
+            // init switch
+            $("#attestato").bootstrapSwitch('state', $(this).prop('checked'));
+
+            //Date range picker with time picker
+            $('#data-time-range-corso').daterangepicker({
+                "showDropdowns": true,
+                "timePicker": true,
+                "timePicker24Hour": true,
+                "timePickerIncrement": 15,
+                "autoApply": true,
+                "locale": {
+                    "format": "DD/MM/YYYY hh:mm",
+                    "separator": " - ",
+                    "applyLabel": "Applica",
+                    "cancelLabel": "Annulla",
+                    "fromLabel": "da",
+                    "toLabel": "a",
+                    "customRangeLabel": "Personalizzato",
+                    "weekLabel": "W",
+                    "daysOfWeek": [
+                        "Do",
+                        "Lu",
+                        "Ma",
+                        "Me",
+                        "Gi",
+                        "Ve",
+                        "Sa"
+                    ],
+                    "monthNames": [
+                        "Gennaio",
+                        "Febbraio",
+                        "Marzo",
+                        "Aprile",
+                        "Maggio",
+                        "Giugno",
+                        "Luglio",
+                        "Agosto",
+                        "Settembre",
+                        "Ottobre",
+                        "Novembre",
+                        "Dicembre"
+                    ],
+                    "firstDay": 0
+                },
+                "startDate": (update) ? $('#data-inizio').val() : moment().format("DD/MM/YY hh:mm:ss"), //"14/01/2023",
+                "endDate": (update) ? $('#data-fine').val() : moment().add(2, 'days').format("DD/MM/YY hh:mm"), // "20/01/2023",
+                "minDate": "DD/MM/YYYY hh:mm",
+                "maxDate": "DD/MM/YYYY hh:mm",
+                "drops": "auto"
+            }, function (start, end, label) {
+                console.log('New date range selected: ' + start.format('dd/MM/yyyy HH:mm:ss') + ' to ' + end.format('dd/MM/yyyy HH:mm:ss') + ' (predefined range: ' + label + ')');
+                $('#data-inizio').val(start.format('DD/MM/YYYY hh:mm:ss'));
+                $('#data-fine').val(end.format('DD/MM/YYYY hh:mm:ss'));
+            });
+
+            let linksNum = [[${corso.links.size()}]];
+            $('#addLink').click(() => {
+                const row = $('<div class="form-group row" id="link' + linksNum + '"><label for="name" class="col-2 col-form-label">' + [[#{corso.link.name}]] + '</label>' +
+                    '<div class="col-4">' +
+                    '<input type="hidden" id="links' + linksNum + '.id" name="links[' + linksNum + '].id" value="">' +
+                    '<input type="text" id="links' + linksNum + '.name" name="links[' + linksNum + '].name" value="" class="form-control" maxlength="100"/>' +
+                    '</div>' +
+                    '<label for="url" class="col-2 col-form-label">' + [[#{corso.link.url}]] + '</label>' +
+                    '<div class="col-3">' +
+                    '<input type="text" id="links' + linksNum + '.url" name="links[' + linksNum + '].url" value="" class="form-control" maxlength="100"/>' +
+                    '</div>' +
+                    '<div class="col-1">' +
+                    '<button type="button" class="btn btn-sm btn-danger removeLink" value="' + linksNum + '"><i class="fas fa-trash" value="' + linksNum + '"></i></button>' +
+                    '</div>' +
+                    '</div>');
+                $('#links').append(row);
+                linksNum++;
+
+                $(document).on('click', '.removeLink', function (e) {
+                    console.log(e.target.value);
+                    $("#link" + e.target.value).remove();
+                    linksNum--;
+                });
+
+            });
+            $(document).on('click', '.removeLink', function (e) {
+                $("#link" + e.target.value).remove();
+                linksNum--;
+            });
+            $(document).on('click', '.removeLink>i', function (e) {
+                const target = e.target;
+                $("#link" + target.parentElement.value).remove();
+                linksNum--;
+            });
+
+
+        });
+
+
+    </script>
+    <div class="row mb-2">
+        <div class="col-sm-6">
+            <h1 class="m-0" th:text="#{corsi.titolo}">Corsi</h1>
+        </div>
+        <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="/" th:href="@{/}">Home</a></li>
+                <li class="breadcrumb-item"><a href="/" th:href="@{/admin}">Admin</a></li>
+                <li class="breadcrumb-item active" th:text="#{corsi.titolo}">Corsi</li>
+            </ol>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-info">
+                <div class="card-header">
+                    <h3 th:if="${#request.getRequestURI().endsWith('create')}" class="card-title"
+                        th:text="#{corso.titolo.nuovo}"></h3>
+                    <h3 th:if="${#request.getRequestURI().endsWith('update')}" class="card-title"
+                        th:utext="#{corso.titolo.modifica(${corso.titolo})}"></h3>
+                </div>
+                <form th:action="${#request.getRequestURI()}" th:object="${corso}" class="form-horizontal"
+                      method="post">
+                    <input type="hidden" th:field="*{id}"/>
+<!--                    <input type="hidden" th:field="*{version}"/>-->
+                    <div class="card-body">
+                        <div class="form-group row">
+                            <label for="titolo" class="col-2 col-form-label" th:text="#{corso.nome}">Titolo</label>
+                            <div class="col-6">
+                                <input type="text" id="titolo" th:field="*{titolo}" class="form-control" maxlength="100"/>
+                                <span th:if="${#fields.hasErrors('titolo')}" th:each="err: ${#fields.errors('titolo')}"
+                                      th:utext="${err}"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="descrizione" class="col-2 col-form-label" th:text="#{corso.descrizione}">Descrizione</label>
+                            <div class="col-6">
+                                <textarea class="form-control" id="descrizione" th:field="*{descrizione}" rows="10" maxlength="255"
+                                          placeholder="Inserisci una descrizione"></textarea>
+                                <span th:if="${#fields.hasErrors('descrizione')}"
+                                      th:each="err: ${#fields.errors('descrizione')}" th:utext="${err}"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="data-time-range-corso" class="col-2 col-form-label" th:text="#{corso.periodo}">Data
+                                range</label>
+                            <div class="col-10">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="far fa-clock"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control float-right" id="data-time-range-corso">
+                                </div>
+                                <input type="hidden" th:field="*{inizio}" id="data-inizio" class="form-control"
+                                       readonly/>
+                                <input type="hidden" th:field="*{fine}" id="data-fine" class="form-control" readonly/>
+                                <span th:if="${#fields.hasErrors('inizio')}" th:each="err: ${#fields.errors('inizio')}"
+                                      th:utext="${err}"></span>
+                                <span th:if="${#fields.hasErrors('fine')}" th:each="err: ${#fields.errors('fine')}"
+                                      th:utext="${err}"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="crediti" class="col-2 col-form-label" th:text="#{corso.crediti}" min="1"
+                                   max="100" step="1">Crediti</label>
+                            <div class="col-4">
+                                <input type="number" id="crediti" th:field="*{crediti}" class="form-control"/>
+                                <span th:if="${#fields.hasErrors('crediti')}"
+                                      th:each="err: ${#fields.errors('crediti')}" th:utext="${err}"></span>
+                            </div>
+                            <label for="ore" class="col-2 col-form-label" th:text="#{corso.ore}">Ore</label>
+                            <div class="col-4">
+                                <input type="number" id="ore" th:field="*{ore}" min="1" max="99" step="1" class="form-control"/>
+                                <span th:if="${#fields.hasErrors('ore')}" th:each="err: ${#fields.errors('ore')}"
+                                      th:utext="${err}"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="posti" class="col-1 col-form-label" th:text="#{corso.posti}">Posti</label>
+                            <div class="col-3">
+                                <input type="number" id="posti" th:field="*{posti}" min="1" max="99" step="1"
+                                       class="form-control"/>
+                                <span th:if="${#fields.hasErrors('posti')}" th:each="err: ${#fields.errors('posti')}"
+                                      th:utext="${err}"></span>
+                            </div>
+                            <label for="prezzo" class="col-2 col-form-label" th:text="#{corso.prezzo}">Prezzo</label>
+                            <div class="col-6">
+                                <input type="number" id="prezzo" min="0.00" max="10000.00" th:field="*{prezzo}"
+                                       class="form-control"/>
+                                <span th:if="${#fields.hasErrors('prezzo')}" th:each="err: ${#fields.errors('prezzo')}"
+                                      th:utext="${err}"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="attestato" class="col-sm-2 col-form-label" th:text="#{corso.attestatoFinale}">Attestato</label>
+                            <div class="col-sm-6">
+                                <input type="checkbox" id="attestato" th:field="*{attestatoFinale}" th:value="*{attestatoFinale}" data-on-text="previsto" data-off-text="non previsto" data-onstyle="info" data-size="small" data-bootstrap-switch>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="creatore" class="col-sm-2 col-form-label"
+                                   th:text="#{corso.creatore}">Creatore</label>
+                            <div class="col-sm-6">
+                                <select class="form-control select2bs4" id="creatore" th:field="*{creatore}"
+                                        style="width: 100%;">
+                                    <option th:value="${c.id}" th:field="*{creatore}" th:each="c: ${creatori}"
+                                            th:text="${c.nome}">nome creatore
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="categorie" class="col-sm-2 col-form-label" th:text="#{corso.categorie}">Categorie</label>
+                            <div class="col-sm-6">
+                                <select class="select2 select2-hidden-accessible select2-primary"
+                                        th:field="*{categorie}" id="categorie" multiple="multiple"
+                                        data-placeholder="Seleziona uno o più categorie"
+                                        data-dropdown-css-class="select2-primary" style="width: 100%;"
+                                        aria-hidden="true">
+                                    <option th:value="${cat.id}" th:field="*{categorie}" th:each="cat: ${cats}"
+                                            th:text="${cat.nome}">nomecategoria
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="tags" class="col-sm-2 col-form-label" th:text="#{corso.tags}">Tags</label>
+                            <div class="col-sm-6">
+                                <select class="select2 select2-hidden-accessible select2-primary" th:field="*{tags}"
+                                        id="tags" multiple="multiple" data-placeholder="Seleziona uno o più tags"
+                                        data-dropdown-css-class="select2-primary" style="width: 100%;"
+                                        aria-hidden="true">
+                                    <option th:value="${t.id}" th:each="t: ${tags}" th:text="${t.nome}">nometag</option>
+                                </select>
+                            </div>
+                        </div>
+                        <h4 th:text="#{corso.links}">Links</h4>
+                        <div class="form-group row">
+                            <div class="col-sm-12">
+                                <button type="button" id="addLink" class="btn btn-sm btn-success float-right"><i
+                                        class="fas fa-plus"></i>Aggiungi
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="links">
+                            <div class="form-group row" th:id="${'link' + rowStat.index}"
+                                 th:each="link,rowStat : ${corso.links}">
+                                <label class="col-2 col-form-label" th:for="${'links' + rowStat.index + '.nome'}"  th:text="#{corso.link.name}">nome</label>
+                                <div class="col-4">
+                                    <input type="hidden" id="link_id" th:field="*{links[__${rowStat.index}__].id}">
+                                    <input type="text" th:id="${'links' + rowStat.index + '.nome'}" th:field="*{links[__${rowStat.index}__].name}"
+                                           class="form-control" maxlength="100"/>
+                                </div>
+                                <label class="col-2 col-form-label" th:for="${'links' + rowStat.index + '.url'}" th:text="#{corso.link.url}">url</label>
+                                <div class="col-3">
+                                    <input type="text" th:id="${'links' + rowStat.index + '.url'}" th:field="*{links[__${rowStat.index}__].url}"
+                                           class="form-control" maxlength="100"/>
+                                </div>
+                                <div class="col-1">
+                                    <button type="button" class="btn btn-sm btn-danger removeLink"
+                                            th:value="${rowStat.index}"><i class="fas fa-trash"
+                                                                           th:value="${rowStat.index}"></i></button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="card-footer">
+                        <a href="#" th:href="@{/admin/corsi/list}" class="btn btn-default float-right"
+                           th:text="#{common.cancel}"></a>
+                        <button type="submit" class="btn btn-info" th:text="#{common.submit}"></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+

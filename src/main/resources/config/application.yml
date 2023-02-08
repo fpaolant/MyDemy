@@ -1,0 +1,26 @@
+server:
+  servlet:    
+    context-path: /mydemy
+  port: 8090
+spring:
+  application:
+    name: MyDemy
+  profiles:
+    active: dev
+  messages:
+    basename: i18n/common, i18n/mydemy
+    encoding: UTF-8
+    use-code-as-default-message: true
+  devtools:
+    restart:
+      poll-interval: 2s
+      quiet-period: 1s
+    livereload:
+      enabled: true
+      port: 35730
+
+###############################################
+########### MYDEMY PROPERTIES ###############
+###############################################    
+mydemy:
+  dateformat: dd/MM/yyyy

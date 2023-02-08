@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layout/layout}">
+<body>
+<div layout:fragment="content">
+    <link th:href="@{/plugins/bootstrap-switch/css/bootstrap-switch.min.css}" rel="stylesheet"/>
+    <!-- Bootstrap Switch -->
+    <script th:src="@{/plugins/bootstrap-switch/js/bootstrap-switch.min.js}"></script>
+    <script th:inline="javascript">
+        $(document).ready(function () {
+            const update = [[${#request.getRequestURI().endsWith('update')? true : false}]];
+            if (update) {
+                $(":input[name='username']").attr('readonly', 'readonly');
+            }
+            //Initialize Select2 Elements
+            $('.select2').select2({
+                allowClear: true, tags: true,
+            })
+            // init switch
+            $("#enabled").bootstrapSwitch('state', $(this).prop('checked'));
+
+        });
+    </script>
+    <div class="row mb-2">
+        <div class="col-sm-6">
+            <h1 class="m-0" th:text="#{utenti.titolo}">utenti</h1>
+        </div>
+        <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="/" th:href="@{/}">Home</a></li>
+                <li class="breadcrumb-item"><a href="/" th:href="@{/admin}">Admin</a></li>
+                <li class="breadcrumb-item active" th:text="#{utenti.titolo}">utenti</li>
+            </ol>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-info">
+                <div class="card-header">
+                    <h3 th:if="${#request.getRequestURI().endsWith('create')}" class="card-title"
+                        th:text="#{utente.titolo.nuovo}"></h3>
+                    <h3 th:if="${#request.getRequestURI().endsWith('update')}" class="card-title"
+                        th:utext="#{utente.titolo.modifica(${utente.username})}"></h3>
+                </div>
+                <form th:action="${#request.getRequestURI()}" th:object="${utente}" class="form-horizontal"
+                      method="post">
+                    <input type="hidden" th:field="*{id}"/>
+                    <div class="card-body">
+                        <div th:if="${#fields.hasErrors('global')}">
+                            <p th:each="err : ${#fields.errors('global')}" th:text="${err}" class="error"/>
+                        </div>
+                        <div class="form-group row">
+                            <label for="nome" class="col-sm-2 col-form-label" th:text="#{utente.nome}"></label>
+                            <div class="col-sm-6">
+                                <input type="text" id="nome" th:field="*{nome}" class="form-control"/>
+                                <span th:if="${#fields.hasErrors('nome')}" th:each="err: ${#fields.errors('nome')}"
+                                      th:utext="${err}"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="cognome" class="col-sm-2 col-form-label" th:text="#{utente.cognome}"></label>
+                            <div class="col-sm-6">
+                                <input type="text" id="cognome" th:field="*{cognome}" class="form-control"/>
+                                <span th:if="${#fields.hasErrors('cognome')}"
+                                      th:each="err: ${#fields.errors('cognome')}" th:utext="${err}"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="email" class="col-sm-2 col-form-label" th:text="#{utente.email}"></label>
+                            <div class="col-sm-6">
+                                <input type="email" id="email" th:field="*{email}" class="form-control"/>
+                                <span th:if="${#fields.hasErrors('email')}" th:each="err: ${#fields.errors('email')}"
+                                      th:utext="${err}"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="username" class="col-sm-2 col-form-label" th:text="#{utente.username}"></label>
+                            <div class="col-sm-6">
+                                <input type="text" id="username" th:field="*{username}" name="username" class="form-control"
+                                       autocomplete="off"/>
+                                <span th:if="${#fields.hasErrors('username')}"
+                                      th:each="err: ${#fields.errors('username')}" th:utext="${err}"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="password" class="col-sm-2 col-form-label" th:text="#{utente.password}"></label>
+                            <div class="col-sm-6">
+                                <input th:if="${utente.id==null}" type="password" id="password" th:field="*{password}"
+                                       class="form-control" autocomplete="off" required/>
+                                <input th:if="${utente.id!=null}" type="password" id="password" th:field="*{password}"
+                                       class="form-control" autocomplete="off"
+                                       th:placeholder="#{utente.pwdplaceholder}"/>
+                                <span th:if="${#fields.hasErrors('password')}"
+                                      th:each="err: ${#fields.errors('password')}" th:utext="${err}"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="enabled" class="col-sm-2 col-form-label" th:text="#{utente.enabled}"></label>
+                            <div class="col-sm-6">
+                                <input type="checkbox" id="enabled" th:field="*{enabled}" checked data-bootstrap-switch
+                                       data-off-color="danger" data-on-color="success">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="ruoli" class="col-sm-2 col-form-label" th:text="#{utente.ruoli}">Ruoli</label>
+                            <div class="col-sm-6">
+                                <select th:field="*{ruoli}" class="select2 select2-hidden-accessible select2-primary"
+                                        id="ruoli" multiple="multiple" data-placeholder="Seleziona uno o più ruoli"
+                                        data-dropdown-css-class="select2-primary" style="width: 100%;"
+                                        aria-hidden="true">
+                                    <option th:data-select2-id="${ruolo.code}" th:value="${ruolo.id}"
+                                            th:each="ruolo: ${ruoli}" th:text="${ruolo.nome}">nomeruolo
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-info"
+                                th:text="#{${#request.getRequestURI().endsWith('delete')? 'common.delete' : 'common.submit'}}"></button>
+                        <a href="#" th:href="@{/admin/utenti/list}" class="btn btn-default float-right"
+                           th:text="#{common.cancel}"></a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layout/layout}">
+<body>
+<div layout:fragment="content">
+<script th:inline="javascript">
+$(document).ready(function() {
+	$('#corsi_table').DataTable({
+		"searchDelay": 350,
+		"columns":[
+	                {"data":"id"},
+	                {"data":"titolo"},
+	                {"data":"creator",
+	                	"searchable": false,
+	                    "sortable": false,
+	                    "defaultContent": "",
+	                    "render": function ( data, type, row, meta ) {
+	                    	return row.creatore.nome + " " + row.creatore.cognome;
+	                     }
+	                },
+	                {"data":"datainizio",
+	                	"render": function ( data, type, row, meta ) {
+	                    	return moment(row.inizio).format("D MMMM YYYY");
+	                     }
+	                },
+	                {"data": "ore",
+	                	"searchable": false,
+	                	"className": "center"
+	                },
+	                {"data": "approvato",
+	                	"className": "center",
+	                	"render": function ( data, type, row, meta ) {
+	                    	return (row.approvato)? "<span class='badge bg-success'>approvato</span>": "<span class='badge bg-danger'>non approvato</span>";
+	                     }
+	                },
+	                {"data":"action",
+	                    "searchable": false,
+	                    "sortable": false,
+	                    "defaultContent": "",
+	                	"className": "center",
+	                    "render": function ( data, type, row, meta ) {
+	                    	return "<a href='[(@{/admin/corsi/update})]?id=" + row.id + "'><i class='fas fa-edit'></i></a>" + " | "+ 
+	                    		   "<a href='[(@{/admin/corsi/approve})]?id=" + row.id + "'>" + ((!row.approvato)? "<i class='fas fa-thumbs-up' alt='approva'></i>" : "<i class='fas fa-thumbs-down' alt='disapprova'></i>") + "</a>  | " + 
+	                       		   "<a href='[(@{/admin/corsi/delete})]?id=" + row.id + "'><i class='fas fa-trash'></a>";
+	                     }
+	                }
+        ],
+        "ajax": {
+		    "url": "[(@{/admin/corsi/findallpaginated})]"
+		},
+	});
+});
+</script>
+	<div class="row mb-2">
+		<div class="col-sm-6">
+			<h1 class="m-0" th:text="#{corsi.titolo}">Corsi</h1>
+		</div>
+		<div class="col-sm-6">
+			<ol class="breadcrumb float-sm-right">
+				<li class="breadcrumb-item"><a href="/" th:href="@{/}">Home</a></li>
+				<li class="breadcrumb-item"><a href="/" th:href="@{/admin/index}">Admin</a></li>
+				<li class="breadcrumb-item active" th:text="#{corsi.titolo}">Corsi</li>
+			</ol>
+		</div>
+	</div>
+<div class="row">
+<div class="col-12">
+	<div class="card card-info">
+		<div class="card-header"><h3 class="card-title" th:text="#{corsi.titolo}"></h3></div>
+		  <div class="card-body">
+  	     	<p><a href="#" th:href="@{/admin/corsi/create}" class="btn btn-app"><i class="fa fa-plus"></i>[[#{common.create}]]</a></p>
+	        <table id="corsi_table" class="table table-bordered table-striped">
+	          <thead>
+	          <tr>
+	            <th th:text="#{common.id}"></th>
+	            <th th:text="#{corso.titolo}"></th>
+	            <th th:text="#{corso.creatore}"></th>
+	            <th th:text="#{corso.inizio}"></th>
+	            <th th:text="#{corso.ore}"></th>
+	            <th></th>
+	            <th th:text="#{common.action}"></th>
+	          </tr>
+	          </thead>
+	          <tbody>
+	          </tbody>
+	          <tfoot>
+	          <tr>
+	            <th th:text="#{common.id}"></th>
+	            <th th:text="#{corso.titolo}"></th>
+	            <th th:text="#{corso.creatore}"></th>
+	            <th th:text="#{corso.inizio}"></th>
+	            <th th:text="#{corso.ore}"></th>
+	            <th></th>
+	            <th th:text="#{common.action}"></th>
+	          </tr>
+	          </tfoot>
+	        </table>         
+		  </div>
+	</div>
+</div>
+</div>
+</div>
+</body>
+</html>

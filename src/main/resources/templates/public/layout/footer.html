@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<footer class="main-footer" th:fragment="footer">
+  <strong>Public Copyright &copy; 2022 - [[${#calendars.format(#calendars.createNow(), 'yyyy')}]] <a href="#" th:text="#{common.applicationtitle}"></a>.</strong>
+  [(#{common.allrightreserved})]. 
+  <div class="float-right d-none d-sm-inline-block">
+    <b th:text="#{common.version}"></b>  1.1.0
+  </div>
+</footer>
+</body>
+</html>

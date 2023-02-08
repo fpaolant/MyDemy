@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layout/layout}">
+<body>
+	<div layout:fragment="content">
+		<section class="content-header">
+			<div class="container-fluid">
+				<div class="row mb-2">
+					<div class="col-sm-6">
+						<h1>Iscrizioni</h1>
+					</div>
+					<div class="col-sm-6">
+						<ol class="breadcrumb float-sm-right">
+							<li class="breadcrumb-item"><a href="/" th:href="@{/}">Home</a></li>
+							<li class="breadcrumb-item active">iscrizioni</li>
+						</ol>
+					</div>
+				</div>
+			</div>
+			<!-- /.container-fluid -->
+		</section>
+
+		<p th:if="${iscrizioni.empty}">Non sono presenti iscrizioni</p>
+		<div class="row" th:unless="${iscrizioni.empty}">
+			<div class="col-12">
+				<div class="card">
+					<div class="card-header">
+						<!--<div class="card-tools">
+							<ul class="pagination pagination-sm float-right">
+								<li class="page-item"><a class="page-link" href="#">«</a></li>
+								<li class="page-item"><a class="page-link" href="#">1</a></li>
+								<li class="page-item"><a class="page-link" href="#">2</a></li>
+								<li class="page-item"><a class="page-link" href="#">3</a></li>
+								<li class="page-item"><a class="page-link" href="#">»</a></li>
+							</ul>
+						</div> -->
+					</div>
+
+					<div class="card-body p-0">
+						<table class="table">
+							<thead>
+								<tr>
+									<th style="width: 10px">#</th>
+									<th>Titolo</th>
+									<th style="width: 40px">Crediti</th>
+									<th>Iscrizione</th>
+									<th>Progresso</th>
+									<th style="width: 40px">Superato</th>
+									<th style="width: 40px">Certificato</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="iscrizione: ${iscrizioni}">
+									<td th:text="${iscrizione.corso.id + '.'}">1</td>
+									<td>
+										<a th:href="@{'/corso/' + ${iscrizione.corso.id}}" th:text="${iscrizione.corso.titolo}">titolo</a> </td>
+									<td th:text="${iscrizione.corso.crediti}">crediti</td>
+									<td th:text="${#temporals.format(iscrizione.data, 'dd/MM/yyyy HH:mm')}">gg/mm/aaaa</td>
+									<td>
+										<div class="progress progress-xs">
+											<div th:if="${iscrizione.superato}" class="progress-bar bg-success"
+												style="width: 100%"></div>
+											<div th:unless="${iscrizione.superato}" class="progress-bar bg-warning"
+												style="width: 55%"></div>
+												
+										</div>
+									</td>
+									<td><span th:class="${iscrizione.superato}? 'badge bg-success': 'badge bg-warning'" th:text="${iscrizione.superato}? SI: NO">SI</span></td>
+									<td th:text="${iscrizione.superato}? 'link': 'non disponibile'">link cert</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+				</div>
+
+			</div>
+			<!-- /.col -->
+		</div>
+		<!-- /.row -->
+
+
+
+		<div class="row">
+			<div class="col-12"></div>
+		</div>
+	</div>
+</body>
+</html>

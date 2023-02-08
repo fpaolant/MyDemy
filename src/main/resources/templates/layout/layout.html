@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	  	
+	<title th:text="#{common.applicationtitle}">My Demy</title>
+	
+	<!-- Font Awesome Icons -->
+	<link rel="stylesheet" href="" th:href="@{/plugins/fontawesome-free/css/all.min.css}">
+	<!-- IonIcons -->
+	<link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+	<!-- flag-icon-css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.3.0/css/flag-icon.min.css">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="../../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css" th:href="@{/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css}">
+	<!-- Select2 -->
+	<link rel="stylesheet" href="../../plugins/select2/css/select2.min.css" th:href="@{/plugins/select2/css/select2.min.css}">
+	<link rel="stylesheet" href="../../plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css" th:href="@{/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css}">
+	
+	<!-- Theme style -->
+	<link rel="stylesheet" href="" th:href="@{/dist/css/adminlte.min.css}">
+	<!-- MyDemy style -->
+	<link rel="stylesheet" href="" th:href="@{/dist/css/mydemy.css}">
+	<!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  
+	<!-- REQUIRED SCRIPTS -->
+	<!-- jQuery -->
+	<script src="" th:src="@{/plugins/jquery/jquery.min.js}"></script>
+	<!-- InputMask -->
+	<script src="" th:src="@{/plugins/moment/moment-with-locales.min.js}"></script>
+	<script src="" th:src="@{/plugins/inputmask/jquery.inputmask.min.js}"></script>
+	<!-- Bootstrap 4 -->
+	<script src="" th:src="@{/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
+	<!-- Select2 -->
+	<script src="" th:src="@{/plugins/select2/js/select2.full.min.js}"></script>
+	
+	<!-- DataTables -->
+	<script src="" th:src="@{/plugins/datatables/jquery.dataTables.min.js}"></script>
+	<script src="" th:src="@{/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
+	
+	<!-- AdminLTE App -->
+	<script src="" th:src="@{/dist/js/adminlte.min.js}"></script>
+</head>
+
+<body class="hold-transition sidebar-mini accent-info">
+<script th:inline="javascript">
+		$.extend( true, $.fn.dataTable.defaults, {
+			"processing": true,
+			"serverSide": true,
+			"language": {"url": "[(@{'/i18n/datatables/'+ ${#locale.language} + '.properties'})]"},
+			"ajax": {
+				"type": "POST",
+	            dataType: "json",
+	            "contentType": "application/json",
+			    "data": function ( d ) {
+	                return JSON.stringify( d );
+	            }
+			}
+		} );
+		$.fn.dataTable.render.moment = function ( from, to, locale ) {
+		    // Argument shifting
+		    if ( arguments.length === 1 ) {
+		        locale = '${#locale.language}';
+		        to = from;
+		        from = 'YYYY-MM-DD';
+		    }
+		    else if ( arguments.length === 2 ) {
+		        locale = 'en';
+		    }
+		 
+		    return function ( d, type, row ) {
+		        if (! d) {
+		            return type === 'sort' || type === 'type' ? 0 : d;
+		        }
+		 
+		        var m = window.moment( d, from, locale, true );
+		 
+		        // Order and type get a number value from Moment, everything else
+		        // sees the rendered value
+		        return m.format( type === 'sort' || type === 'type' ? 'x' : to );
+	    	};
+		};
+</script>
+<div class="wrapper">
+  <nav th:replace="~{layout/header :: header}"></nav>
+  <aside th:replace="~{layout/menu :: menu}"></aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+    </div>
+
+    <!-- Main content -->
+    <div class="content">
+      <div class="container-fluid" layout:fragment="content">
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Footer -->
+  <footer class="main-footer" th:replace="~{layout/footer :: footer}">    
+  </footer>
+</div>
+</body>
+</html>

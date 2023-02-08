@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layout/layout}">
+  <body>
+    <th:block th:fragment="item_private_content">
+        <div class="card card-danger card-outline">
+            <div class="card-header">
+                <h3 class="card-title">Contenuto del corso</h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool"
+                            data-card-widget="collapse" title="Collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+          <div class="card-body box-profile">
+              <p>Di seguito trovi i link riservati agli iscritti</p>
+
+              <div class="row">
+                  <div class="col-12">
+                      <div class="post">
+                          <th:block th:each="link: ${corso.links}">
+                              <a th:href="@{${link.url}}" target="_blank"
+                                 class="link-black text-sm"><i class="fas fa-link mr-1"></i>
+                                  <span th:text="${link.name}">risorsa 1</span></a>
+                          </th:block>
+                      </div>
+
+                  </div>
+              </div>
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+
+  </th:block>
+</body>
+</html>
+
+

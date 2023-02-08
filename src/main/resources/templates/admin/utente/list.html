@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layout/layout}">
+<body>
+<div layout:fragment="content">
+<script th:inline="javascript">
+$(document).ready(function() {
+	const username = $("#username").val();
+	$('#utenti_table').DataTable({
+		"columns":[
+	                {"data":"id"},
+	                {"data":"username"},
+	                {"data":"nome"},
+	                {"data":"cognome"},
+	                {"data":"email"},
+	                {"data":"enabled",
+	                    "searchable": false,
+	                    "sortable": false,
+	                    "defaultContent": "",
+	                    "className": "center", 
+	                    "render": function ( data, type, row, meta ) {
+	                    	return (row.enabled)? "<i class='fas fa-user-check' title='abilitato'></i>" : "<i class='fas fa-user-minus' title='disabilitato'></i>"
+	                     }
+	                 },
+	                { "data": "action",
+	                    "searchable": false,
+	                    "sortable": false,
+	                    "defaultContent": "",
+	                    "render": function ( data, type, row, meta ) {
+	                    	if(row.username === username) return "";
+	                    	return "<a href='[(@{/admin/utenti/update})]?id=" + row.id + "'><i class='fas fa-edit'></i></a>  | "+ 
+	                       		   "<a href='[(@{/admin/utenti/enable})]?id=" + row.id + "'>" + ((!row.enabled)? "<i class='fas fa-user-check'></i>" : "<i class='fas fa-user-minus'></i>") + "</a>  | " + 
+	                       		   "<a href='[(@{/admin/utenti/delete})]?id=" + row.id + "'><i class='fas fa-trash'></i></a>";
+	                     }
+	                  }
+        ],
+        "ajax": {
+		    "url": "[(@{/admin/utenti/findallpaginated})]"
+		},
+	});
+});
+</script>
+
+	<div class="row mb-2">
+		<div class="col-sm-6">
+			<h1 class="m-0" th:text="#{utenti.titolo}">utenti</h1>
+		</div>
+		<div class="col-sm-6">
+			<ol class="breadcrumb float-sm-right">
+				<li class="breadcrumb-item"><a href="/" th:href="@{/}">Home</a></li>
+				<li class="breadcrumb-item"><a href="/" th:href="@{/admin/index}">Admin</a></li>
+				<li class="breadcrumb-item active" th:text="#{utenti.titolo}">utenti</li>
+			</ol>
+		</div>
+	</div>
+<div class="row">
+	<div class="col-12">
+		<div class="card card-info">
+			<div class="card-header"><h3 class="card-title" th:text="#{utenti.titolo}"></h3></div>
+			  <div class="card-body">
+	  	     	<p><a href="#" th:href="@{/admin/utenti/create}" class="btn btn-app"><i class="fa fa-plus"></i>[[#{common.create}]]</a></p>
+		        <table id="utenti_table" class="table table-bordered table-striped">
+		          <thead>
+		          <tr>
+		            <th th:text="#{common.id}"></th>
+		            <th th:text="#{utente.username}"></th>
+		            <th th:text="#{utente.nome}"></th>
+		            <th th:text="#{utente.cognome}"></th>
+		            <th th:text="#{utente.email}"></th>
+		            <th th:text="#{utente.stato}" class="center"></th>
+		            <th th:text="#{common.action}"></th>
+		          </tr>
+		          </thead>
+		          <tbody>
+		          </tbody>
+		          <tfoot>
+		          <tr>
+		            <th th:text="#{common.id}"></th>
+		            <th th:text="#{utente.username}"></th>
+		            <th th:text="#{utente.nome}"></th>
+		            <th th:text="#{utente.cognome}"></th>
+		            <th th:text="#{utente.email}"></th>
+		            <th th:text="#{utente.stato}" class="center"></th>
+		            <th th:text="#{common.action}"></th>
+		          </tr>
+		          </tfoot>
+		        </table>         
+			  </div>
+		</div>
+	</div>
+</div>
+<input type="hidden" id="username" th:value="${#authentication.getPrincipal().getUsername()}" />
+</div>
+</body>
+</html>

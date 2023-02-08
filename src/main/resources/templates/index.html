@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layout/layout}">
+<body>
+<div layout:fragment="content">
+
+    <!-- Prossimi corsi -->
+    <div class="row">
+        <div class="col-12">
+            <h5 class="mb-2">Prossimamente <small><i>corsi che si terranno prossimamente</i></small></h5>
+        </div>
+    </div>
+    <div th:replace="~{fragments/slidercorsi :: slidercorsi}"></div>
+    <div class="row">
+        <div class="col-12">
+
+        </div>
+    </div>
+
+    <!-- Categorie -->
+    <div class="row">
+        <div class="col-12">
+            <h5 class="mb-2">Categorie <small><i>categorie di corsi</i></small></h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4" th:each="categoria: ${categorie}">
+            <a th:href="@{'/categoria/' + ${categoria.id}}">
+                <div class="info-box shadow-none">
+                    <span class="info-box-icon bg-info"><i class="" th:classappend="${categoria.icon}"></i></span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text" th:text="${categoria.nome}">Informatica</span>
+                        <span class="info-box-number" th:if="${categoria.corsi.size()}>0"
+                              th:text="${categoria.corsi.size()} + ' corsi presenti'">n.corsi</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+
+    <!-- /.content -->
+</div>
+
+
+</body>
+</html>

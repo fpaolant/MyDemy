@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layout/layout}">
+<body>
+  <div layout:fragment="content">
+    <script th:inline="javascript">
+      $(document).ready(function() {
+        $('#corsi_table').DataTable({
+          "searchDelay": 350,
+          "columns":[
+            {"data":"id"},
+            {"data":"titolo"},
+            {"data":"posti",
+              "className": "center",
+              "searchable": false,
+              "sortable": false,
+              "defaultContent": "",
+              "render": function ( data, type, row, meta ) {
+                return row.numIscritti + "/" + row.posti;
+              }
+            },
+            {"data":"datainizio",
+              "render": function ( data, type, row, meta ) {
+                return moment(row.inizio).format("D MMMM YYYY");
+              }
+            },
+            {"data": "ore",
+              "searchable": false,
+              "className": "center"
+            },
+            {"data": "approvato",
+              "className": "center",
+              "render": function ( data, type, row, meta ) {
+                return (row.approvato)? "<span class='badge bg-success'>approvato</span>": "<span class='badge bg-danger'>non approvato</span>";
+              }
+            },
+            {"data":"action",
+              "searchable": false,
+              "sortable": false,
+              "defaultContent": "",
+              "className": "center",
+              "render": function ( data, type, row, meta ) {
+                      let actions = [];
+                      if(!row.approvato) actions.push("<a href='[(@{/creatore/corsi/update})]?id=" + row.id + "'><i class='fas fa-edit'></i></a>");
+                      if(row.numIscritti>0) actions.push("<a href='[(@{/creatore/iscritti})]?id=" + row.id + "'>iscritti</a>");
+                return actions.join(" | ");
+              }
+            }
+          ],
+          "ajax": {
+            "url": "[(@{/creatore/findallcorsipaginated})]"
+          },
+        });
+      });
+    </script>
+
+
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="m-0" th:text="#{creatore.corsi.titolo}">Corsi</h1>
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="" th:href="@{/}">Home</a></li>
+          <li class="breadcrumb-item"><a href="" th:href="@{/creatore/index}">Creatore</a></li>
+          <li class="breadcrumb-item active" th:text="#{creatore.corsi.titolo}">Corsi</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <div class="card card-info">
+          <div class="card-header"><h3 class="card-title" th:text="#{corsi.titolo}"></h3></div>
+          <div class="card-body">
+            <p><a href="#" th:href="@{/creatore/corsi/proponi}" class="btn btn-app"><i class="fa fa-plus"></i>[[#{menu.creator.creacorso}]]</a></p>
+            <table id="corsi_table" class="table table-bordered table-striped">
+              <thead>
+              <tr>
+                <th th:text="#{common.id}"></th>
+                <th th:text="#{corso.titolo}"></th>
+                <th th:text="#{corso.iscritti}"></th>
+                <th th:text="#{corso.inizio}"></th>
+                <th th:text="#{corso.ore}"></th>
+                <th></th>
+                <th th:text="#{common.action}"></th>
+              </tr>
+              </thead>
+              <tbody>
+              </tbody>
+              <tfoot>
+              <tr>
+                <th th:text="#{common.id}"></th>
+                <th th:text="#{corso.titolo}"></th>
+                <th th:text="#{corso.iscritti}"></th>
+                <th th:text="#{corso.inizio}"></th>
+                <th th:text="#{corso.ore}"></th>
+                <th></th>
+                <th th:text="#{common.action}"></th>
+              </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+  </div>
+</body>
+</html>

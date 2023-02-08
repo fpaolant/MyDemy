@@ -1,0 +1,32 @@
+.error {
+    color: red;
+}
+th.center, td.center {
+	text-align: center;
+}
+
+
+.scrolling-wrapper{
+    overflow-x: auto;
+}
+
+.card-block {
+    background-color: #fff;
+    border: none;
+    transition: all 0.2s ease-in-out !important;
+    border-radius: 24px;
+}
+.card-block:hover{
+     transform: translateY(-5px);
+     box-shadow: none;
+     opacity: 0.9;
+ }
+
+
+.widget-user-image>img, .profile-user-img {
+    max-height: 100px;
+}
+
+.ribbon-wrapper .ribbon {
+    font-size: 0.6rem;
+}

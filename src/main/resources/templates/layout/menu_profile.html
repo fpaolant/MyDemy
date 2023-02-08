@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+		xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+<li class="nav-item dropdown" th:fragment="menu_profile">
+	<a class="nav-link" data-toggle="dropdown" href="#">
+		  <i class="fa fa-user"></i>
+		</a>      
+		<!-- Authenticated -->
+		<div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" 
+    	sec:authorize="isAuthenticated()">
+		  <span class="dropdown-item dropdown-header" sec:authentication="principal.username"></span>
+		  <div class="dropdown-divider"></div>
+		  <a href="#" th:href="@{/common/profilo}" class="dropdown-item" >
+		    <i class="fas fa-user-circle mr-2"></i> [[#{common.profile}]]
+		  </a>
+		  <div class="dropdown-divider"></div>
+		  <a href="#" th:href="@{/logout}" class="dropdown-item">
+		    <i class="fas fa-sign-out-alt mr-2"></i>[[#{common.logout}]] 
+		  </a>
+		</div>
+		<!-- Anonymous -->
+		<div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" 
+    	sec:authorize="isAnonymous()">
+		  <span class="dropdown-item dropdown-header"></span>
+		  <a href="#" th:href="@{/loginstart.html}" class="dropdown-item">
+		    <i class="fas fa-sign-out-alt mr-2"></i>[[#{common.login}]] 
+		  </a>
+		  <div class="dropdown-divider"></div>
+		  <a href="#" th:href="@{/signup}" class="dropdown-item">
+		    <i class="fas fa-sign-out-alt mr-2"></i>[[#{common.signup}]]
+		  </a>
+		</div>
+</li>
+</body>
+</html>

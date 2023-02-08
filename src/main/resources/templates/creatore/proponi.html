@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layout/layout}">
+<body>
+  <div layout:fragment="content">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="m-0" th:text="#{creatore.proponi.titolo}">Proponi un corso</h1>
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="/templates/public" th:href="@{/}">Home</a></li>
+          <li class="breadcrumb-item"><a href="/templates/public" th:href="@{/creatore/index}">Creatore</a></li>
+          <li class="breadcrumb-item active" th:text="#{creatore.proponi.titolo}">Proponi un corso</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- FORM CORSO -->
+    <th:block th:insert="~{creatore/form_corso :: form_corso}"></th:block>
+
+
+  </div>
+</body>
+</html>

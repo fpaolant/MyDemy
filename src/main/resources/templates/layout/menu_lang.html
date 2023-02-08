@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<li class="nav-item dropdown" th:fragment="menu_lang">
+<a
+	class="nav-link" data-toggle="dropdown" href="#"> <i
+		th:classappend="'flag-icon flag-icon-'+ (${#locale.language}=='en' ? 'gb' : ${#locale.language})"></i>
+</a>
+<div class="dropdown-menu dropdown-menu-right p-0">
+		<a href="#" th:href="@{?lang=en}" 
+			th:classappend="'dropdown-item ' + (${#locale.language}=='en' ? 'active':'')"> <i
+			class="flag-icon flag-icon-gb mr-2"></i> [[#{common.english}]]
+		</a> <a href="#" th:href="@{?lang=it}" 
+		th:classappend="'dropdown-item ' + (${#locale.language}=='it' ? 'active': '')"> <i
+			class="flag-icon flag-icon-it mr-2"></i> [[#{common.italian}]]
+		</a>
+	</div>
+</li>
+</body>
+</html>

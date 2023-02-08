@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layout/layout}">
+<body>
+<div layout:fragment="content">
+<link th:href="@{/plugins/bootstrap-switch/css/bootstrap-switch.min.css}" rel="stylesheet" />
+<!-- Bootstrap Switch -->
+<script th:src="@{/plugins/bootstrap-switch/js/bootstrap-switch.min.js}"></script>
+<script th:inline="javascript">
+$(document).ready(function() {
+
+	//Initialize Select2 Elements
+    $('.select2').select2({
+    	allowClear: true, tags: true,
+    })
+
+	if($("#password").val()!==$("#cpassword").val()) {
+		alert("password e conferma password  hanno valori diversi");
+	}
+
+});
+</script>
+<div class="row mb-2">
+	<div class="col-sm-6">
+		<h1 class="m-0" th:text="#{utenti.titolo}">utenti</h1>
+	</div>
+	<div class="col-sm-6">
+		<ol class="breadcrumb float-sm-right">
+			<li class="breadcrumb-item"><a href="/" th:href="@{/}">Home</a></li>
+			<li class="breadcrumb-item active" th:text="#{common.signup}">Registrati</li>
+		</ol>
+	</div>
+</div>
+<div class="row">
+<div class="col-12">
+	<div class="card card-info">
+		<div class="card-header">
+			<h3 class="card-title" th:text="#{common.signup}">Registrati</h3>
+		</div>
+		<form th:action="${#request.getRequestURI()}" th:object="${utente}" class="form-horizontal" method="post">
+		  <!--<input type="hidden" th:field="*{id}"/>-->
+		  <div class="card-body">
+		  	<div th:if="${#fields.hasErrors('global')}">
+			    <p th:each="err : ${#fields.errors('global')}" th:text="${err}" class="error" />
+			</div>
+			<div class="form-group row">
+				<label for="nome" class="col-sm-2 col-form-label" th:text="#{utente.nome}"></label>
+				<div class="col-sm-6">
+					<input type="text" th:field="*{nome}" class="form-control"/>
+					<span th:if="${#fields.hasErrors('nome')}" th:each="err: ${#fields.errors('nome')}" th:utext="${err}"></span>
+				</div>
+			</div>	  	  
+			<div class="form-group row">
+				<label for="cognome" class="col-sm-2 col-form-label" th:text="#{utente.cognome}"></label>
+				<div class="col-sm-6">
+					<input type="text" th:field="*{cognome}" class="form-control"/>
+					<span th:if="${#fields.hasErrors('cognome')}" th:each="err: ${#fields.errors('cognome')}" th:utext="${err}"></span>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="email" class="col-sm-2 col-form-label" th:text="#{utente.email}"></label>
+				<div class="col-sm-6">
+					<input type="email" th:field="*{email}" class="form-control"/>
+					<span th:if="${#fields.hasErrors('email')}" th:each="err: ${#fields.errors('email')}" th:utext="${err}"></span>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="username" class="col-sm-2 col-form-label" th:text="#{utente.username}"></label>
+				<div class="col-sm-6">
+					<input type="text" th:field="*{username}" name="username" class="form-control" autocomplete="off"/>
+					<span th:if="${#fields.hasErrors('username')}" th:each="err: ${#fields.errors('username')}" th:utext="${err}"></span>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="password" class="col-sm-2 col-form-label" th:text="#{utente.password}"></label>
+				<div class="col-sm-6">
+					<input type="password" id="password" th:field="*{password}" class="form-control" autocomplete="off" th:placeholder="#{utente.pwdplaceholder}"/>
+					<span th:if="${#fields.hasErrors('password')}" th:each="err: ${#fields.errors('password')}" th:utext="${err}"></span>
+				</div>
+			</div>
+			  <div class="form-group row">
+				  <label for="cpassword" class="col-sm-2 col-form-label" th:text="#{utente.password}"></label>
+				  <div class="col-sm-6">
+					  <input type="password" id="cpassword" value="" class="form-control" autocomplete="off" required/>
+					  <!--<span th:if="${#fields.hasErrors('cpassword')}" th:each="err: ${#fields.errors('cpassword')}" th:utext="${err}"></span>-->
+				  </div>
+			  </div>
+		  </div>
+		  <div class="card-footer">
+			<button type="submit" class="btn btn-info" th:text="#{common.submit}"></button>
+			<a href="#" th:href="@{/}" class="btn btn-default float-right" th:text="#{common.cancel}"></a>
+		  </div>
+		</form>
+	</div>
+</div>
+</div>
+</div>
+</body>
+</html>
+

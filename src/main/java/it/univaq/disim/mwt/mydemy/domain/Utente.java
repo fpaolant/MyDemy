@@ -1,0 +1,104 @@
+package it.univaq.disim.mwt.mydemy.domain;
+
+import java.sql.Blob;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@Getter
+@Setter
+@ToString
+public class Utente extends BaseEntity {
+
+	private static final long serialVersionUID = 1L;
+
+	@NotBlank
+	@Column(length = 30)
+	private String nome;
+	@NotBlank
+	@Column(length = 30)
+	private String cognome;
+	@Email
+	@Column(length = 50)
+	private String email;
+
+	@Lob
+	private byte[] foto;
+
+	@Column(nullable = false, unique = true, length = 30)
+	private String username;
+	@Column(length = 255)
+	private String password;
+
+	private Boolean enabled;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "id", referencedColumnName = "id")
+	private CreatoreInfo creatoreInfo;
+
+	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
+	@JoinTable(name = "utente_ruolo", joinColumns = { @JoinColumn(name = "utente_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "ruolo_id") })
+	private Set<Ruolo> ruoli = new HashSet<>();
+
+	public Utente() {
+	}
+
+	public Utente(@NotBlank String nome, @NotBlank String cognome, @Email String email, @NotBlank String username,
+			@NotBlank String password, Boolean enabled) {
+		super();
+		this.nome = nome;
+		this.cognome = cognome;
+		this.email = email;
+		this.username = username;
+		this.password = password;
+		this.enabled = enabled;
+	}
+
+	public void addRuolo(Ruolo r) {
+		this.ruoli.add(r);
+	}
+
+	public void removeRuolo(long roleId) {
+		Ruolo ruolo = this.ruoli.stream().filter(r -> r.getId() == roleId).findFirst().orElse(null);
+		if (ruolo != null) {
+			this.ruoli.remove(ruolo);
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		int hash = 5;
+		hash = 89 * hash + Objects.hashCode(this.username);
+		return hash;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final Utente other = (Utente) obj;
+		if (!Objects.equals(this.username, other.username)) {
+			return false;
+		}
+		return true;
+	}
+
+}

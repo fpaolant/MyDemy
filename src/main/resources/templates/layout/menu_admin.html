@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+
+		<!-- MENU ADMIN -->
+		<li class="nav-item" th:fragment="menu_admin"
+			th:classappend="${#request.getRequestURI().contains('/admin') ? 'menu-is-opening menu-open' : ''}">
+			<a href="#" class="nav-link"> <i
+					class="nav-icon fas fa-chart-pie"></i>
+					<p>
+						<th:block th:text="#{menu.admin.title}">GESTIONE</th:block>  <i class="right fas fa-angle-left"></i>
+					</p>
+			</a>
+			<ul class="nav nav-treeview">
+				<li class="nav-item"><a
+						href="#" th:href="@{/admin/index}"
+						th:classappend="${#request.getRequestURI().contains('/admin/index') ? 'active' : ''}"
+						class="nav-link">
+					<i class="far fa-circle nav-icon"></i>
+					<p th:text="#{menu.dashboard}"></p>
+				</a>
+				</li>
+				<li class="nav-item"><a
+					href="#" th:href="@{/admin/utenti/list}"
+					th:classappend="${#request.getRequestURI().contains('/admin/utenti/list') ? 'active' : ''}"
+					class="nav-link">
+						<i class="far fa-circle nav-icon"></i>
+						<p th:text="#{menu.utenti}"></p>
+					</a>
+				</li>
+				<li class="nav-item"><a
+					href="#" th:href="@{/admin/ruoli/list}"
+					th:classappend="${#request.getRequestURI().contains('/admin/ruoli/list') ? 'active' : ''}"
+					class="nav-link"> <i
+						class="far fa-circle nav-icon"></i>
+						<p th:text="#{menu.ruoli}"></p>
+				</a></li>
+				<li class="nav-item"><a
+					href="#" th:href="@{/admin/corsi/list}"
+					th:classappend="${#request.getRequestURI().contains('/admin/corsi/list') ? 'active' : ''}"
+					class="nav-link"> <i
+						class="far fa-circle nav-icon"></i>
+						<p th:text="#{menu.corsi}"></p>
+				</a></li>
+				<li class="nav-item"><a
+					href="#" th:href="@{/admin/categorie/list}"
+					th:classappend="${#request.getRequestURI().contains('/admin/categorie/list') ? 'active' : ''}"
+					class="nav-link">
+						<i class="far fa-circle nav-icon"></i>
+						<p th:text="#{menu.categorie}"></p>
+				</a></li>
+			</ul>
+		</li>
+
+</body>
+</html>

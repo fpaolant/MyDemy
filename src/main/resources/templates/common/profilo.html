@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layout/layout}">
+<body>
+<div layout:fragment="content">
+
+    <script th:inline="javascript">
+    </script>
+
+    <div class="row mb-2">
+        <div class="col-sm-6">
+            <h1 class="m-0" th:text="#{profilo.titolo}">Profilo</h1>
+        </div>
+        <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="/" th:href="@{/}">Home</a></li>
+                <li class="breadcrumb-item active" th:text="#{profilo.titolo}">Profilo</li>
+            </ol>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-info">
+                <div class="card-header"><h3 class="card-title" th:text="#{profilo.titolo}"></h3></div>
+                <form class="form-horizontal" th:action="@{/common/profilo}" th:object="${user}" method="post">
+                    <div class="card-body">
+                        <div class="input-group mb-12">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" th:text="#{profilo.username}"></i></span>
+                            </div>
+                            <input type="text" th:field="*{username}" class="form-control" required maxlength="100"
+                                   readonly="readonly">
+                        </div>
+                        <div class="input-group mb-6">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" th:text="#{profilo.nome}"></span>
+                            </div>
+                            <input type="text" th:field="*{nome}" class="form-control" required maxlength="100">
+                        </div>
+                        <div class="input-group mb-6">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" th:text="#{profilo.cognome}"></span>
+                            </div>
+                            <input type="text" th:field="*{cognome}" class="form-control" required maxlength="100">
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                            </div>
+                            <input type="email" th:field="*{email}" class="form-control" required maxlength="100">
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-info" th:text="#{common.submit}"></button>
+                        <a href="#" th:href="@{/}" class="btn btn-default float-right" th:text="#{common.cancel}"></a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <div class="card card-info">
+                <div class="card-header"><h3 class="card-title" th:text="#{profilo.profilepicture}">foto profilo</h3>
+                </div>
+                <form class="form-horizontal" th:action="@{/common/profilo/upload}" method="post"
+                      enctype="multipart/form-data">
+                    <div class="card-body">
+                        <div class="form-group row">
+                            <label for="foto">Foto</label>
+                            <div class="input-group">
+                                <div class="custom-file">
+                                    <input type="file" name="foto" class="custom-file-input" id="foto">
+                                    <label class="custom-file-label" for="foto">Scegli</label>
+                                </div>
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-info">cambia</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="imageContainer"
+                 th:style="'height: 160px; width: 100%; background-image: url(' + @{profilo/profileImage} + '); background-repeat: no-repeat, repeat; background-size: contain;'"
+
+        </div>
+    </div>
+
+</div>
+
+
+</div>
+</body>
+</html>

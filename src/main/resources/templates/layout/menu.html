@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+	<!-- Main Sidebar Container -->
+	<aside class="main-sidebar sidebar-dark-primary elevation-4"
+		th:fragment="menu">
+		<!-- Brand Logo -->
+		<a href="#" th:href="@{/}" class="brand-link"> <!--<img src="#" th:src="@{/dist/img/logomydemy.png}" alt="My Demy Logo" class="brand-image img-circle elevation-3" style="opacity: .8"> -->
+			<span class="brand-text font-weight-light">MyDemy</span>
+		</a>
+
+		<div class="sidebar">
+			<nav class="mt-2">
+				<ul class="nav nav-pills nav-sidebar flex-column"
+					data-widget="treeview" role="menu" data-accordion="false"
+					sec:authorize="isAuthenticated()">
+
+
+					<!-- MENU ADMIN -->
+					<sec:authorize access="hasRole('ADMIN')">
+						<th:block th:insert="~{layout/menu_admin :: menu_admin}"></th:block>
+					</sec:authorize>
+
+					<!-- MENU CREATORE -->
+					<sec:authorize access="hasRole('CREATOR')">
+						<th:block th:insert="~{layout/menu_creatore :: menu_creatore}"></th:block>
+					</sec:authorize>
+
+					<!-- MENU USER -->
+					<sec:authorize access="hasRole('USER')">
+						<th:block th:insert="~{layout/menu_utente :: menu_utente}"></th:block>
+					</sec:authorize>
+
+				</ul>
+			</nav>
+		</div>
+	</aside>
+</body>
+</html>
