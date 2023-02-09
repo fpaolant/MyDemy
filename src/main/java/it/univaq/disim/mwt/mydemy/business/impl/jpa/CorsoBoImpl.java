@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import it.univaq.disim.mwt.mydemy.domain.Categoria;
 import it.univaq.disim.mwt.mydemy.domain.Utente;
 import it.univaq.disim.mwt.mydemy.repository.IscrizioneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,8 +57,8 @@ public class CorsoBoImpl implements CorsoBO {
 	
 	@Override
 	@Transactional(readOnly = true)
-	public Optional<Corso> findByTitolo(String titolo) {
-		return corsoRepository.findByTitolo(titolo);
+	public List<Corso> findByTitoloContainingIgnoreCase(String searchString, PageRequest pageRequest) {
+		return corsoRepository.findByTitoloContainingIgnoreCaseAndApprovatoIsTrue(searchString, pageRequest);
 	}
 
 	@Override
@@ -113,6 +114,12 @@ public class CorsoBoImpl implements CorsoBO {
 			c.setNumIscritti(iscrizioneRepository.findByCorso(c).size());
 		});
 		return new ResponseGrid<Corso>(requestGrid.getDraw(), numTotali, corsi.size(), corsi);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Corso> findAllByCategoriaAndTitoloContainingIgnoreCasePaginatedSortBy(Categoria categoria, String searchTitleString, PageRequest pageRequest) {
+		return corsoRepository.findByCategorie_AndTitoloContainingIgnoreCaseAndApprovatoIsTrue(categoria, searchTitleString, pageRequest);
 	}
 
 	@Override

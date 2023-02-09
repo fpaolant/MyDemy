@@ -5,23 +5,35 @@
 <body>
 <div layout:fragment="content">
 
+    <!-- Cerca -->
+    <div class="container-fluid">
+        <div th:replace="~{fragments/searchForm :: searchForm}"></div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <br/>
+        </div>
+    </div>
+
     <!-- Prossimi corsi -->
     <div class="row">
         <div class="col-12">
-            <h5 class="mb-2">Prossimamente <small><i>corsi che si terranno prossimamente</i></small></h5>
+            <h3 class="mb-2">Prossimamente <small><i>corsi che si terranno prossimamente</i></small></h3>
         </div>
     </div>
     <div th:replace="~{fragments/slidercorsi :: slidercorsi}"></div>
+
     <div class="row">
         <div class="col-12">
-
+            <br/>
         </div>
     </div>
 
     <!-- Categorie -->
     <div class="row">
         <div class="col-12">
-            <h5 class="mb-2">Categorie <small><i>categorie di corsi</i></small></h5>
+            <h3 class="mb-2">Categorie <small><i>categorie di corsi</i></small></h3>
         </div>
     </div>
     <div class="row">

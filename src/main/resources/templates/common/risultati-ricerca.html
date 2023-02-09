@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layout/layout}">
+<body>
+<div layout:fragment="content">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6"></div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/" th:href="@{/}">Home</a></li>
+                        <li class="breadcrumb-item active">Ricerca</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <!-- /.container-fluid -->
+    </section>
+
+    <div class="container-fluid">
+        <div th:replace="~{fragments/searchFormEnhanced :: searchFormEnhanced}"></div>
+        <div class="row mt-3">
+            <div class="col-md-10 offset-md-1">
+                <div class="list-group">
+                    <dic class="text-center" th:if="${corsi.size()==0}">Nessun risultato prova con altri criteri di ricerca</div>
+                    <!-- list group start -->
+                    <div class="list-group-item" th:each="corso: ${corsi}">
+
+                        <div class="ribbon-wrapper" th:if="${corso.attestatoFinale}">
+                            <div class="ribbon bg-success" th:text="#{corso.attestatoFinaleShort}">Attestato</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-auto">
+                                <a th:href="@{'/corso/' + ${corso.id}}"><img class="img-fluid"
+                                                                             src="../dist/img/photo1.png" alt="Photo"
+                                                                             style="max-height: 160px;"></a>
+                            </div>
+                            <div class="col px-4">
+                                <div>
+                                    <div class="float-right"
+                                         th:text="${#temporals.format(corso.inizio, 'dd/MM/yyyy HH:mm')}">dd/MM/yyyy HH:mm
+                                    </div>
+                                    <h3 th:text="${corso.titolo}"></h3>
+                                    <div>
+                                        <a th:each="categoria, iterStat: ${corso.categorie}" href="/"
+                                           th:href="@{'/categoria/' + ${categoria.id}}"
+                                           th:text="${(iterStat.last)? categoria.nome + '': categoria.nome + ' - '}">cat
+                                            nome</a>
+                                    </div>
+
+                                    <p class="mb-0" th:text="${#strings.abbreviate(corso.descrizione,150)}">consectetuer
+                                        adipiscing elit. Aenean commodo ligula eget dolor.</p>
+                                    <div class="row">
+                                        <div class="col-10">
+                                            <div class="user-block">
+                                                <img class="img-circle" src="../dist/img/user1-128x128.jpg" th:src="@{'/corso/creatorImage/'+ ${corso.creatore.id}}" th:alt="${corso.creatore.username}">
+
+                                                <span class="username">
+                                                    <a href="#"
+                                                       th:text="${corso.creatore.cognome + ' ' + corso.creatore.nome }">Jonathan Burke Jr.</a></span>
+                                                <span class="description"
+                                                      th:text="${corso.creatore.creatoreInfo.titolo}">Developer</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-2 float-right">
+                                            <b style="font-size: x-large; color: #1c7430;"
+                                               th:text="${corso.prezzo + '€'}"></b>
+                                        </div>
+                                    </div><!--row end-->
+                                    <div>
+                                        <b th:if="${corso.tags.size()>0}">Tags:</b>
+                                        <a href="#"
+                                           class="badge badge-secondary"
+                                           th:each="tag: ${corso.tags}"
+                                           th:text="${tag.nome}">tag
+                                            nome</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- list group end -->
+                    <br/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
