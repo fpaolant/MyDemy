@@ -44,7 +44,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 					.mvcMatchers("/", "/static/**", "/favicon.ico", "/corsidisponibili").permitAll()
 					.mvcMatchers("/common/**").authenticated()
 					.mvcMatchers("/admin/**").hasAuthority("ADMIN");
-					//.mvcMatchers("/insegnamenti/**", "/appelli/**").hasAnyRole("docente");
 	}
 	
 	
