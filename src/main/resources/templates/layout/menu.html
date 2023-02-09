@@ -15,23 +15,18 @@
 				<ul class="nav nav-pills nav-sidebar flex-column"
 					data-widget="treeview" role="menu" data-accordion="false"
 					sec:authorize="isAuthenticated()">
-
-
 					<!-- MENU ADMIN -->
-					<sec:authorize access="hasRole('ADMIN')">
+					<th:block sec:authorize="hasAuthority('ADMIN')">
 						<th:block th:insert="~{layout/menu_admin :: menu_admin}"></th:block>
-					</sec:authorize>
+					</th:block>
 
 					<!-- MENU CREATORE -->
-					<sec:authorize access="hasRole('CREATOR')">
+					<th:block sec:authorize="hasAuthority('CREATOR')">
 						<th:block th:insert="~{layout/menu_creatore :: menu_creatore}"></th:block>
-					</sec:authorize>
+					</th:block>
 
 					<!-- MENU USER -->
-					<sec:authorize access="hasRole('USER')">
-						<th:block th:insert="~{layout/menu_utente :: menu_utente}"></th:block>
-					</sec:authorize>
-
+					<th:block th:insert="~{layout/menu_utente :: menu_utente}"></th:block>
 				</ul>
 			</nav>
 		</div>
