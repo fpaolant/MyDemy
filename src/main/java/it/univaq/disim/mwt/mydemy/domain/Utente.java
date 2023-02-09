@@ -43,7 +43,6 @@ public class Utente extends BaseEntity {
 	private Boolean enabled;
 
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "id", referencedColumnName = "id")
 	private CreatoreInfo creatoreInfo;
 
 	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })

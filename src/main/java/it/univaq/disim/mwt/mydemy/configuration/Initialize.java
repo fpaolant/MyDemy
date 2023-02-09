@@ -63,7 +63,7 @@ public class Initialize implements ApplicationListener<ApplicationReadyEvent> {
         utenteService.save(marco);
 
         Utente a = new Utente("Antonio", "Paolo", "fabiopaolantonio@gmail.com", "antpaol", passwordEncoder.encode("antpaol"), true);
-        a.setCreatoreInfo(new CreatoreInfo("Software Developer", ""));
+        a.setCreatoreInfo(new CreatoreInfo("Software Engineer", ""));
         a.addRuolo(adminRole);
         a.addRuolo(userRole);
         a.addRuolo(creatorRole);
