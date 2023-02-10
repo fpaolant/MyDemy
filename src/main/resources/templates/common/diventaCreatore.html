@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layout/layout}">
+<body>
+<div layout:fragment="content">
+
+  <div class="row mb-2">
+    <div class="col-sm-6">
+      <h1 class="m-0" th:text="#{diventacreatore.titolo}">Diventa creatore</h1>
+    </div>
+    <div class="col-sm-6">
+      <ol class="breadcrumb float-sm-right">
+        <li class="breadcrumb-item"><a href="/" th:href="@{/}">Home</a></li>
+        <li class="breadcrumb-item active" th:text="#{diventacreatore.titolo}">Diventa creatore</li>
+      </ol>
+    </div>
+  </div>
+  <p sec:authorize="!hasAuthority('CREATOR')" th:text="#{diventacreatore.sottotitolo}">Diventando creatore potrai..</p>
+  <div class="row" sec:authorize="!hasAuthority('CREATOR')">
+    <div class="col-12">
+      <div class="card card-info">
+        <div class="card-header">
+          <h3 class="card-title" th:text="#{diventacreatore.titolo}">Diventa Creatore</h3>
+        </div>
+        <form th:action="@{/common/profilo/diventaCreatoreAction}" th:object="${creatoreInfo}" class="form-horizontal" method="post">
+          <div class="card-body">
+            <div th:if="${#fields.hasErrors('global')}">
+              <p th:each="err : ${#fields.errors('global')}" th:text="${err}" class="error" />
+            </div>
+            <div class="form-group row">
+              <label for="titolo" class="col-sm-2 col-form-label" th:text="#{creatore.titolo}"></label>
+              <div class="col-sm-6">
+                <input type="text" th:field="*{titolo}" id="titolo" class="form-control"/>
+                <span th:if="${#fields.hasErrors('titolo')}" th:each="err: ${#fields.errors('titolo')}" th:utext="${err}"></span>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="descrizione" class="col-sm-2 col-form-label" th:text="#{creatore.descrizione}"></label>
+              <div class="col-sm-6">
+                <textarea th:field="*{descrizione}" rows="10" id="descrizione" class="form-control"></textarea>
+                <span th:if="${#fields.hasErrors('descrizione')}" th:each="err: ${#fields.errors('descrizione')}" th:utext="${err}"></span>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button type="submit" class="btn btn-info" th:text="#{common.submit}"></button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout callout-success" sec:authorize="hasAuthority('CREATOR')">
+    <h5 th:text="#{diventacreatore.successo.titolo(${utente.nome}, ${utente.cognome})}">Complimenti nome cognome!</h5>
+    <p>
+      <th:block th:text="#{diventacreatore.successo.messaggio}">Sei ora un creatore di MyDemy,</th:block>
+      <a th:href="@{/creatore/corsi/proponi}" th:text="#{diventacreatore.successo.nomelink}">proponi subito un corso ai tuoi studenti</a></p>
+  </div>
+
+</div>
+</body>
+</html>
