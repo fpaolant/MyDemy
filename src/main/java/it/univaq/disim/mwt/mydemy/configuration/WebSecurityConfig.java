@@ -42,7 +42,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 					.and().authorizeRequests()
 					// Specificare le url che sono soggette ad autenticazione ed autorizzazione
 					.mvcMatchers("/", "/static/**", "/favicon.ico", "/corsidisponibili").permitAll()
-					.mvcMatchers("/common/**").authenticated()
+					.mvcMatchers("/common/**","/iscrizioni").authenticated()
 				    .mvcMatchers("/creatore/**").hasAuthority("CREATOR")
 					.mvcMatchers("/admin/**").hasAuthority("ADMIN");
 	}
