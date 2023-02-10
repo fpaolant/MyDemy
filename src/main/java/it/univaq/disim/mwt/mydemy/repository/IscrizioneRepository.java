@@ -16,6 +16,5 @@ public interface IscrizioneRepository extends JpaRepository<Iscrizione, Long> {
 	List<Iscrizione> findByUtenteOrderByDataAsc(Utente utente);
 	List<Iscrizione> findByUtenteAndCorsoOrderByDataAsc(Utente utente, Corso corso);
 	List<Iscrizione> findAllByCorsoOrderByUtenteCognomeAsc(Corso corso, Pageable paging);
-
 	List<Iscrizione> findAllByCorsoAndUtenteCognomeContainingIgnoreCaseOrderByUtenteCognomeAsc(Corso corso, String needle, Pageable paging);
 }

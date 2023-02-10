@@ -39,14 +39,10 @@ public class HomeController {
 
 		Sort sortCriteria = Sort.by(Sort.Direction.DESC, "inizio");
 		PageRequest pageRequest = PageRequest.of(0, 10, sortCriteria);
-		model.addAttribute("corsi", serviceCorso.findAllNextCorsi(pageRequest).getContent());
+		model.addAttribute("corsi", serviceCorso.findAllNextCorsi(pageRequest));
 		
 		return "index";
 	}
-		
-	@PostMapping("/corsidisponibili")
-	public @ResponseBody ResponseGrid<Corso> findAllPaginated(@RequestBody RequestGrid requestGrid) throws BusinessException {		
-		return serviceCorso.findAllPaginated(requestGrid);		
-	}
+
 	
 }

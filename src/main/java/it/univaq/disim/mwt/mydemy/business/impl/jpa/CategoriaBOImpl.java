@@ -53,10 +53,4 @@ public class CategoriaBOImpl implements CategoriaBO {
 		else return getLevel(categoria.getParent(), categorie) + 1;
 	}
 
-	@Override
-	public Categoria findCategoryWithMaxCourses() {
-		return null;
-	}
-
-
 }

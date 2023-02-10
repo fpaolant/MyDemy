@@ -2,7 +2,6 @@ package it.univaq.disim.mwt.mydemy.domain;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -15,7 +14,6 @@ import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import groovyjarjarantlr4.v4.runtime.misc.NotNull;
 import groovyjarjarantlr4.v4.runtime.misc.Nullable;

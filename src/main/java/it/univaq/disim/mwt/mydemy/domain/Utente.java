@@ -1,6 +1,6 @@
 package it.univaq.disim.mwt.mydemy.domain;
 
-import java.sql.Blob;
+
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;

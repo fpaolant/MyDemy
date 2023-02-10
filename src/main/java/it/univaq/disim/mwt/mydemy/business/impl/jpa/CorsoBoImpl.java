@@ -31,8 +31,6 @@ public class CorsoBoImpl implements CorsoBO {
 	@Autowired
 	private IscrizioneRepository iscrizioneRepository;
 
-//	static final Logger logger = Logger.getLogger(CorsoBoImpl.class);
-
 	@Override
 	public void save(Corso corso) {
 		corsoRepository.save(corso);
@@ -46,8 +44,8 @@ public class CorsoBoImpl implements CorsoBO {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Page<Corso> findAllNextCorsi(PageRequest pageRequest) {
-		return corsoRepository.findAll(pageRequest);
+	public List<Corso> findAllNextCorsi(PageRequest pageRequest) {
+		return corsoRepository.findByApprovatoIsTrue(pageRequest);
 	}
 
 	@Override
@@ -78,14 +76,13 @@ public class CorsoBoImpl implements CorsoBO {
 		// pageable
 		PageRequest pageRequest = PageRequest.of(requestGrid.getStart(), requestGrid.getLength(), sortCriteria);
 		
-		
 		if("".equals(requestGrid.getSearch().getValue())) {			
-			corsi = corsoRepository.findAll(pageRequest).stream().collect(Collectors.toList());
+			corsi = corsoRepository.findByApprovatoIsTrue(pageRequest).stream().collect(Collectors.toList());
 		} else {
-			corsi = corsoRepository.findByTitoloContainingIgnoreCase(requestGrid.getSearch().getValue(), pageRequest);
+			corsi = corsoRepository.findByTitoloContainingIgnoreCaseAndApprovatoIsTrue(requestGrid.getSearch().getValue(), pageRequest);
 		}
 		
-		int numTotali = corsoRepository.findAll().size();
+		int numTotali = corsoRepository.findByApprovatoIsTrue(PageRequest.of(0,Integer.MAX_VALUE)).size();
 		
 		return new ResponseGrid<Corso>(requestGrid.getDraw(), numTotali, corsi.size(), corsi);
 		

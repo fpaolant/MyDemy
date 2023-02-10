@@ -6,7 +6,6 @@ import java.util.Optional;
 import it.univaq.disim.mwt.mydemy.domain.Categoria;
 import it.univaq.disim.mwt.mydemy.domain.Corso;
 import it.univaq.disim.mwt.mydemy.domain.Utente;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 public interface CorsoBO {
@@ -15,7 +14,7 @@ public interface CorsoBO {
 
 	List<Corso> findAllCorsi();
 
-	Page<Corso> findAllNextCorsi(PageRequest pageRequest);
+	List<Corso> findAllNextCorsi(PageRequest pageRequest);
 	
 	List<Corso> findByCreatore(Utente creatore);
 
@@ -34,7 +33,4 @@ public interface CorsoBO {
 	public List<Corso> findAllByCategoriaAndTitoloContainingIgnoreCasePaginatedSortBy(Categoria categoria, String searchTitleString, PageRequest pageRequest);
 
 	void delete(Corso corso);
-	
-	
-
 }

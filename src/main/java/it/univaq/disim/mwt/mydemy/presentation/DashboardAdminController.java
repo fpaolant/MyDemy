@@ -12,8 +12,6 @@ public class DashboardAdminController {
 	@GetMapping("/index")
 	String index(Model model) {
 
-		
-
 		return "admin/dashboard/index";
 	}
 		

@@ -11,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import it.univaq.disim.mwt.mydemy.business.BusinessException;
 import it.univaq.disim.mwt.mydemy.business.IscrizioneBO;
 import it.univaq.disim.mwt.mydemy.domain.Iscrizione;
 import it.univaq.disim.mwt.mydemy.domain.Utente;

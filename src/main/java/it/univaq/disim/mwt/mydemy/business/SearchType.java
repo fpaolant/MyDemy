@@ -8,6 +8,5 @@ import lombok.ToString;
 public class SearchType {
 	
 	private String value;
-	private boolean regex; 
-
+	private boolean regex;
 }

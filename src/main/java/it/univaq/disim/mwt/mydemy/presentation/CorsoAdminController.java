@@ -137,10 +137,4 @@ public class CorsoAdminController {
 		return "redirect:/admin/corsi/list";
 	}
 	
-	
-	
-	
-    
-    
-	
 }

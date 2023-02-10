@@ -6,7 +6,6 @@ import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;

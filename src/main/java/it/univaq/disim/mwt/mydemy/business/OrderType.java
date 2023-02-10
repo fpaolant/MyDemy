@@ -7,6 +7,4 @@ public class OrderType {
 	
 	private int column;
 	private String dir;
-	
-
 }

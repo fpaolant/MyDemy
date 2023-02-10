@@ -1,6 +1,6 @@
 package it.univaq.disim.mwt.mydemy.presentation;
 
-import java.io.IOException;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -30,7 +30,6 @@ import it.univaq.disim.mwt.mydemy.business.RuoloBO;
 import it.univaq.disim.mwt.mydemy.business.UtenteBO;
 import it.univaq.disim.mwt.mydemy.domain.Ruolo;
 import it.univaq.disim.mwt.mydemy.domain.Utente;
-import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("/admin/utenti")

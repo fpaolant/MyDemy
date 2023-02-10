@@ -23,6 +23,4 @@ public interface UtenteBO {
 	void changePassword(Utente utente, String password);
 
 	List<Utente> findAllByRole(Ruolo ruolo);
-
-
 }

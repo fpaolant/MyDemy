@@ -11,6 +11,4 @@ public interface WebLinkBO {
 	void save(WebLink wl);
 		
 	void delete(WebLink wl);
-
-
 }

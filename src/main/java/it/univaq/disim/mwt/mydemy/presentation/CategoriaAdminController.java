@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
-import it.univaq.disim.mwt.mydemy.repository.CategoriaRepository;
 import it.univaq.disim.mwt.mydemy.repository.CorsoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -23,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import it.univaq.disim.mwt.mydemy.business.BusinessException;
 import it.univaq.disim.mwt.mydemy.business.CategoriaBO;
 import it.univaq.disim.mwt.mydemy.business.ResponseCategoryItem;
 import it.univaq.disim.mwt.mydemy.domain.Categoria;
@@ -34,8 +32,6 @@ public class CategoriaAdminController {
 	
 	@Autowired
 	private CategoriaBO serviceCategoria;
-	@Autowired
-	private CategoriaRepository categoriaRepository;
 	@Autowired
 	private CorsoRepository corsoRepository;
 

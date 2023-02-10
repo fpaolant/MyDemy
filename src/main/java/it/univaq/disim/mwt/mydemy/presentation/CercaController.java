@@ -3,22 +3,12 @@ package it.univaq.disim.mwt.mydemy.presentation;
 import it.univaq.disim.mwt.mydemy.business.*;
 import it.univaq.disim.mwt.mydemy.domain.Categoria;
 import it.univaq.disim.mwt.mydemy.domain.Corso;
-import it.univaq.disim.mwt.mydemy.domain.Iscrizione;
-import it.univaq.disim.mwt.mydemy.domain.Utente;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -63,10 +53,7 @@ public class CercaController {
         } else {
             corsi = serviceCorso.findByTitoloContainingIgnoreCase(searchString, PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.ASC, "titolo"));
         }
-
-
         model.addAttribute("corsi", corsi);
-
         return "common/risultati-ricerca";
     }
 

@@ -19,22 +19,15 @@ import it.univaq.disim.mwt.mydemy.domain.Corso;
 import it.univaq.disim.mwt.mydemy.domain.Iscrizione;
 import it.univaq.disim.mwt.mydemy.domain.Utente;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping("/corso")
 public class CorsoController {
-	
 	@Autowired
 	private CorsoBO serviceCorso;
 	@Autowired
 	private IscrizioneBO serviceIscrizione;
-	@Autowired
-	private CategoriaBO serviceCategoria;
-	@Autowired
-	private TagBo serviceTag;
-
 	@Autowired
 	private UtenteBO serviceUtente;
 	
@@ -103,27 +96,10 @@ public class CorsoController {
 		});
 		return "redirect:/corso/" + id + iscrizione[0];
 	}
-	
-	/*@GetMapping("/pubblica")
-	public String pubblica(Model model) {
-		Corso c = new Corso();
-		Utente utente = Utility.getUtente();
-
-		c.setCreatore(new Utente());
-		model.addAttribute("corso", c);
-		
-		List<Tag> tags = serviceTag.findAll();
-		model.addAttribute("tags", tags);
-		List<Categoria> categorie = serviceCategoria.findAll();
-		model.addAttribute("cats", categorie);
-		
-		return "/corso/form";
-	}*/
 
 	@RequestMapping(value = "/creatorImage/{creatorId}", method = RequestMethod.GET,
 			produces = MediaType.IMAGE_JPEG_VALUE)
-	public void getCreatorImage(@PathVariable Long creatorId, HttpServletResponse response)
-			throws ServletException, IOException {
+	public void getCreatorImage(@PathVariable Long creatorId, HttpServletResponse response) throws IOException {
 		Optional<Utente> utente = serviceUtente.findByID(creatorId);
 
 		if(utente.isPresent()) {
@@ -136,7 +112,5 @@ public class CorsoController {
 			}
 		}
 	}
-	
-	
 	
 }

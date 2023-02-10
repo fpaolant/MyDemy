@@ -16,8 +16,6 @@ public interface CreatoreInfoBO {
 	
 	void updateProfilo(CreatoreInfo nuovoProfilo);
 	
-	//ResponseGrid<CreatoreInfo> findAllPaginated(RequestGrid requestGrid);
-	
 	List<CreatoreInfo> findAll();
 	
 	void delete(CreatoreInfo creatoreInfo);

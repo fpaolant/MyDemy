@@ -2,7 +2,6 @@ package it.univaq.disim.mwt.mydemy.domain;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -22,7 +21,6 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import groovyjarjarantlr4.v4.runtime.misc.Nullable;
 
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
 @Entity

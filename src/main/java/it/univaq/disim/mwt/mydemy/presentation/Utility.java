@@ -40,8 +40,6 @@ public class Utility {
 		Authentication newAuth = new UsernamePasswordAuthenticationToken(auth.getPrincipal(), auth.getCredentials(), updatedAuthorities);
 		SecurityContextHolder.getContext().setAuthentication(newAuth);
 	}
-
-
 	
 }
 
