@@ -1,6 +1,6 @@
 package it.univaq.disim.mwt.mydemy.business.impl.jpa;
 
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -9,7 +9,6 @@ import it.univaq.disim.mwt.mydemy.domain.Categoria;
 import it.univaq.disim.mwt.mydemy.domain.Utente;
 import it.univaq.disim.mwt.mydemy.repository.IscrizioneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -21,7 +20,6 @@ import it.univaq.disim.mwt.mydemy.business.ResponseGrid;
 import it.univaq.disim.mwt.mydemy.domain.Corso;
 import it.univaq.disim.mwt.mydemy.repository.CorsoRepository;
 
-import javax.persistence.EntityManager;
 
 @Service
 @Transactional
@@ -66,7 +64,7 @@ public class CorsoBoImpl implements CorsoBO {
 
 	@Override
 	@Transactional(readOnly = true)
-	public ResponseGrid<Corso> findAllPaginated(RequestGrid requestGrid) {
+	public ResponseGrid<Corso> findAllApprovedPaginated(RequestGrid requestGrid) {
 		String sortCol = requestGrid.getSortCol();
 		
 		List<Corso> corsi = null;
@@ -86,6 +84,30 @@ public class CorsoBoImpl implements CorsoBO {
 		
 		return new ResponseGrid<Corso>(requestGrid.getDraw(), numTotali, corsi.size(), corsi);
 		
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public ResponseGrid<Corso> findAllPaginated(RequestGrid requestGrid) {
+		String sortCol = requestGrid.getSortCol();
+
+		List<Corso> corsi = null;
+		// sort order and value
+		Sort sortCriteria = Sort.by(sortCol);
+		if(requestGrid.getSortDir().equalsIgnoreCase("desc")) sortCriteria.descending();
+		// pageable
+		PageRequest pageRequest = PageRequest.of(requestGrid.getStart(), requestGrid.getLength(), sortCriteria);
+
+		if("".equals(requestGrid.getSearch().getValue())) {
+			corsi = corsoRepository.findAll(pageRequest).stream().collect(Collectors.toList());
+		} else {
+			corsi = corsoRepository.findByTitoloContainingIgnoreCase(requestGrid.getSearch().getValue(), pageRequest);
+		}
+
+		int numTotali = corsoRepository.findByApprovatoIsTrue(PageRequest.of(0,Integer.MAX_VALUE)).size();
+
+		return new ResponseGrid<Corso>(requestGrid.getDraw(), numTotali, corsi.size(), corsi);
+
 	}
 
 	@Override

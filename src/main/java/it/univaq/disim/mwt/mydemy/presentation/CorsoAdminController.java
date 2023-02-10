@@ -45,16 +45,12 @@ public class CorsoAdminController {
 	@PostMapping("/findallpaginated")
 	public @ResponseBody ResponseGrid<Corso> findAllPaginated(@RequestBody RequestGrid requestGrid) {
 		ResponseGrid<Corso> rgc = serviceCorso.findAllPaginated(requestGrid);
-		System.out.println("filtered: " + rgc.getRecordsFiltered());
-		System.out.println("totali: " + rgc.getRecordsTotal());
 		return rgc;
 	}
 
 	@GetMapping("/findallpaginated")
 	public @ResponseBody ResponseGrid<Corso> findAllPaginatedget(@RequestBody RequestGrid requestGrid) {
 		ResponseGrid<Corso> rgc = serviceCorso.findAllPaginated(requestGrid);
-		System.out.println("filtered: " + rgc.getRecordsFiltered());
-		System.out.println("totali: " + rgc.getRecordsTotal());
 		return rgc;
 	}
 	

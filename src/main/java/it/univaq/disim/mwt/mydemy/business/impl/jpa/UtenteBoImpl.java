@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 
 import it.univaq.disim.mwt.mydemy.domain.Ruolo;
+import it.univaq.disim.mwt.mydemy.repository.IscrizioneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -23,7 +24,9 @@ import it.univaq.disim.mwt.mydemy.repository.UtenteRepository;
 @Transactional
 public class UtenteBoImpl implements UtenteBO {
 	
-	@Autowired UtenteRepository utenteRepository; 
+	@Autowired UtenteRepository utenteRepository;
+	@Autowired
+	IscrizioneRepository iscrizioneRepository;
 
 	@Override
 	public Utente findByUsername(String username) {
@@ -71,8 +74,8 @@ public class UtenteBoImpl implements UtenteBO {
 
 	@Override
 	public void delete(Utente utente) {
+		iscrizioneRepository.deleteByUtente(utente);
 		utenteRepository.delete(utente);
-		
 	}
 
 	@Override

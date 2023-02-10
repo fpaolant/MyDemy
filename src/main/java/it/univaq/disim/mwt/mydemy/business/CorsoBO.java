@@ -28,6 +28,8 @@ public interface CorsoBO {
 
 	ResponseGrid<Corso> findAllPaginated(RequestGrid requestGrid);
 
+	ResponseGrid<Corso> findAllApprovedPaginated(RequestGrid requestGrid);
+
 	public ResponseGrid<Corso> findAllByCreatorePaginated(Utente creatore, RequestGrid requestGrid);
 
 	public List<Corso> findAllByCategoriaAndTitoloContainingIgnoreCasePaginatedSortBy(Categoria categoria, String searchTitleString, PageRequest pageRequest);
