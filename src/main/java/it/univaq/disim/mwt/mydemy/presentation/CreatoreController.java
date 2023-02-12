@@ -5,6 +5,7 @@ import it.univaq.disim.mwt.mydemy.business.impl.jpa.IscrizioneBOImpl;
 import it.univaq.disim.mwt.mydemy.domain.*;
 import it.univaq.disim.mwt.mydemy.repository.IscrizioneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -32,13 +33,41 @@ public class CreatoreController {
 	@Autowired
 	private UtenteBO serviceUtente;
 	@Autowired
-	private IscrizioneRepository iscrizioneRepository;
+	private IscrizioneBO iscrizioneService;
 
 	@GetMapping("/index")
 	public String index(Principal principal, Model model) throws BusinessException {
-		// to do
+		Utente creatore = Utility.getUtente();
+
+		Long iscrizioniCount = iscrizioneService.count(creatore);
+		model.addAttribute("iscrizioniCount", iscrizioniCount);
+		model.addAttribute("usersCount", iscrizioniCount);
+
+		float percSuperato = iscrizioneService.getPercentualeSuperato(creatore);
+		model.addAttribute("percSuperato", String.format("%.0f%%",percSuperato));
+
+		int corsiCount = serviceCorso.findByCreatore(creatore).size();
+		model.addAttribute("corsiCount", corsiCount);
 
 		return "creatore/dashboard";
+	}
+
+	@RequestMapping(value = "/getVendite", method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponsePieData getVendite() {
+		Utente creatore = Utility.getUtente();
+		ResponsePieData entity = new ResponsePieData();
+
+		ResponsePieDataDataset ds = new ResponsePieDataDataset();
+		entity.addDataset(ds);
+
+		List<Corso> corsi = serviceCorso.findByCreatore(creatore);
+		corsi.stream().forEach(c->{
+			entity.addLabel(c.getTitolo());
+			ds.addData(iscrizioneService.count(c));
+		});
+
+		return entity;
 	}
 
 	@GetMapping("/corsi/proponi")
@@ -165,7 +194,7 @@ public class CreatoreController {
 		if(iscrizioneOpt.isPresent()) {
 			Iscrizione iscrizione = iscrizioneOpt.get();
 			iscrizione.setSuperato(true);
-			iscrizioneRepository.save(iscrizione);
+			iscrizioneService.save(iscrizione);
 			// todo invia certificato
 			return "redirect:/creatore/iscritti?id="+iscrizione.getCorso().getId();
 		}

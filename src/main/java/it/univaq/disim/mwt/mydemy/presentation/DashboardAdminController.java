@@ -49,7 +49,7 @@ public class DashboardAdminController {
 		List<Corso> corsi = corsoService.findAllCorsiApprovati();
 		corsi.stream().forEach(c->{
 			entity.addLabel(c.getTitolo());
-			ds.addData(iscrizioneService.countByCorso(c));
+			ds.addData(iscrizioneService.count(c));
 		});
 
 		return entity;

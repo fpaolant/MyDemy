@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import it.univaq.disim.mwt.mydemy.business.RequestGrid;
 import it.univaq.disim.mwt.mydemy.business.ResponseGrid;
+import it.univaq.disim.mwt.mydemy.repository.CorsoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -22,6 +23,8 @@ import it.univaq.disim.mwt.mydemy.repository.IscrizioneRepository;
 @Transactional
 public class IscrizioneBOImpl implements IscrizioneBO {
 	@Autowired IscrizioneRepository iscrizioneRepository;
+	@Autowired
+	private CorsoRepository corsoRepository;
 
 
 	@Override
@@ -71,7 +74,6 @@ public class IscrizioneBOImpl implements IscrizioneBO {
 	@Override
 	public void save(Iscrizione iscrizione) {
 		iscrizioneRepository.save(iscrizione);
-		
 	}
 
 	@Override
@@ -97,11 +99,25 @@ public class IscrizioneBOImpl implements IscrizioneBO {
 
 	@Override
 	@Transactional(readOnly = true)
+	public float getPercentualeSuperato(Utente creatore) {
+		Long iscrittiTotali = iscrizioneRepository.countByCorsoCreatoreAndCorsoApprovatoIsTrue(creatore);
+		Long iscrittiSuperato = iscrizioneRepository.countBySuperatoIsTrueAndCorsoCreatoreIs(creatore);
+		return (iscrittiSuperato*100 / iscrittiTotali);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
 	public Long count() {
 		return iscrizioneRepository.count();
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public Long countByCorso(Corso corso) { return  iscrizioneRepository.countByCorso(corso); }
+	public Long count(Corso corso) { return  iscrizioneRepository.countByCorso(corso); }
+
+	@Override
+	@Transactional(readOnly = true)
+	public Long count(Utente creatore) {
+		return iscrizioneRepository.countByCorsoCreatore(creatore);
+	}
 }

@@ -16,8 +16,10 @@ public interface IscrizioneBO {
 	ResponseGrid<Iscrizione> findAllByCorsoPaginated(Corso corso, RequestGrid requestGrid);
 	float getPercentualeSuperatoTotale();
 	float getPercentualeSuperato(Corso corso);
+	float getPercentualeSuperato(Utente creatore);
 	void save(Iscrizione iscrizione);
 	void delete(Iscrizione iscrizione);
 	Long count();
-	Long countByCorso(Corso corso);
+	Long count(Corso corso);
+	Long count(Utente creatore);
 }
