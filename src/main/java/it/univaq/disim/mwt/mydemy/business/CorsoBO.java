@@ -14,6 +14,8 @@ public interface CorsoBO {
 
 	List<Corso> findAllCorsi();
 
+	List<Corso> findAllCorsiApprovati();
+
 	List<Corso> findAllNextCorsi(PageRequest pageRequest);
 	
 	List<Corso> findByCreatore(Utente creatore);
@@ -33,6 +35,8 @@ public interface CorsoBO {
 	public ResponseGrid<Corso> findAllByCreatorePaginated(Utente creatore, RequestGrid requestGrid);
 
 	public List<Corso> findAllByCategoriaAndTitoloContainingIgnoreCasePaginatedSortBy(Categoria categoria, String searchTitleString, PageRequest pageRequest);
+
+	Long count();
 
 	void delete(Corso corso);
 }

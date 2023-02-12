@@ -42,6 +42,12 @@ public class CorsoBoImpl implements CorsoBO {
 
 	@Override
 	@Transactional(readOnly = true)
+	public List<Corso> findAllCorsiApprovati() {
+		return corsoRepository.findByApprovatoIsTrue(PageRequest.of(0,Integer.MAX_VALUE));
+	}
+
+	@Override
+	@Transactional(readOnly = true)
 	public List<Corso> findAllNextCorsi(PageRequest pageRequest) {
 		return corsoRepository.findByApprovatoIsTrue(pageRequest);
 	}
@@ -158,6 +164,10 @@ public class CorsoBoImpl implements CorsoBO {
 		return corsoRepository.findByIdAndCreatore(id, creatore);
 	}
 
-
+	@Override
+	@Transactional(readOnly = true)
+	public Long count() {
+		return corsoRepository.count();
+	}
 
 }

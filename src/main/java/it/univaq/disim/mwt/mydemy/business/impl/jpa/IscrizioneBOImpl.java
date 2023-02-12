@@ -78,6 +78,30 @@ public class IscrizioneBOImpl implements IscrizioneBO {
 	public void delete(Iscrizione iscrizione) {
 		iscrizioneRepository.delete(iscrizione);
 	}
-	
 
+	@Override
+	@Transactional(readOnly = true)
+	public float getPercentualeSuperatoTotale() {
+		Long iscrittiTotali = iscrizioneRepository.count();
+		Long iscrittiSuperato = iscrizioneRepository.countBySuperatoIsTrue();
+		return (iscrittiSuperato*100 / iscrittiTotali);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public float getPercentualeSuperato(Corso corso) {
+		Long iscrittiTotali = iscrizioneRepository.countByCorso(corso);
+		Long iscrittiSuperato = iscrizioneRepository.countBySuperatoIsTrueAndCorsoIs(corso);
+		return (iscrittiSuperato*100 / iscrittiTotali);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Long count() {
+		return iscrizioneRepository.count();
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Long countByCorso(Corso corso) { return  iscrizioneRepository.countByCorso(corso); }
 }

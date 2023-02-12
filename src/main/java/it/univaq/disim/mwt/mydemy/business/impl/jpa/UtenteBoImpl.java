@@ -89,5 +89,8 @@ public class UtenteBoImpl implements UtenteBO {
 		return utenteRepository.findByRuoli_(ruolo);
 	}
 
-
+	@Override
+	public Long count() {
+		return utenteRepository.count();
+	}
 }

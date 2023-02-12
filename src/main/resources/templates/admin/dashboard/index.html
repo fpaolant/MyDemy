@@ -3,6 +3,43 @@
 	xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layout/layout}">
 <body>
 	<div layout:fragment="content">
+		<!-- ChartJS -->
+		<script th:src="@{/plugins/chart.js/Chart.min.js}"></script>
+		<script>
+			$(document).ready(async function() {
+				// Donut Chart
+				const pieChartCanvas = $('#sales-chart-canvas').get(0).getContext('2d')
+
+				const randColor = () =>  {
+					return "#" + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0').toUpperCase();
+				}
+				const pieOptions = {
+					legend: {
+						display: true
+					},
+					maintainAspectRatio: false,
+					responsive: true
+				}
+
+				let data = [];
+				let response = await fetch("/mydemy/admin/getVendite");
+				if (response.ok) {
+					data = await response.json();
+					const numOfCourses = data.datasets[0].data.length;
+					for(i=0; i<numOfCourses; i++) {
+						data.datasets[0].backgroundColor.push(randColor());
+					}
+					const pieChart = new Chart(pieChartCanvas, {
+						type: 'doughnut',
+						data: data,
+						options: pieOptions
+					});
+				}
+
+
+			});
+		</script>
+
 		<div class="row mb-2">
 			<div class="col-sm-6">
 				<h1 class="m-0" th:text="#{dashboard.titolo}">Dashboard</h1>
@@ -13,6 +50,88 @@
 					<li class="breadcrumb-item active" th:text="#{dashboard.titolo}">admin</li>
 				</ol>
 			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-lg-3 col-6">
+				<!-- small box -->
+				<div class="small-box bg-info">
+					<div class="inner">
+						<h3 th:text="${iscrizioniCount}">150</h3>
+
+						<p th:text="#{dashboard.corsivenduti}">Corsi venduti</p>
+					</div>
+					<div class="icon">
+						<i class="ion ion-bag"></i>
+					</div>
+					<a th:href="@{/admin/corsi/list}" class="small-box-footer"><th:block th:text="#{common.info}">More info</th:block> <i class="fas fa-arrow-circle-right"></i></a>
+				</div>
+			</div>
+			<!-- ./col -->
+			<div class="col-lg-3 col-6">
+				<!-- small box -->
+				<div class="small-box bg-success">
+					<div class="inner">
+						<h3><th:block th:text="${percSuperato}"></th:block></h3>
+
+						<p th:text="#{dashbord.percsuperato}">Perc Superato</p>
+					</div>
+					<div class="icon">
+						<i class="ion ion-stats-bars"></i>
+					</div>
+					<a href="#" class="small-box-footer"><th:block th:text="#{common.info}">More info</th:block> <i class="fas fa-arrow-circle-right"></i></a>
+				</div>
+			</div>
+			<!-- ./col -->
+			<div class="col-lg-3 col-6">
+				<!-- small box -->
+				<div class="small-box bg-warning">
+					<div class="inner">
+						<h3 th:text="${usersCount}">12</h3>
+
+						<p th:text="#{dashboard.utentiregistarti}">Utenti registrati</p>
+					</div>
+					<div class="icon">
+						<i class="ion ion-person-add"></i>
+					</div>
+					<a th:href="@{/admin/utenti/list}" href="#" class="small-box-footer"><th:block th:text="#{common.info}">More info</th:block> <i class="fas fa-arrow-circle-right"></i></a>
+				</div>
+			</div>
+			<!-- ./col -->
+			<div class="col-lg-3 col-6">
+				<!-- small box -->
+				<div class="small-box bg-danger">
+					<div class="inner">
+						<h3 th:text="${corsiCount}">65</h3>
+
+						<p th:text="#{corsi.titolo}">Corsi</p>
+					</div>
+					<div class="icon">
+						<i class="ion ion-pie-graph"></i>
+					</div>
+					<a th:href="@{/admin/corsi/list}" href="#" class="small-box-footer"><th:block th:text="#{common.info}">More info</th:block> <i class="fas fa-arrow-circle-right"></i></a>
+				</div>
+			</div>
+			<!-- ./col -->
+		</div>
+		<!-- /.row -->
+
+
+
+		<div class="card">
+			<div class="card-header">
+				<h3 class="card-title">
+					<i class="fas fa-chart-pie mr-1"></i>
+					<th:block th:text="#{dashboard.vendite}">Vendite</th:block>
+				</h3>
+				<div class="card-tools">
+				</div>
+			</div><!-- /.card-header -->
+			<div class="card-body">
+				<div class="chart tab-pane active" id="sales-chart" style="position: relative; height: 300px;">
+					<canvas id="sales-chart-canvas" height="300" style="height: 300px;"></canvas>
+				</div>
+			</div><!-- /.card-body -->
 		</div>
 
 

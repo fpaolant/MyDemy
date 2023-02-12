@@ -18,4 +18,8 @@ public interface IscrizioneRepository extends JpaRepository<Iscrizione, Long> {
 	List<Iscrizione> findByUtenteAndCorsoOrderByDataAsc(Utente utente, Corso corso);
 	List<Iscrizione> findAllByCorsoOrderByUtenteCognomeAsc(Corso corso, Pageable paging);
 	List<Iscrizione> findAllByCorsoAndUtenteCognomeContainingIgnoreCaseOrderByUtenteCognomeAsc(Corso corso, String needle, Pageable paging);
+	long countBySuperatoIsTrue();
+
+	long countBySuperatoIsTrueAndCorsoIs(Corso corso);
+	long countByCorso(Corso corso);
 }

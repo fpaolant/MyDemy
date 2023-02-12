@@ -93,10 +93,6 @@ public class Corso extends BaseEntity {
 		this.approvato = approvato;
 	}
 
-	public Set<Utente> getIscritti() {
-		return null;
-	}
-
 	public void addWebLink(WebLink wl) {
 		this.links.add(wl);
 	}

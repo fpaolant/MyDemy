@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import it.univaq.disim.mwt.mydemy.domain.Ruolo;
 import it.univaq.disim.mwt.mydemy.domain.Utente;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface UtenteBO {
 	
@@ -15,7 +16,8 @@ public interface UtenteBO {
 	void save(Utente utente);
 	
 	void updateProfilo(Utente nuovoProfilo);
-	
+
+	@Transactional(readOnly = true)
 	ResponseGrid<Utente> findAllPaginated(RequestGrid requestGrid);
 	
 	void delete(Utente utente);
@@ -23,4 +25,6 @@ public interface UtenteBO {
 	void changePassword(Utente utente, String password);
 
 	List<Utente> findAllByRole(Ruolo ruolo);
+	@Transactional(readOnly = true)
+	Long count();
 }
