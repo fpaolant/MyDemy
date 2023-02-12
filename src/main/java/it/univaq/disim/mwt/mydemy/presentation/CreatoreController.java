@@ -3,7 +3,6 @@ package it.univaq.disim.mwt.mydemy.presentation;
 import it.univaq.disim.mwt.mydemy.business.*;
 import it.univaq.disim.mwt.mydemy.business.impl.jpa.IscrizioneBOImpl;
 import it.univaq.disim.mwt.mydemy.domain.*;
-import it.univaq.disim.mwt.mydemy.repository.IscrizioneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -200,14 +199,5 @@ public class CreatoreController {
 		}
 		return "redirect:/creatore/corsi/list";
 	}
-
-
-
-
-
-	
-
-	
-	
 	
 }

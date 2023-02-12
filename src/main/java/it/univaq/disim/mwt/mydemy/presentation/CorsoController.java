@@ -37,34 +37,31 @@ public class CorsoController {
 			model.addAttribute("corso", c);
 			
 			boolean iscritto = false;
+			boolean isCreatore = false;
 			
 			if(principal != null) { // logged in
 				Utente utente = Utility.getUtente();
-				iscritto = serviceIscrizione.findByUtenteAndCorso(utente, c).size() > 0;		
+				iscritto = serviceIscrizione.findByUtenteAndCorso(utente, c).size() > 0;
+				// utente e creatore sono la stessa persona
+				if(c.getCreatore().equals(utente)) {
+					isCreatore = true;
+				}
 			}
-			
-			 model.addAttribute("iscritto", iscritto);
+			model.addAttribute("iscritto", iscritto);
+			model.addAttribute("isCreatore", isCreatore);
 			 
 			 // numero iscritti al corso
-			 int numIscritti = serviceIscrizione.findByCorso(c).size();
+			 Long numIscritti = serviceIscrizione.count(c);
 			 model.addAttribute("postiRimanenti", c.getPosti() - numIscritti);
-			 
-			 List<Corso> corsiCreatore = serviceCorso.findByCreatore(c.getCreatore());
-			 
+
 			 // numero corsi del creatore
-			 int numCorsiCreatore = corsiCreatore.size();
+			 int numCorsiCreatore = serviceCorso.findByCreatore(c.getCreatore()).size();
 			 model.addAttribute("numCorsiCreatore", numCorsiCreatore);
 			 
 			 // totale iscritti a tutti i corsi del creatore
-			 int totaleIscrittiCreatore = 0;
-			 for (Corso corso : corsiCreatore) {
-				 totaleIscrittiCreatore += serviceIscrizione.findByCorso(corso).size();				
-			 }
-			 model.addAttribute("totaleIscrittiCreatore", totaleIscrittiCreatore);
-			 
-			 System.out.println(flagInsert);
-			 model.addAttribute("notificaIscrizioneSuccesso", flagInsert);
+			 model.addAttribute("totaleIscrittiCreatore", serviceIscrizione.count(c.getCreatore()));
 
+			 model.addAttribute("notificaIscrizioneSuccesso", flagInsert);
 			}, () -> {
 				System.out.println("corso non trovato");
 			}

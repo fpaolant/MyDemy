@@ -50,6 +50,26 @@
 					</div>
 					<div class="card-body">
 						<div class="row">
+							<div class="col-12 col-sm-6">
+								<div class="info-box bg-light">
+									<div class="info-box-content">
+										<span class="info-box-text text-center text-muted">Inizio</span>
+										<span class="info-box-number text-center text-muted mb-0"
+											  th:text="${#temporals.format(corso.inizio, 'dd/MM/yyyy HH:mm')}">10 gennaio 2023</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-12 col-sm-6">
+								<div class="info-box bg-light">
+									<div class="info-box-content">
+										<span class="info-box-text text-center text-muted">Fine</span>
+										<span class="info-box-number text-center text-muted mb-0"
+											  th:text="${#temporals.format(corso.fine, 'dd/MM/yyyy HH:mm')}">11 gennaio 2023</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
 							<div class="col-12 col-md-12 col-lg-12">
 								<div class="row">
 									<div class="col-12 col-sm-4">

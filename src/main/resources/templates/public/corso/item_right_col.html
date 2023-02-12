@@ -2,77 +2,93 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layout/layout}">
-  <body>
-    <th:block th:fragment="item_right_col">
-        <div class="card card-primary card-outline">
-          <div class="card-body box-profile">
+<body>
+<th:block th:fragment="item_right_col">
+    <div class="card card-primary card-outline">
+        <div class="card-body box-profile">
             <div class="text-center">
-              <img class="profile-user-img img-fluid img-circle"
-                   th:src="@{'/corso/creatorImage/'+ ${corso.creatore.id}}" th:alt="${corso.creatore.username}">
+                <img class="profile-user-img img-fluid img-circle"
+                     th:src="@{'/corso/creatorImage/'+ ${corso.creatore.id}}" th:alt="${corso.creatore.username}">
             </div>
 
             <h3 class="profile-username text-center"
                 th:text="${corso.creatore.nome + ' ' + corso.creatore.cognome  }">Nome
-              cognome</h3>
+                cognome</h3>
 
             <p class="text-muted text-center"
                th:text="${corso.creatore.creatoreInfo.titolo}">Software Engineer</p>
 
             <ul class="list-group list-group-unbordered mb-3">
-              <li class="list-group-item"><b>Corsi</b> <a
-                      class="float-right" th:text="${numCorsiCreatore}">322</a></li>
-              <li class="list-group-item"><b>Iscritti totali</b> <a
-                      class="float-right" th:text="${totaleIscrittiCreatore}">543</a></li>
+                <li class="list-group-item"><b>Corsi</b> <a
+                        class="float-right" th:text="${numCorsiCreatore}">322</a></li>
+                <li class="list-group-item"><b>Iscritti totali</b> <a
+                        class="float-right" th:text="${totaleIscrittiCreatore}">543</a></li>
             </ul>
+        </div>
+        <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
 
+    <div class="card card-success card-outline">
+        <div class="card-header">
+            <h3 class="card-title">Iscrizione</h3>
+        </div>
+        <div class="card-body box-profile">
             <span sec:authorize="isAuthenticated()">
-                                    <a th:if="${iscritto}" href="#" class="btn btn-primary btn-block disabled"><b>Sei già iscritto :)</b></a>
-                                    <form th:if="${!iscritto} and ${postiRimanenti}>0" th:action="@{/corso/iscrivi}" method="POST">
-                                        <input type="hidden" name="id" th:value="${corso.id}"/>
-                                        <button type="submit" class="btn btn-primary btn-block"><b>Acquista</b></button>
-                                    </form>
+                <a th:if="${iscritto}" href="#" class="btn btn-primary btn-block disabled"><b>Sei già iscritto :)</b></a>
 
+                <form th:if="${!iscritto} and ${postiRimanenti}>0 and ${!isCreatore}" th:action="@{/corso/iscrivi}"
+                      method="POST">
+                    <input type="hidden" name="id" th:value="${corso.id}"/>
+                    <button type="submit" class="btn btn-primary btn-block"><b>Acquista</b></button>
+                </form>
+                <a th:if="${!iscritto} and ${postiRimanenti}==0 and ${!isCreatore}" href="#"
+                   class="btn btn-primary btn-block disabled"><b>Posti esauriti</b></a>
 
-                                    <a th:if="${!iscritto} and ${postiRimanenti}==0" href="#" class="btn btn-primary btn-block disabled"><b>Posti esauriti</b></a>
-                                </span>
+                <a th:if="${isCreatore}" href="#"
+                   class="btn btn-primary btn-block disabled"><b>E' un tuo corso!</b></a>
+            </span>
 
             <span sec:authorize="!isAuthenticated()">
-                                    <a th:if="${postiRimanenti}>0" th:href="@{/loginstart.html}" class="btn btn-primary btn-block"><b>Entra per iscriverti :)</b></a>
-                                    <a th:if="${postiRimanenti}==0" href="#" class="btn btn-primary btn-block disabled"><b>Posti esauriti</b></a>
-                                </span>
+                <a th:if="${postiRimanenti}>0" th:href="@{/loginstart.html}"
+                   class="btn btn-primary btn-block"><b>Entra per iscriverti :)</b></a>
+                <a th:if="${postiRimanenti}==0" href="#" class="btn btn-primary btn-block disabled"><b>Posti esauriti</b></a>
+            </span>
 
-
-          </div>
-          <!-- /.card-body -->
+            <div class="row">
+                <div class="col-12 text-center"><b style="font-size: x-large; color: #1c7430;" th:text="${corso.prezzo + '€'}">1000.5</b></div>
+            </div>
         </div>
-        <!-- /.card -->
+        <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
 
-        <!-- About Me Box -->
-        <div class="card card-primary">
-          <!-- /.card-header -->
-          <div class="card-body">
+    <!-- Tag e category Box -->
+    <div class="card card-primary">
+        <!-- /.card-header -->
+        <div class="card-body">
             <strong><i class="fas fa-tags mr-1"></i> Tags</strong><br/>
 
-            <a th:href="@{'/tag/' + ${tag.id}}" th:each="tag: ${corso.tags}" >
-              <span class="badge badge-success" th:text="${tag.nome}">tagname</span>
+            <a th:href="@{'/tag/' + ${tag.id}}" th:each="tag: ${corso.tags}">
+                <span class="badge badge-success" th:text="${tag.nome}">tagname</span>
             </a>
 
             <hr>
 
             <strong><i class="fas fa-map-marker-alt mr-1"></i>
-              Categorie</strong>
+                Categorie</strong>
 
             <p class="text-muted">
-              <a th:href="@{'/categoria/' + ${categoria.id}}"
-                 th:each="categoria, iterStat : ${corso.categorie}"
-                 th:text="!${iterStat.last} ? ${categoria.nome} + ',': ${categoria.nome}">nome categoria</a>
+                <a th:href="@{'/categoria/' + ${categoria.id}}"
+                   th:each="categoria, iterStat : ${corso.categorie}"
+                   th:text="!${iterStat.last} ? ${categoria.nome} + ',': ${categoria.nome}">nome categoria</a>
             </p>
 
-          </div>
-          <!-- /.card-body -->
         </div>
-        <!-- /.card -->
-  </th:block>
+        <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+</th:block>
 </body>
 </html>
 
