@@ -40,7 +40,7 @@ public class Utente extends BaseEntity {
 	@Column(length = 255)
 	private String password;
 
-	private Boolean enabled;
+	private Boolean enabled = true;
 
 	@OneToOne(cascade = CascadeType.ALL)
 	private CreatoreInfo creatoreInfo;

@@ -59,8 +59,6 @@ public class SignupController {
 		final String password = passwordEncoder.encode(utente.getPassword());
 		utente.setPassword(password);
 
-		utente.setEnabled(false);
-
 		serviceUtente.save(utente);
 		return "redirect:/signup/welcome";
 	}
