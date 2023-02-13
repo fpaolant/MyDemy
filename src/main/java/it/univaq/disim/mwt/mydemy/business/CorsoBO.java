@@ -12,8 +12,6 @@ public interface CorsoBO {
 
 	void save(Corso corso);
 
-	List<Corso> findAllCorsi();
-
 	List<Corso> findAllCorsiApprovati();
 
 	List<Corso> findAllNextCorsi(PageRequest pageRequest);
@@ -34,7 +32,9 @@ public interface CorsoBO {
 
 	public ResponseGrid<Corso> findAllByCreatorePaginated(Utente creatore, RequestGrid requestGrid);
 
-	public List<Corso> findAllByCategoriaAndTitoloContainingIgnoreCasePaginatedSortBy(Categoria categoria, String searchTitleString, PageRequest pageRequest);
+	public List<Corso> findAllCriteria(String searchTitleString, PageRequest pageRequest);
+
+	public List<Corso> findAllCriteriaInCategoria(Categoria categoria, String searchTitleString, PageRequest pageRequest);
 
 	Long count();
 

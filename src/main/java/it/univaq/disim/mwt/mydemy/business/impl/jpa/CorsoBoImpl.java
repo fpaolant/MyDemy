@@ -36,12 +36,6 @@ public class CorsoBoImpl implements CorsoBO {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<Corso> findAllCorsi() {
-		return (List<Corso>) corsoRepository.findAll();
-	}
-
-	@Override
-	@Transactional(readOnly = true)
 	public List<Corso> findAllCorsiApprovati() {
 		return corsoRepository.findByApprovatoIsTrue(PageRequest.of(0,Integer.MAX_VALUE));
 	}
@@ -142,11 +136,14 @@ public class CorsoBoImpl implements CorsoBO {
 	}
 
 	@Override
-	@Transactional(readOnly = true)
-	public List<Corso> findAllByCategoriaAndTitoloContainingIgnoreCasePaginatedSortBy(Categoria categoria, String searchTitleString, PageRequest pageRequest) {
-		return corsoRepository.findByCategorie_AndTitoloContainingIgnoreCaseAndApprovatoIsTrue(categoria, searchTitleString, pageRequest);
+	public List<Corso> findAllCriteria(String searchTitleString, PageRequest pageRequest) {
+		return corsoRepository.findByTitoloContainingIgnoreCaseOrTagsNomeContainingIgnoreCaseOrCreatoreNomeContainingIgnoreCaseOrCreatoreCognomeContainingIgnoreCaseAndApprovatoIsTrue(searchTitleString, searchTitleString, searchTitleString, searchTitleString, pageRequest);
 	}
 
+	@Override
+	public List<Corso> findAllCriteriaInCategoria(Categoria categoria, String searchTitleString,  PageRequest pageRequest) {
+		return corsoRepository.findByCategorie_AndTitoloContainingIgnoreCaseOrTagsNomeContainingIgnoreCaseOrCreatoreNomeContainingIgnoreCaseOrCreatoreCognomeContainingIgnoreCaseAndApprovatoIsTrue(categoria, searchTitleString, searchTitleString, searchTitleString, searchTitleString, pageRequest);
+	}
 	@Override
 	public void delete(Corso corso) {
 		corsoRepository.delete(corso);

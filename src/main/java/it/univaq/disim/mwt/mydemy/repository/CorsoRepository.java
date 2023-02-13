@@ -28,5 +28,7 @@ public interface CorsoRepository extends JpaRepository<Corso, Long> {
 
     List<Corso> findAllByCreatoreAndTitoloContainingIgnoreCaseOrderByFineDescApprovatoDesc(Utente creatore, String title, Pageable pageable);
 
-    List<Corso> findByCategorie_AndTitoloContainingIgnoreCaseAndApprovatoIsTrue(Categoria categoria, String searchString, Pageable pageable);
+    List<Corso> findByTitoloContainingIgnoreCaseOrTagsNomeContainingIgnoreCaseOrCreatoreNomeContainingIgnoreCaseOrCreatoreCognomeContainingIgnoreCaseAndApprovatoIsTrue(String titolo, String tagNome, String creatoreNome, String creatoreCognome, Pageable pageable);
+
+    List<Corso> findByCategorie_AndTitoloContainingIgnoreCaseOrTagsNomeContainingIgnoreCaseOrCreatoreNomeContainingIgnoreCaseOrCreatoreCognomeContainingIgnoreCaseAndApprovatoIsTrue(Categoria categoria, String titolo, String tagNome, String creatoreNome, String creatoreCognome, Pageable pageable);
 }

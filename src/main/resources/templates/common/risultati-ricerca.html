@@ -26,25 +26,30 @@
                 <div class="list-group">
                     <dic class="text-center" th:if="${corsi!=null && corsi.size()==0}">Nessun risultato prova con altri criteri di ricerca</div>
                     <!-- list group start -->
-                    <div class="list-group-item" th:each="corso: ${corsi}">
+                    <div class="list-group-item mb-2 shadow" th:each="corso: ${corsi}">
 
                         <div class="ribbon-wrapper" th:if="${corso.attestatoFinale}">
                             <div class="ribbon bg-success" th:text="#{corso.attestatoFinaleShort}">Attestato</div>
                         </div>
                         <div class="row">
                             <div class="col-auto">
-                                <a th:href="@{'/corso/' + ${corso.id}}"><img class="img-fluid"
-                                                                             src="../dist/img/photo1.png" alt="Photo"
-                                                                             style="max-height: 160px;"></a>
+                                <a th:href="@{'/corso/' + ${corso.id}}">
+                                    <img class="img-fluid"
+                                         src="../dist/img/placeholder_corso.jpg"
+                                         alt="Photo" style="max-height: 160px;"></a>
                             </div>
                             <div class="col px-4">
                                 <div>
-                                    <div class="float-right"
-                                         th:text="${#temporals.format(corso.inizio, 'dd/MM/yyyy HH:mm')}">dd/MM/yyyy HH:mm
+                                    <div class="float-right text-secondary"
+                                         th:text="${'inizia il ' + #temporals.format(corso.inizio, 'dd/MM/yyyy HH:mm')}">dd/MM/yyyy HH:mm
                                     </div>
-                                    <h3 th:text="${corso.titolo}"></h3>
+                                    <h4>
+                                        <th:block th:text="${corso.titolo}"></th:block>
+                                        <span style="font-size: medium;" th:text="${'(' + corso.ore + ' ore - ' + corso.crediti  + ' cfu)'}">(3 ore)</span>
+                                    </h4>
                                     <div>
-                                        <a th:each="categoria, iterStat: ${corso.categorie}" href="/"
+                                        <a class="badge badge-dark"
+                                           th:each="categoria, iterStat: ${corso.categorie}" href="/"
                                            th:href="@{'/categoria/' + ${categoria.id}}"
                                            th:text="${(iterStat.last)? categoria.nome + '': categoria.nome + ' - '}">cat
                                             nome</a>
@@ -65,12 +70,12 @@
                                             </div>
                                         </div>
                                         <div class="col-2 float-right">
-                                            <b style="font-size: x-large; color: #1c7430;"
+                                            <b class="text-success font-weight-bold" style="font-size: x-large;"
                                                th:text="${corso.prezzo + '€'}"></b>
                                         </div>
                                     </div><!--row end-->
                                     <div>
-                                        <b th:if="${corso.tags.size()>0}">Tags:</b>
+                                        <span class="text-secondary" th:if="${corso.tags.size()>0}">Tags:</span>
                                         <a href="#"
                                            class="badge badge-secondary"
                                            th:each="tag: ${corso.tags}"

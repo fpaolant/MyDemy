@@ -9,17 +9,17 @@
             </script>
             <h2 class="text-center display-4">Cerca</h2>
             <div class="row">
-               <div class="col-md-8 offset-md-2">
+               <div class="col-md-10 offset-md-1">
                   <form th:action="@{/cerca/enhanced}" method="post">
                      <div class="row">
-                        <div class="col-md-10 offset-md-1">
+                        <div class="col-md-12">
                            <div class="row">
                               <div class="col-6">
                                  <div class="form-group">
                                     <label th:text="#{categorie.titolo}">Categorie</label>
                                     <select class="select2" multiple="multiple" name="categoriaId" data-placeholder="Tutte" style="width: 100%;">
-                                       <option value="-1" selected>Tutte</option>
-                                       <option th:value="${categoria.id}" th:each="categoria: ${categorie}" th:text="${categoria.nome}">Text only</option>
+                                       <option value="-1" th:selected="${categoriaId==null}">Tutte</option>
+                                       <option th:value="${categoria.id}" th:each="categoria: ${categorie}" th:text="${categoria.nome}" th:selected="${categoriaId==categoria.id}">Text only</option>
                                     </select>
                                  </div>
                               </div>

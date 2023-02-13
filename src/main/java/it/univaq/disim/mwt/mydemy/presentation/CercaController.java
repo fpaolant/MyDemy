@@ -45,13 +45,17 @@ public class CercaController {
     @PostMapping("/enhanced")
     public String findEnhanced(@RequestParam String searchString, @RequestParam Long categoriaId, @RequestParam String orderBy, @RequestParam String sortOrder, Model model) {
         model.addAttribute("searchString", searchString);
+
+        List<Categoria> categorie = serviceCategoria.findAll();
+        model.addAttribute("categorie", categorie);
+        model.addAttribute("categoriaId", categoriaId);
         List<Corso> corsi;
         Optional<Categoria> optionalCategoria = serviceCategoria.findByID(categoriaId);
         if (optionalCategoria.isPresent()) {
-            corsi = serviceCorso.findAllByCategoriaAndTitoloContainingIgnoreCasePaginatedSortBy(
+            corsi = serviceCorso.findAllCriteriaInCategoria(
                     optionalCategoria.get(), searchString, PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.fromString(sortOrder), orderBy));
         } else {
-            corsi = serviceCorso.findByTitoloContainingIgnoreCase(searchString, PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.ASC, "titolo"));
+            corsi = serviceCorso.findAllCriteria(searchString, PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.ASC, orderBy));
         }
         model.addAttribute("corsi", corsi);
         return "common/risultati-ricerca";
