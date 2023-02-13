@@ -200,7 +200,7 @@
                   </div>
                   <label for="prezzo" class="col-2 col-form-label" th:text="#{corso.prezzo}">Prezzo</label>
                   <div class="col-6">
-                    <input type="number" id="prezzo" min="0.00" max="10000.00" th:field="*{prezzo}"
+                    <input type="number" id="prezzo" min="0.00" max="10000.00"  pattern="^\d+(?:\.\d{1,2})?$" th:field="*{prezzo}"
                            class="form-control"/>
                     <span th:if="${#fields.hasErrors('prezzo')}" th:each="err: ${#fields.errors('prezzo')}"
                           th:utext="${err}"></span>
