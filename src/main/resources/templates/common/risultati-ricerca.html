@@ -24,7 +24,7 @@
         <div class="row mt-3">
             <div class="col-md-10 offset-md-1">
                 <div class="list-group">
-                    <dic class="text-center" th:if="${corsi.size()==0}">Nessun risultato prova con altri criteri di ricerca</div>
+                    <dic class="text-center" th:if="${corsi!=null && corsi.size()==0}">Nessun risultato prova con altri criteri di ricerca</div>
                     <!-- list group start -->
                     <div class="list-group-item" th:each="corso: ${corsi}">
 
