@@ -13,9 +13,17 @@
 			</a>
 			<ul class="nav nav-treeview">
 				<li class="nav-item">
-					<a href="#" th:href="@{/iscrizioni}"
-					th:classappend="${#request.getRequestURI().contains('/utente/utenti/list') ? 'active' : ''}"
+					<a href="#" th:href="@{/cerca/}"
+					th:classappend="${#request.getRequestURI().contains('/cerca/') ? 'active' : ''}"
 					class="nav-link">
+						<i class="far fa-circle nav-icon"></i>
+						<p th:text="#{menu.cerca}">Trova un corso</p>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a href="#" th:href="@{/iscrizioni}"
+					   th:classappend="${#request.getRequestURI().contains('/utente/utenti/list') ? 'active' : ''}"
+					   class="nav-link">
 						<i class="far fa-circle nav-icon"></i>
 						<p th:text="#{menu.iscrizioni}">I miei corsi</p>
 					</a>
