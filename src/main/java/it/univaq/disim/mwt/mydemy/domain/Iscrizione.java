@@ -28,22 +28,15 @@ public class Iscrizione extends BaseEntity {
 	@NotNull
 	private Utente utente;
 	private Boolean superato = false;
-	@Lob
-	private byte[] certificato;
 
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
 	private LocalDateTime data = LocalDateTime.now();
-	
-	public Byte[] getCertificato() {
-		if(this.superato) return null;
-		return null;
-	}
-	
+
 	public Iscrizione() {
 		super();
 	}
 	
-	public Iscrizione(Corso corso, Utente utente, Boolean superato, Boolean certificatoInviato, LocalDateTime data) {
+	public Iscrizione(Corso corso, Utente utente, Boolean superato, LocalDateTime data) {
 		super();
 		this.corso = corso;
 		this.utente = utente;
