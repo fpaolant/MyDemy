@@ -3,18 +3,13 @@ package it.univaq.disim.mwt.mydemy.domain;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -39,6 +34,12 @@ public class Categoria extends BaseEntity {
 	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE }, mappedBy = "categorie")
 	@JsonBackReference
 	private Set<Corso> corsi = new HashSet<>();
+
+	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE},
+			fetch = FetchType.LAZY,
+			mappedBy = "parent")
+	@OrderBy("nome")
+	private List<Categoria> subCategorie;
 
 	public Categoria() {
 	}

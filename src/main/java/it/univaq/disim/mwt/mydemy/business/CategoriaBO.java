@@ -13,4 +13,6 @@ public interface CategoriaBO {
 	void save(Categoria categoria);
 	void delete(Categoria categoria);
 	int getLevel(Categoria categoria, List<Categoria> categorie);
+
+	List<Categoria> getTree();
 }

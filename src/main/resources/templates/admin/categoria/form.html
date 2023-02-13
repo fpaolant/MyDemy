@@ -63,7 +63,7 @@
                         <div class="form-group row">
                             <label for="nome" class="col-sm-2 col-form-label" th:text="#{categoria.nome}"></label>
                             <div class="col-sm-6">
-                                <input type="text" th:field="*{nome}" class="form-control"/>
+                                <input type="text" th:field="*{nome}" id="nome" class="form-control"/>
                                 <span th:if="${#fields.hasErrors('nome')}" th:each="err: ${#fields.errors('nome')}"
                                       th:utext="${err}"></span>
                             </div>
@@ -72,18 +72,18 @@
                             <label for="categorie" class="col-sm-2 col-form-label" th:text="#{categoria.parent}">Categorie</label>
                             <div class="col-sm-6">
                                 <select class="select2 select2-hidden-accessible select2-primary" th:field="*{parent}"
-                                        id="categorie" data-placeholder="Seleziona uno categoria"
+                                        id="categorie" data-placeholder="Seleziona una categoria"
                                         data-dropdown-css-class="select2-primary" style="width: 100%;"
                                         aria-hidden="true">
-                                    <option th:value="NULL">nessuna</option>
-                                    <option th:value="${cat.id}" th:field="*{parent}" th:each="cat: ${categorie}"
-                                            th:text="${cat.nome}">nome categoria
+                                    <option th:value="NULL" th:selected="${categoria.parent==null}">nessuna</option>
+                                    <option th:value="${cat.id}" name="parent" th:each="cat: ${categorie}"
+                                            th:text="${cat.nome}" th:selected="${categoria.parent!=null && cat.id==categoria.parent.id}">nome categoria
                                     </option>
                                 </select>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="iconSelect" class="col-sm-2 col-form-label"
+                            <label for="icon" class="col-sm-2 col-form-label"
                                    th:text="#{categoria.icon}">Icona</label>
                             <div class="col-sm-6">
                                 <input type="hidden" th:field="*{icon}" id="icon"/>

@@ -7,21 +7,12 @@
 	    <link th:href="@{/plugins/jquery-ui/jquery-ui.min.css}" rel="stylesheet" />
 		<link th:href="@{/plugins/sortable-list-tree/css/style.css}" rel="stylesheet" />
 		<link th:href="@{/plugins/toastr/toastr.min.css}" rel="stylesheet">
-		<!--<script
-			type="module"
-			th:src="@{/plugins/sortable-list-tree/js/ionicons.esm.js}"
-		></script>
-		<script
-				nomodule
-				th:src="@{/plugins/sortable-list-tree/js/ionicons.js}"
-		></script>-->
 
 		<script th:src="@{/plugins/jquery-ui/jquery-ui.min.js}"></script>
 		<script th:src="@{/plugins/sortable-list-tree/js/treeSortable.js}"></script>
 		<script th:src="@{/plugins/toastr/toastr.min.js}"></script>
 
 		<script th:inline="javascript">
-
 			$(document).ready(async function() {
 				let data = [];
 				let response = await fetch("/mydemy/admin/categorie/getTree");
@@ -79,10 +70,6 @@
 				} else {
 					console.log(response)
 				}
-
-
-
-
 
 			});
 		</script>

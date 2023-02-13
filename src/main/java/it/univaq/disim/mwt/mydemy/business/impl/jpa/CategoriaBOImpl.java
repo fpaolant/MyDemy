@@ -1,5 +1,6 @@
 package it.univaq.disim.mwt.mydemy.business.impl.jpa;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,6 +52,32 @@ public class CategoriaBOImpl implements CategoriaBO {
 	public int getLevel(Categoria categoria, List<Categoria> categorie) {
 		if(categoria.getParent()==null) return 1;
 		else return getLevel(categoria.getParent(), categorie) + 1;
+	}
+	@Override
+	public List<Categoria> getTree() {
+		List<Categoria> allCategorie = categoriaRepository.findAll();
+
+		List<Categoria> rootCategorie = new ArrayList<>();
+		for(Categoria categoria : allCategorie) {
+			if(categoria.getParent() == null) {
+				rootCategorie.add(categoria);
+			}
+		}
+
+		List<Categoria> ordered = new ArrayList<>();
+		for (Categoria categoria: rootCategorie) {
+			ordered.add(categoria);
+			getTreeInner(categoria, ordered);
+		}
+
+		return ordered;
+	}
+
+	private void getTreeInner(Categoria father, List<Categoria> ordered) {
+		for(Categoria child : father.getSubCategorie()) {
+			ordered.add(child);
+			getTreeInner(child, ordered);
+		}
 	}
 
 }

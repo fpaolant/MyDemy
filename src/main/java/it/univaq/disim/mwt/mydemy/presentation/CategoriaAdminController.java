@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import it.univaq.disim.mwt.mydemy.domain.Corso;
 import it.univaq.disim.mwt.mydemy.repository.CorsoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -44,7 +45,9 @@ public class CategoriaAdminController {
             produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody List<ResponseCategoryItem> getTree() {
 		List<ResponseCategoryItem> entities = new ArrayList<>();
-		List<Categoria> categorie = serviceCategoria.findAll();
+
+		List<Categoria> categorie = serviceCategoria.getTree();
+
 	    for (Categoria c : categorie) {
 	    	long pid = (c.getParent()!=null)? c.getParent().getId(): 0;
 	        entities.add(new ResponseCategoryItem(c.getId(), pid, c.getNome(), serviceCategoria.getLevel(c, categorie)));
@@ -83,12 +86,11 @@ public class CategoriaAdminController {
 
 		if(categoria.isPresent()) {
 			model.addAttribute("categoria", categoria.get());
-			// get selectable parent categories
+			// get selectable parent categories excluding current category
 			Predicate<Categoria> isNotCurrent = c -> (c.getId()!=categoria.get().getId());
 			List<Categoria> categorie =  serviceCategoria.findAll().stream().filter(isNotCurrent).collect(Collectors.toList());
 			model.addAttribute("categorie", categorie);	
 		}
-
 		return "admin/categoria/form";
 	}
 	
@@ -97,7 +99,11 @@ public class CategoriaAdminController {
 		if (errors.hasErrors()) {
 			return "admin/categoria/form";
 		}
-		serviceCategoria.save(categoria);
+		Optional<Categoria> categoriaOld = serviceCategoria.findByID(categoria.getId());
+		if(categoriaOld.isPresent()) {
+			categoria.setVersion(categoriaOld.get().getVersion());
+			serviceCategoria.save(categoria);
+		}
 		return "redirect:/admin/categorie/list";
 	}
 	
