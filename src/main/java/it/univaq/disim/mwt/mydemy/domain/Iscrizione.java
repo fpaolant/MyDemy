@@ -18,8 +18,6 @@ import groovyjarjarantlr4.v4.runtime.misc.NotNull;
 @Setter
 @ToString
 public class Iscrizione extends BaseEntity {
-
-	private static final long serialVersionUID = 1L;
 	
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
     @NotNull
