@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -28,6 +29,7 @@ public class Tag extends BaseEntity {
 	@Column(nullable = false, unique = true, length = 15)
 	@NotNull
 	@NotBlank
+	@Size(max=15)
 	private String nome;
 
 	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE }, mappedBy = "tags")

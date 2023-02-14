@@ -22,6 +22,7 @@ public class Iscrizione extends BaseEntity {
 	private static final long serialVersionUID = 1L;
 	
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
+    @NotNull
 	private Corso corso;
 	
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })

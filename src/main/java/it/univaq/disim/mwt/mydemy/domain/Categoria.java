@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -21,6 +21,8 @@ public class Categoria extends BaseEntity {
 
 	@NotBlank
 	@Column(length = 30)
+	@Size(max=30)
+	@NotNull
 	private String nome;
 
 	@ManyToOne(cascade = { CascadeType.MERGE })
@@ -29,7 +31,7 @@ public class Categoria extends BaseEntity {
 	private Categoria parent;
 
 	@Column(length = 30)
-	private String icon = "fa-sharp fa-solid fa-list";
+	private String icon = "fa-sharp fa-solid fa-list"; // TODO remove icon field and refactor
 
 	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE }, mappedBy = "categorie")
 	@JsonBackReference
@@ -41,8 +43,7 @@ public class Categoria extends BaseEntity {
 	@OrderBy("nome")
 	private List<Categoria> subCategorie;
 
-	public Categoria() {
-	}
+	public Categoria() { super(); }
 
 	public Categoria(@NotBlank String nome, Categoria parent, String icon) {
 		super();

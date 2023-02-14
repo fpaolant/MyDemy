@@ -10,8 +10,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.*;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -22,22 +21,25 @@ public class Utente extends BaseEntity {
 
 	private static final long serialVersionUID = 1L;
 
-	@NotBlank
+
 	@Column(length = 30)
+	@Size(max=30)
 	private String nome;
 	@NotBlank
 	@Column(length = 30)
+	@Size(max=30)
 	private String cognome;
 	@Email
 	@Column(length = 50)
+	@Size(max=50)
 	private String email;
-
 	@Lob
 	private byte[] foto;
-
 	@Column(nullable = false, unique = true, length = 30)
+	@Size(min=4, max=30)
 	private String username;
 	@Column(length = 255)
+	@Size(min=5, max=255)
 	private String password;
 
 	private Boolean enabled = true;
@@ -50,8 +52,7 @@ public class Utente extends BaseEntity {
 			@JoinColumn(name = "ruolo_id") })
 	private Set<Ruolo> ruoli = new HashSet<>();
 
-	public Utente() {
-	}
+	public Utente() { super(); }
 
 	public Utente(@NotBlank String nome, @NotBlank String cognome, @Email String email, @NotBlank String username,
 			@NotBlank String password, Boolean enabled) {

@@ -11,17 +11,13 @@ import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import groovyjarjarantlr4.v4.runtime.misc.Nullable;
-
-import javax.validation.constraints.Min;
 
 @Entity
 @Getter
@@ -32,16 +28,26 @@ public class Corso extends BaseEntity {
 
 	@NotBlank
 	@Column(length = 150)
+	@NotBlank
+	@Size(min=2, max=150)
 	private String titolo;
-	@Column(length = 255)
+
+	@Column(length = 1500)
+	@Size(max=1500)
 	private String descrizione;
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+	@Future
 	private LocalDateTime inizio;
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+	@Future
 	private LocalDateTime fine;
+	@Min(0) @Max(60)
 	private Integer crediti;
+	@Min(3) @Max(150)
 	private Integer ore;
+	@Digits(integer=6, fraction=2)
 	private Float prezzo;
+
 	private Boolean attestatoFinale = false;
 
 	@NotNull
@@ -54,8 +60,8 @@ public class Corso extends BaseEntity {
 	)
 	private List<WebLink> links = new ArrayList<>();
 
-	@Min(1)
-	private Integer posti;
+	@Min(1) @Max(500)
+	private int posti;
 	private Boolean approvato = false;
 
 	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
@@ -73,8 +79,7 @@ public class Corso extends BaseEntity {
 	@Transient
 	private Integer numIscritti;
 
-	public Corso() {
-	}
+	public Corso() { super(); }
 
 	public Corso(@NotBlank @Size(max = 150) String titolo, String descrizione, LocalDateTime inizio, LocalDateTime fine,
 			Integer crediti, Integer ore, Float prezzo, Boolean attestatoFinale, @NotNull Utente creatore,

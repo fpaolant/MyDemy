@@ -25,6 +25,7 @@ public class Ordine  extends BaseEntity {
 	private static final long serialVersionUID = 1L;
 	
 	@ManyToOne(cascade = { CascadeType.MERGE})
+    @NotNull
 	private Utente ordinante;
 	
 	private Integer totale;
@@ -35,7 +36,7 @@ public class Ordine  extends BaseEntity {
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
 	private LocalDateTime data;
 	
-	public Ordine( ) {}
+	public Ordine() { super(); }
 	public Ordine(@NotNull Utente ordinante, Integer totale, StatoOrdine stato, LocalDateTime data) {
 		super();
 		this.ordinante = ordinante;

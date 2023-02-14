@@ -4,6 +4,8 @@ import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -18,14 +20,19 @@ public class Ruolo extends BaseEntity {
 	private static final long serialVersionUID = 1L;
 		
 	@Column(length = 30)
+    @NotBlank
+    @Size(max=30)
 	private String nome;
+    @NotBlank
 	@Column(length = 10)
+    @Size(max=10)
 	private String code;
 	@Column(length = 100)
+    @Size(max=100)
 	private String descrizione;
 	
 	
-	public Ruolo() {}
+	public Ruolo() { super(); }
 	public Ruolo(String nome, String code, String descrizione) {
 		this.nome = nome;
 		this.code = code;

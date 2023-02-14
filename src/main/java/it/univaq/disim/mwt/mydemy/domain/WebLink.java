@@ -1,12 +1,14 @@
 package it.univaq.disim.mwt.mydemy.domain;
 
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.*;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.validator.constraints.URL;
 
 @Entity
 @Getter
@@ -16,9 +18,12 @@ public class WebLink extends BaseEntity {
 
 	private static final long serialVersionUID = 1L;
 	
-	@NotBlank
+	@Column(length = 150)
+	@URL(regexp = "^(http|https).*")
 	private String url;
 	@NotBlank
+	@Column(length = 30)
+	@Size(max=30)
 	private String name;
 	
 	public WebLink(@NotBlank String url, @NotBlank String name) {
