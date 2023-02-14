@@ -50,20 +50,20 @@ public class Initialize implements ApplicationListener<ApplicationReadyEvent> {
         ruoloService.save(creatorRole);
 
         // set admin default
-        Utente u = new Utente("Fabio", "Paolantonio", "fabiopaolantonio@gmail.com", "admin", passwordEncoder.encode("admin"), true);
-        u.setCreatoreInfo(new CreatoreInfo("Software Developer", ""));
-        u.addRuolo(adminRole);
-        u.addRuolo(userRole);
-        u.addRuolo(creatorRole);
-        utenteService.save(u);
+        Utente fabio = new Utente("Fabio", "Paolantonio", "fabiopaolantonio@gmail.com", "admin", passwordEncoder.encode("admin"), true);
+        fabio.setCreatoreInfo(new CreatoreInfo("Software Developer", ""));
+        fabio.addRuolo(adminRole);
+        fabio.addRuolo(userRole);
+        fabio.addRuolo(creatorRole);
+        utenteService.save(fabio);
 
         // set other users
         Utente marco = new Utente("Marco", "Giarrusso", "marco.giarrusso@univaq.it", "magiar", passwordEncoder.encode("magiar"), true);
         marco.addRuolo(userRole);
         utenteService.save(marco);
 
-        Utente a = new Utente("Antonio", "Paolo", "fabiopaolantonio@gmail.com", "antpaol", passwordEncoder.encode("antpaol"), true);
-        a.setCreatoreInfo(new CreatoreInfo("Software Engineer", ""));
+        Utente a = new Utente("Mario", "Rossi", "fabiopaolantonio@gmail.com", "antpaol", passwordEncoder.encode("antpaol"), true);
+        a.setCreatoreInfo(new CreatoreInfo("Finance Director", ""));
         a.addRuolo(adminRole);
         a.addRuolo(userRole);
         a.addRuolo(creatorRole);
@@ -73,12 +73,15 @@ public class Initialize implements ApplicationListener<ApplicationReadyEvent> {
         Categoria cat = new Categoria("senza categoria", null, "fas fa-th");
         categoriaService.save(cat);
 
-        Categoria cat2 = new Categoria("informatica", null, "fas fa-desktop");
+        Categoria cat2 = new Categoria("Informatica", null, "fas fa-desktop");
         categoriaService.save(cat2);
 
+        Categoria cat21 = new Categoria("Sviluppo", cat2, "fas fa-desktop");
+        categoriaService.save(cat21);
 
-        Categoria cat3 = new Categoria("java", cat2, "fas fa-coffee");
-        categoriaService.save(cat3);
+
+        Categoria cat211 = new Categoria("Java", cat21, "fas fa-coffee");
+        categoriaService.save(cat211);
 
         Categoria cat4 = new Categoria("Economia", null, "fas fa-dollar-sign");
         categoriaService.save(cat4);
@@ -90,7 +93,7 @@ public class Initialize implements ApplicationListener<ApplicationReadyEvent> {
         // corso 1 java spring
         Corso corso = new Corso("Java spring boot",
                 "",
-                LocalDateTime.of(2023, 9, 29, 12, 30),
+                LocalDateTime.of(2023, 9, 27, 12, 30),
                 LocalDateTime.of(2023, 9, 30, 12, 30),
                 10, 12, 1000.5f,
                 true, a, 15, true);
@@ -109,7 +112,7 @@ public class Initialize implements ApplicationListener<ApplicationReadyEvent> {
         corso.addWebLink(new WebLink("http://www.google.com", "google"));
         corso.addWebLink(new WebLink("http://www.youtube.com", "youtube"));
         corso.addTag(tag);
-        corso.addCategoria(cat3);
+        corso.addCategoria(cat211);
         corsoService.save(corso);
 
         // corso 2 java
@@ -118,7 +121,7 @@ public class Initialize implements ApplicationListener<ApplicationReadyEvent> {
                 LocalDateTime.of(2023, 9, 29, 12, 30),
                 LocalDateTime.of(2023, 9, 30, 12, 30),
                 10, 12, 1000.5f,
-                true, u, 20, true);
+                true, fabio, 20, true);
 
         corso2.setDescrizione("Lorem ipsum represents a long-held tradition for\n"
                 + "												designers, typographers and the like. Some people hate it\n"
@@ -132,17 +135,17 @@ public class Initialize implements ApplicationListener<ApplicationReadyEvent> {
         corsoService.save(corso2);
         corso2.addWebLink(new WebLink("http://www.youtube.com", "youtube1"));
         corso2.addTag(tag);
-        corso2.addCategoria(cat3);
+        corso2.addCategoria(cat211);
         corsoService.save(corso2);
 
 
         // corso 3 C++
         Corso corso3 = new Corso("C++",
                 "",
-                LocalDateTime.of(2023, 9, 29, 12, 30),
-                LocalDateTime.of(2023, 9, 30, 12, 30),
+                LocalDateTime.of(2023, 9, 9, 12, 30),
+                LocalDateTime.of(2023, 9, 20, 12, 30),
                 10, 12, 1000.5f,
-                true, u, 20, true);
+                true, fabio, 20, true);
 
         corso3.setDescrizione("Lorem ipsum represents a long-held tradition for\n"
                 + "												designers, typographers and the like. Some people hate it\n"
@@ -154,7 +157,7 @@ public class Initialize implements ApplicationListener<ApplicationReadyEvent> {
                 + "												designers, typographers and the like. Some people hate it\n"
                 + "												and argue for its demise, but others ignore.");
         corsoService.save(corso3);
-        corso3.addCategoria(cat3);
+        corso3.addCategoria(cat21);
         corsoService.save(corso3);
 
 
@@ -163,10 +166,10 @@ public class Initialize implements ApplicationListener<ApplicationReadyEvent> {
         // corso 4 C#
         Corso corso4 = new Corso("C#",
                 "",
-                LocalDateTime.of(2023, 9, 29, 12, 30),
+                LocalDateTime.of(2023, 9, 18, 12, 30),
                 LocalDateTime.of(2023, 9, 30, 12, 30),
                 10, 12, 1000.5f,
-                true, u, 20, false);
+                true, marco, 20, false);
 
         corso3.setDescrizione("Lorem ipsum represents a long-held tradition for\n"
                 + "												designers, typographers and the like. Some people hate it\n"
@@ -178,7 +181,7 @@ public class Initialize implements ApplicationListener<ApplicationReadyEvent> {
                 + "												designers, typographers and the like. Some people hate it\n"
                 + "												and argue for its demise, but others ignore.");
         corsoService.save(corso4);
-        corso4.addCategoria(cat3);
+        corso4.addCategoria(cat21);
         corsoService.save(corso4);
 
 
@@ -186,8 +189,16 @@ public class Initialize implements ApplicationListener<ApplicationReadyEvent> {
         Iscrizione is = new Iscrizione();
         is.setCorso(corso3);
         is.setSuperato(false);
-        is.setUtente(u);
+        is.setUtente(marco);
         is.setData(LocalDateTime.of(2023, 9, 29, 12, 30));
+        iscrizioneService.save(is);
+
+
+        Iscrizione is1 = new Iscrizione();
+        is.setCorso(corso4);
+        is.setSuperato(false);
+        is.setUtente(fabio);
+        is.setData(LocalDateTime.of(2023, 9, 21, 12, 30));
         iscrizioneService.save(is);
 
     }

@@ -38,8 +38,10 @@ public class Utente extends BaseEntity {
 	@Column(nullable = false, unique = true, length = 30)
 	@Size(min=4, max=30)
 	private String username;
-	@Column(length = 30)
-	@Size(min=5, max=30)
+	@Column(length = 60)
+	@Size(max=60)
+	@NotBlank
+	@NotNull
 	private String password;
 
 	private Boolean enabled = true;
