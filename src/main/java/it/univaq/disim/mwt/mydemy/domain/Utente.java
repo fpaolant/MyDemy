@@ -53,6 +53,8 @@ public class Utente extends BaseEntity {
 	@JoinTable(name = "utente_ruolo", joinColumns = { @JoinColumn(name = "utente_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "ruolo_id") })
 	private Set<Ruolo> ruoli = new HashSet<>();
+	@OneToMany(mappedBy = "utente")
+	Set<Iscrizione> iscrizioni;
 
 	public Utente() { super(); }
 

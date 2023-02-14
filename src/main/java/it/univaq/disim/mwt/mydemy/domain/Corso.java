@@ -73,6 +73,9 @@ public class Corso extends BaseEntity {
 	@Nullable
 	@JsonManagedReference
 	private Set<Tag> tags = new HashSet<>();
+
+	@OneToMany(mappedBy = "corso")
+	private Set<Iscrizione> iscrizioni;
 	@Transient
 	private Integer numIscritti;
 
