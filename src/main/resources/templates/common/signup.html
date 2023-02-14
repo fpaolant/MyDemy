@@ -40,42 +40,42 @@
 						<div class="form-group row">
 							<label for="nome" class="col-sm-2 col-form-label" th:text="#{utente.nome}"></label>
 							<div class="col-sm-6">
-								<input type="text" th:field="*{nome}" id="nome" class="form-control"/>
+								<input type="text" th:field="*{nome}" id="nome" class="form-control" minlength="2" maxlength="30" required/>
 								<span th:if="${#fields.hasErrors('nome')}" th:each="err: ${#fields.errors('nome')}" th:utext="${err}"></span>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="cognome" class="col-sm-2 col-form-label" th:text="#{utente.cognome}"></label>
 							<div class="col-sm-6">
-								<input type="text" th:field="*{cognome}" id="cognome" class="form-control"/>
+								<input type="text" th:field="*{cognome}" id="cognome" class="form-control" minlength="2" maxlength="30" required/>
 								<span th:if="${#fields.hasErrors('cognome')}" th:each="err: ${#fields.errors('cognome')}" th:utext="${err}"></span>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="email" class="col-sm-2 col-form-label" th:text="#{utente.email}"></label>
 							<div class="col-sm-6">
-								<input type="email" th:field="*{email}" id="email" class="form-control"/>
+								<input type="email" th:field="*{email}" id="email" class="form-control" minlength="2" maxlength="30" required/>
 								<span th:if="${#fields.hasErrors('email')}" th:each="err: ${#fields.errors('email')}" th:utext="${err}"></span>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="username" class="col-sm-2 col-form-label" th:text="#{utente.username}"></label>
 							<div class="col-sm-6">
-								<input type="text" th:field="*{username}" name="username" id="username" class="form-control" autocomplete="off"/>
+								<input type="text" th:field="*{username}" name="username" id="username" class="form-control" autocomplete="off" minlength="4" maxlength="30" required/>
 								<span th:if="${#fields.hasErrors('username')}" th:each="err: ${#fields.errors('username')}" th:utext="${err}"></span>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="password" class="col-sm-2 col-form-label" th:text="#{utente.password}"></label>
 							<div class="col-sm-6">
-								<input type="password" id="password" th:field="*{password}" class="form-control" autocomplete="off" th:placeholder="#{utente.pwdplaceholder}"/>
+								<input type="password" id="password" th:field="*{password}" class="form-control" autocomplete="off" th:placeholder="#{utente.pwdplaceholder}" minlength="5" maxlength="30" required/>
 								<span th:if="${#fields.hasErrors('password')}" th:each="err: ${#fields.errors('password')}" th:utext="${err}"></span>
 							</div>
 						</div>
 						  <div class="form-group row">
 							  <label for="cpassword" class="col-sm-2 col-form-label" th:text="#{utente.confermapassword}"></label>
 							  <div class="col-sm-6">
-								  <input type="password" id="cpassword" value="" class="form-control" autocomplete="off" required/>
+								  <input type="password" id="cpassword" value="" class="form-control" autocomplete="off" minlength="5" maxlength="30" required/>
 								  <!--<span th:if="${#fields.hasErrors('cpassword')}" th:each="err: ${#fields.errors('cpassword')}" th:utext="${err}"></span>-->
 							  </div>
 						  </div>

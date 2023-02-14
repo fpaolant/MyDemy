@@ -63,7 +63,7 @@
                         <div class="form-group row">
                             <label for="nome" class="col-sm-2 col-form-label" th:text="#{categoria.nome}"></label>
                             <div class="col-sm-6">
-                                <input type="text" th:field="*{nome}" id="nome" class="form-control"/>
+                                <input type="text" th:field="*{nome}" id="nome" class="form-control" maxlength="30" required/>
                                 <span th:if="${#fields.hasErrors('nome')}" th:each="err: ${#fields.errors('nome')}"
                                       th:utext="${err}"></span>
                             </div>

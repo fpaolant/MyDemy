@@ -31,14 +31,14 @@
             <div class="form-group row">
               <label for="titolo" class="col-sm-2 col-form-label" th:text="#{creatore.titolo}"></label>
               <div class="col-sm-6">
-                <input type="text" th:field="*{titolo}" id="titolo" class="form-control"/>
+                <input type="text" th:field="*{titolo}" id="titolo" class="form-control" minlength="2" maxlength="30" required/>
                 <span th:if="${#fields.hasErrors('titolo')}" th:each="err: ${#fields.errors('titolo')}" th:utext="${err}"></span>
               </div>
             </div>
             <div class="form-group row">
               <label for="descrizione" class="col-sm-2 col-form-label" th:text="#{creatore.descrizione}"></label>
               <div class="col-sm-6">
-                <textarea th:field="*{descrizione}" rows="10" id="descrizione" class="form-control"></textarea>
+                <textarea th:field="*{descrizione}" rows="10" id="descrizione" class="form-control" maxlength="255"></textarea>
                 <span th:if="${#fields.hasErrors('descrizione')}" th:each="err: ${#fields.errors('descrizione')}" th:utext="${err}"></span>
               </div>
             </div>

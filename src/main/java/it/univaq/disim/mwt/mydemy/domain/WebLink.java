@@ -15,9 +15,6 @@ import org.hibernate.validator.constraints.URL;
 @Setter
 @ToString
 public class WebLink extends BaseEntity {
-
-	private static final long serialVersionUID = 1L;
-	
 	@Column(length = 150)
 	@URL(regexp = "^(http|https).*")
 	private String url;

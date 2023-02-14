@@ -53,7 +53,7 @@
                         <div class="form-group row">
                             <label for="nome" class="col-sm-2 col-form-label" th:text="#{utente.nome}"></label>
                             <div class="col-sm-6">
-                                <input type="text" id="nome" th:field="*{nome}" class="form-control"/>
+                                <input type="text" id="nome" th:field="*{nome}" class="form-control" maxlength="30" required/>
                                 <span th:if="${#fields.hasErrors('nome')}" th:each="err: ${#fields.errors('nome')}"
                                       th:utext="${err}"></span>
                             </div>
@@ -61,7 +61,7 @@
                         <div class="form-group row">
                             <label for="cognome" class="col-sm-2 col-form-label" th:text="#{utente.cognome}"></label>
                             <div class="col-sm-6">
-                                <input type="text" id="cognome" th:field="*{cognome}" class="form-control"/>
+                                <input type="text" id="cognome" th:field="*{cognome}" class="form-control" maxlength="30" required/>
                                 <span th:if="${#fields.hasErrors('cognome')}"
                                       th:each="err: ${#fields.errors('cognome')}" th:utext="${err}"></span>
                             </div>
@@ -69,7 +69,7 @@
                         <div class="form-group row">
                             <label for="email" class="col-sm-2 col-form-label" th:text="#{utente.email}"></label>
                             <div class="col-sm-6">
-                                <input type="email" id="email" th:field="*{email}" class="form-control"/>
+                                <input type="email" id="email" th:field="*{email}" class="form-control" maxlength="50" required/>
                                 <span th:if="${#fields.hasErrors('email')}" th:each="err: ${#fields.errors('email')}"
                                       th:utext="${err}"></span>
                             </div>
@@ -78,7 +78,7 @@
                             <label for="username" class="col-sm-2 col-form-label" th:text="#{utente.username}"></label>
                             <div class="col-sm-6">
                                 <input type="text" id="username" th:field="*{username}" name="username" class="form-control"
-                                       autocomplete="off"/>
+                                       autocomplete="off" maxlength="30" minlength="4" required/>
                                 <span th:if="${#fields.hasErrors('username')}"
                                       th:each="err: ${#fields.errors('username')}" th:utext="${err}"></span>
                             </div>
@@ -86,11 +86,11 @@
                         <div class="form-group row">
                             <label for="password" class="col-sm-2 col-form-label" th:text="#{utente.password}"></label>
                             <div class="col-sm-6">
-                                <input th:if="${utente.id==null}" type="password" id="password" th:field="*{password}"
+                                <input th:if="${utente.id==null}" type="password" id="password" minlength="5" maxlength="30" th:field="*{password}"
                                        class="form-control" autocomplete="off" required/>
-                                <input th:if="${utente.id!=null}" type="password" id="password" th:field="*{password}"
+                                <input th:if="${utente.id!=null}" type="password" id="password" minlength="5" maxlength="30" th:field="*{password}"
                                        class="form-control" autocomplete="off"
-                                       th:placeholder="#{utente.pwdplaceholder}"/>
+                                       th:placeholder="#{utente.pwdplaceholder}" required/>
                                 <span th:if="${#fields.hasErrors('password')}"
                                       th:each="err: ${#fields.errors('password')}" th:utext="${err}"></span>
                             </div>

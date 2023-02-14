@@ -30,13 +30,13 @@
                  <div class="input-group-prepend">
                    <span class="input-group-text" th:text="#{profilo.creatoreInfo.titoloprofessionale}"><i class="fas fa-address-card"></i></span>
                  </div>
-                 <input type="text" th:value="*{utente.creatoreInfo.titolo}" name="titolo" class="form-control" required maxlength="100">
+                 <input type="text" th:value="*{utente.creatoreInfo.titolo}" name="titolo" class="form-control" required maxlength="30">
                  </div>
            	 	<div class="input-group mb-3">
                  <div class="input-group-prepend">
                    <span class="input-group-text" th:text="#{profilo.creatoreInfo.descrizione}"></span>
                  </div>
-                 <textarea class="form-control" id="description" rows="5"
+                 <textarea class="form-control" id="description" rows="5" maxlength="255"
                               name="descrizione"
                               placeholder="Descrizione" th:value="${utente.creatoreInfo.descrizione}"
                               ></textarea>

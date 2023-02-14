@@ -29,26 +29,25 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" th:text="#{profilo.username}"></i></span>
                             </div>
-                            <input type="text" th:field="*{username}" class="form-control" required maxlength="100"
-                                   readonly="readonly">
+                            <input type="text" th:field="*{username}" class="form-control" readonly="readonly">
                         </div>
                         <div class="input-group mb-6">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" th:text="#{profilo.nome}"></span>
                             </div>
-                            <input type="text" th:field="*{nome}" class="form-control" required maxlength="100">
+                            <input type="text" th:field="*{nome}" class="form-control" minlength="2" maxlength="30" required>
                         </div>
                         <div class="input-group mb-6">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" th:text="#{profilo.cognome}"></span>
                             </div>
-                            <input type="text" th:field="*{cognome}" class="form-control" required maxlength="100">
+                            <input type="text" th:field="*{cognome}" class="form-control" minlength="2" maxlength="30" required>
                         </div>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                             </div>
-                            <input type="email" th:field="*{email}" class="form-control" required maxlength="100">
+                            <input type="email" th:field="*{email}" class="form-control" maxlength="50" required>
                         </div>
                     </div>
                     <div class="card-footer">
