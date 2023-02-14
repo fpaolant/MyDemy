@@ -24,8 +24,6 @@ import groovyjarjarantlr4.v4.runtime.misc.Nullable;
 @Setter
 public class Tag extends BaseEntity {
 
-	private static final long serialVersionUID = 1L;
-
 	@Column(nullable = false, unique = true, length = 15)
 	@NotNull
 	@NotBlank

@@ -15,8 +15,6 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 public class Recensione extends BaseEntity {
-
-	private static final long serialVersionUID = 1L;
 	
 	@NotBlank
 	private String titolo;
@@ -29,5 +27,5 @@ public class Recensione extends BaseEntity {
 	@NotNull
 	private Utente autore; 
 	
-	public Recensione() {}
+	public Recensione() { super(); }
 }

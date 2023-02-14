@@ -23,9 +23,6 @@ import groovyjarjarantlr4.v4.runtime.misc.Nullable;
 @Getter
 @Setter
 public class Corso extends BaseEntity {
-
-	private static final long serialVersionUID = 1L;
-
 	@NotBlank
 	@Column(length = 150)
 	@NotBlank

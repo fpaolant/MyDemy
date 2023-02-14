@@ -17,8 +17,6 @@ import lombok.ToString;
 @ToString
 public class Ruolo extends BaseEntity {
 
-	private static final long serialVersionUID = 1L;
-		
 	@Column(length = 30)
     @NotBlank
     @Size(max=30)
@@ -34,6 +32,7 @@ public class Ruolo extends BaseEntity {
 	
 	public Ruolo() { super(); }
 	public Ruolo(String nome, String code, String descrizione) {
+        super();
 		this.nome = nome;
 		this.code = code;
 		this.descrizione = descrizione;

@@ -38,8 +38,8 @@ public class Utente extends BaseEntity {
 	@Column(nullable = false, unique = true, length = 30)
 	@Size(min=4, max=30)
 	private String username;
-	@Column(length = 255)
-	@Size(min=5, max=255)
+	@Column(length = 30)
+	@Size(min=5, max=30)
 	private String password;
 
 	private Boolean enabled = true;
@@ -55,7 +55,7 @@ public class Utente extends BaseEntity {
 	public Utente() { super(); }
 
 	public Utente(@NotBlank String nome, @NotBlank String cognome, @Email String email, @NotBlank String username,
-			@NotBlank String password, Boolean enabled) {
+			@NotBlank String password, @NotNull Boolean enabled) {
 		super();
 		this.nome = nome;
 		this.cognome = cognome;

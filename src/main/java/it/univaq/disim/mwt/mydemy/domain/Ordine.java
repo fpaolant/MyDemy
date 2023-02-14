@@ -21,9 +21,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Setter
 @ToString
 public class Ordine  extends BaseEntity {
-
-	private static final long serialVersionUID = 1L;
-	
 	@ManyToOne(cascade = { CascadeType.MERGE})
     @NotNull
 	private Utente ordinante;

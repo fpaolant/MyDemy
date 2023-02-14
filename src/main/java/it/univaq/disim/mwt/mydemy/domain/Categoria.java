@@ -17,8 +17,6 @@ import java.util.Set;
 @Setter
 public class Categoria extends BaseEntity {
 
-	private static final long serialVersionUID = 1L;
-
 	@NotBlank
 	@Column(length = 30)
 	@Size(max=30)
