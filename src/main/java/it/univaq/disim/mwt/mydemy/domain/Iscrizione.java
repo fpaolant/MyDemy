@@ -1,5 +1,6 @@
 package it.univaq.disim.mwt.mydemy.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
