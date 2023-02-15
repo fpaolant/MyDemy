@@ -72,7 +72,7 @@ public class UtenteAdminController {
 		}
 		
 		if (errors.hasErrors() || result.hasErrors()) {
-			return "admin/ruolo/form";
+			return "admin/utente/form";
 		}
 		if (errors.hasErrors()) {
 			return "admin/utente/form";
