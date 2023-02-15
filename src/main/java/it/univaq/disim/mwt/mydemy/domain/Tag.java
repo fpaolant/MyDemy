@@ -30,7 +30,7 @@ public class Tag extends BaseEntity {
 	@Size(max=15)
 	private String nome;
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE }, mappedBy = "tags")
+	@ManyToMany(cascade = { CascadeType.MERGE }, mappedBy = "tags")
 	@Nullable
 	@JsonBackReference
 	private Set<Corso> corsi = new HashSet<>();

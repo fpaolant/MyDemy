@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -54,6 +55,7 @@ public class Utente extends BaseEntity {
 			@JoinColumn(name = "ruolo_id") })
 	private Set<Ruolo> ruoli = new HashSet<>();
 	@OneToMany(mappedBy = "utente")
+	@JsonBackReference
 	Set<Iscrizione> iscrizioni;
 
 	public Utente() { super(); }

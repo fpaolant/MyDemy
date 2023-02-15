@@ -31,12 +31,11 @@ public class Categoria extends BaseEntity {
 	@Column(length = 30)
 	private String icon = "fa-sharp fa-solid fa-list"; // TODO remove icon field and refactor
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE }, mappedBy = "categorie")
+	@ManyToMany(cascade = { CascadeType.MERGE }, mappedBy = "categorie")
 	@JsonBackReference
 	private Set<Corso> corsi = new HashSet<>();
 
 	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE},
-			fetch = FetchType.LAZY,
 			mappedBy = "parent")
 	@OrderBy("nome")
 	private List<Categoria> subCategorie;

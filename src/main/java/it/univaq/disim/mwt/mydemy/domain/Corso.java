@@ -1,5 +1,7 @@
 package it.univaq.disim.mwt.mydemy.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -75,6 +77,7 @@ public class Corso extends BaseEntity {
 	private Set<Tag> tags = new HashSet<>();
 
 	@OneToMany(mappedBy = "corso")
+	@JsonBackReference
 	private Set<Iscrizione> iscrizioni;
 	@Transient
 	private Integer numIscritti;
