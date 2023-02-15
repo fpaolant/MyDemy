@@ -126,7 +126,7 @@ public class CorsoAdminController {
 		Optional<Corso> corso = serviceCorso.findByID(id);
 		
 		if(corso.isPresent()) {		
-			Boolean enabled = corso.get().getApprovato();
+			boolean enabled = corso.get().getApprovato();
 			corso.get().setApprovato(!enabled);
 			serviceCorso.save(corso.get());
 		}
