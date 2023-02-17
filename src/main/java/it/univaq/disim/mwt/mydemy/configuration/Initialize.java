@@ -64,12 +64,12 @@ public class Initialize implements ApplicationListener<ApplicationReadyEvent> {
         marco.addRuolo(userRole);
         utenteService.create(marco);
 
-        Utente a = new Utente("Mario", "Rossi", "fabiopaolantonio@gmail.com", "antpaol", passwordEncoder.encode("antpaol"), true);
-        a.setCreatoreInfo(new CreatoreInfo("Finance Director", ""));
-        a.addRuolo(adminRole);
-        a.addRuolo(userRole);
-        a.addRuolo(creatorRole);
-        utenteService.create(a);
+        Utente mario = new Utente("Mario", "Rossi", "fabiopaolantonio@gmail.com", "antpaol", passwordEncoder.encode("antpaol"), true);
+        mario.setCreatoreInfo(new CreatoreInfo("Finance Director", ""));
+        mario.addRuolo(adminRole);
+        mario.addRuolo(userRole);
+        mario.addRuolo(creatorRole);
+        utenteService.create(mario);
 
         // create corso
         Categoria cat = new Categoria("senza categoria", null, "fas fa-th");
@@ -98,7 +98,7 @@ public class Initialize implements ApplicationListener<ApplicationReadyEvent> {
                 LocalDateTime.of(2023, 9, 27, 12, 30),
                 LocalDateTime.of(2023, 9, 30, 12, 30),
                 10, 12, 1000.5f,
-                true, a, 15, true);
+                true, mario, 15, true);
 
         corso.setDescrizione("Lorem ipsum represents a long-held tradition for\n"
                 + "												designers, typographers and the like. Some people hate it\n"
@@ -171,7 +171,7 @@ public class Initialize implements ApplicationListener<ApplicationReadyEvent> {
                 LocalDateTime.of(2023, 9, 18, 12, 30),
                 LocalDateTime.of(2023, 9, 30, 12, 30),
                 10, 12, 1000.5f,
-                true, marco, 20, false);
+                true, mario, 20, false);
 
         corso3.setDescrizione("Lorem ipsum represents a long-held tradition for\n"
                 + "												designers, typographers and the like. Some people hate it\n"
