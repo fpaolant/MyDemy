@@ -64,7 +64,7 @@ public class Initialize implements ApplicationListener<ApplicationReadyEvent> {
         marco.addRuolo(userRole);
         utenteService.create(marco);
 
-        Utente mario = new Utente("Mario", "Rossi", "fabiopaolantonio@gmail.com", "antpaol", passwordEncoder.encode("antpaol"), true);
+        Utente mario = new Utente("Mario", "Rossi", "fabiopaolantonio@gmail.com", "mario", passwordEncoder.encode("mario"), true);
         mario.setCreatoreInfo(new CreatoreInfo("Finance Director", ""));
         mario.addRuolo(adminRole);
         mario.addRuolo(userRole);
