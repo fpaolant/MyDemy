@@ -26,8 +26,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import it.univaq.disim.mwt.mydemy.business.BusinessException;
 import it.univaq.disim.mwt.mydemy.business.RequestGrid;
 import it.univaq.disim.mwt.mydemy.business.ResponseGrid;
-import it.univaq.disim.mwt.mydemy.business.RuoloBO;
-import it.univaq.disim.mwt.mydemy.business.UtenteBO;
+import it.univaq.disim.mwt.mydemy.business.RuoloService;
+import it.univaq.disim.mwt.mydemy.business.UtenteService;
 import it.univaq.disim.mwt.mydemy.domain.Ruolo;
 import it.univaq.disim.mwt.mydemy.domain.Utente;
 
@@ -36,9 +36,9 @@ import it.univaq.disim.mwt.mydemy.domain.Utente;
 public class UtenteAdminController {
 	
 	@Autowired
-	private UtenteBO serviceUtente;
+	private UtenteService serviceUtente;
 	@Autowired
-	private RuoloBO serviceRuolo;
+	private RuoloService serviceRuolo;
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -84,7 +84,7 @@ public class UtenteAdminController {
 		final String password = passwordEncoder.encode(utente.getPassword());
 		utente.setPassword(password);
 		
-		serviceUtente.save(utente);
+		serviceUtente.create(utente);
 		return "redirect:/admin/utenti/list";
 	}
 	
@@ -126,7 +126,7 @@ public class UtenteAdminController {
 		if(utente.isPresent() && !utente.get().getUsername().equalsIgnoreCase("admin")) {
 			Boolean enabled = utente.get().getEnabled();
 			utente.get().setEnabled(!enabled);
-			serviceUtente.save(utente.get());
+			serviceUtente.update(utente.get());
 		}
 		return "redirect:/admin/utenti/list";
 	}

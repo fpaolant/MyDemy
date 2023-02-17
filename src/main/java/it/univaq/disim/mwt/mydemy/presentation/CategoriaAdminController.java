@@ -6,9 +6,12 @@ import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import it.univaq.disim.mwt.mydemy.domain.Corso;
+import it.univaq.disim.mwt.mydemy.business.BusinessException;
+import it.univaq.disim.mwt.mydemy.business.CorsoService;
 import it.univaq.disim.mwt.mydemy.repository.CorsoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -23,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import it.univaq.disim.mwt.mydemy.business.CategoriaBO;
+import it.univaq.disim.mwt.mydemy.business.CategoriaService;
 import it.univaq.disim.mwt.mydemy.business.ResponseCategoryItem;
 import it.univaq.disim.mwt.mydemy.domain.Categoria;
 
@@ -32,9 +35,7 @@ import it.univaq.disim.mwt.mydemy.domain.Categoria;
 public class CategoriaAdminController {
 	
 	@Autowired
-	private CategoriaBO serviceCategoria;
-	@Autowired
-	private CorsoRepository corsoRepository;
+	private CategoriaService serviceCategoria;
 
 	@GetMapping("/list")
 	public String list() {
@@ -44,15 +45,7 @@ public class CategoriaAdminController {
 	@RequestMapping(value = "/getTree", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody List<ResponseCategoryItem> getTree() {
-		List<ResponseCategoryItem> entities = new ArrayList<>();
-
-		List<Categoria> categorie = serviceCategoria.getTree();
-
-	    for (Categoria c : categorie) {
-	    	long pid = (c.getParent()!=null)? c.getParent().getId(): 0;
-	        entities.add(new ResponseCategoryItem(c.getId(), pid, c.getNome(), serviceCategoria.getLevel(c, categorie)));
-	    }
-	    return entities;		
+		return serviceCategoria.getTree();
 	}
 	
 	@GetMapping("/create")
@@ -75,21 +68,20 @@ public class CategoriaAdminController {
 		if (errors.hasErrors()) {
 			return "admin/categoria/form";
 		}
-		
-		serviceCategoria.save(categoria);
+		serviceCategoria.create(categoria);
 		return "redirect:/admin/categorie/list";
 	}
 	
 	@GetMapping("/update")
-	public String updateStart(@RequestParam Long id, Model model) {
+	public String updateStart(@RequestParam Long id, Model model) throws BusinessException {
 		Optional<Categoria> categoria = serviceCategoria.findByID(id);
 
 		if(categoria.isPresent()) {
 			model.addAttribute("categoria", categoria.get());
-			// get selectable parent categories excluding current category
-			Predicate<Categoria> isNotCurrent = c -> (c.getId()!=categoria.get().getId());
-			List<Categoria> categorie =  serviceCategoria.findAll().stream().filter(isNotCurrent).collect(Collectors.toList());
+			List<Categoria> categorie =  serviceCategoria.findAllExceptOne(categoria.get());
 			model.addAttribute("categorie", categorie);	
+		} else {
+			throw new BusinessException("Categoria non trovata");
 		}
 		return "admin/categoria/form";
 	}
@@ -99,41 +91,24 @@ public class CategoriaAdminController {
 		if (errors.hasErrors()) {
 			return "admin/categoria/form";
 		}
-		Optional<Categoria> categoriaOld = serviceCategoria.findByID(categoria.getId());
-		if(categoriaOld.isPresent()) {
-			categoria.setVersion(categoriaOld.get().getVersion());
-			serviceCategoria.save(categoria);
-		}
+		serviceCategoria.update(categoria);
+
 		return "redirect:/admin/categorie/list";
 	}
 	
 	@GetMapping("/delete")
 	public String delete(@RequestParam Long id) {
-		Optional<Categoria> categoria = serviceCategoria.findByID(id);
-		if(categoria.isPresent()) {
-			Categoria cat = categoria.get();
-			cat.getCorsi().forEach(c -> {
-				c.removeCategoria(id);
-				corsoRepository.save(c);
-			});
-			serviceCategoria.delete(categoria.get());
-		}
+		serviceCategoria.delete(id);
 		return "redirect:/admin/categorie/list";
 	}
 
 	@GetMapping("/setparent")
-	public @ResponseBody String deleteStart(@RequestParam Long id, @RequestParam Long parentId) {
-		Optional<Categoria> opt = serviceCategoria.findByID(id);
-		if(opt.isPresent()) {
-			Categoria categoria = opt.get();
-
-			Optional<Categoria> optParent = serviceCategoria.findByID(parentId);
-			if(optParent.isPresent()) {
-				categoria.setParent(optParent.get());
-				serviceCategoria.save(categoria);
-			}
+	public @ResponseBody void setParent(@RequestParam Long id, @RequestParam Long parentId, HttpServletResponse response) {
+		try {
+			serviceCategoria.setParent(id, parentId);
+		} catch (BusinessException e) {
+			response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
 		}
-		return "";
 	}
 	
 }

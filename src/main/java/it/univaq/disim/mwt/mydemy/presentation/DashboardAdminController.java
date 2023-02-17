@@ -15,11 +15,11 @@ import java.util.List;
 public class DashboardAdminController {
 
 	@Autowired
-	UtenteBO utenteService;
+	UtenteService utenteService;
 	@Autowired
-	CorsoBO corsoService;
+    CorsoService corsoService;
 	@Autowired
-	IscrizioneBO iscrizioneService;
+	IscrizioneService iscrizioneService;
 
 	@GetMapping("/index")
 	String index(Model model) {

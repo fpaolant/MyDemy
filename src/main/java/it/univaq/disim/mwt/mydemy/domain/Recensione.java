@@ -1,31 +1,47 @@
 package it.univaq.disim.mwt.mydemy.domain;
 
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.*;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.NotNull;
 
+import lombok.ToString;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @Getter
 @Setter
+@ToString
+@EqualsAndHashCode
+@Document(collection = "recensioni")
 public class Recensione extends BaseEntity {
 	
 	@NotBlank
+	@Size(min = 3, max = 100)
 	private String titolo;
+	@Size(max = 1000)
 	private String descrizione;
 	@Min(0)
 	@Max(5)
 	private Integer voto;
-	private Boolean approvata;
-	private LocalDateTime dataImmissione;
+	private LocalDateTime dataImmissione = LocalDateTime.now();
 	@NotNull
-	private Utente autore; 
+	private Utente autore;
+	@NotNull
+	private Corso corso;
 	
 	public Recensione() { super(); }
+
+	public Recensione(String titolo, String descrizione, Integer voto, LocalDateTime dataImmissione, Utente autore, Corso corso) {
+		super();
+		this.titolo = titolo;
+		this.descrizione = descrizione;
+		this.voto = voto;
+		this.dataImmissione = dataImmissione;
+		this.autore = autore;
+		this.corso = corso;
+	}
 }

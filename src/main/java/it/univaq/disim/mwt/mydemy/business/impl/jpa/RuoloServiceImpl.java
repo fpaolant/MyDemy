@@ -12,13 +12,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import it.univaq.disim.mwt.mydemy.business.RequestGrid;
 import it.univaq.disim.mwt.mydemy.business.ResponseGrid;
-import it.univaq.disim.mwt.mydemy.business.RuoloBO;
+import it.univaq.disim.mwt.mydemy.business.RuoloService;
 import it.univaq.disim.mwt.mydemy.domain.Ruolo;
 import it.univaq.disim.mwt.mydemy.repository.RuoloRepository;
 
 @Service
 @Transactional
-public class RuoloBOImpl implements RuoloBO {
+public class RuoloServiceImpl implements RuoloService {
 	
 	@Autowired RuoloRepository ruoloRepository;
 
@@ -33,7 +33,12 @@ public class RuoloBOImpl implements RuoloBO {
 	}
 
 	@Override
-	public void save(Ruolo ruolo) {
+	public void create(Ruolo ruolo) {
+		ruoloRepository.save(ruolo);
+	}
+
+	@Override
+	public void update(Ruolo ruolo) {
 		ruoloRepository.save(ruolo);
 	}
 

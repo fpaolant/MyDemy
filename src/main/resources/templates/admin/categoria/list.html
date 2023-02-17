@@ -42,9 +42,16 @@
 						const parentId = ui.item.data('parent')
 
 						let response = await fetch("/mydemy/admin/categorie/setparent?id="+id+"&parentId="+parentId);
+
 						if (response.ok) {
 							toastr.success('Albero delle categorie salvato');
-						} else {alert('errore')}
+						} else {
+							toastr.error('Si è verificato un errore nella richiesta');
+							setTimeout(() => {
+								window.location.reload();
+							}, 1500)
+
+						}
 					});
 
 					sortable.addListener("click", ".add-child", function (e, instance) {

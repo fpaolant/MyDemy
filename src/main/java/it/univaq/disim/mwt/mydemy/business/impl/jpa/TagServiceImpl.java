@@ -8,13 +8,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import it.univaq.disim.mwt.mydemy.business.TagBo;
+import it.univaq.disim.mwt.mydemy.business.TagService;
 import it.univaq.disim.mwt.mydemy.domain.Tag;
 import it.univaq.disim.mwt.mydemy.repository.TagRepository;
 
 @Service
 @Transactional
-public class TagBOImpl implements TagBo {
+public class TagServiceImpl implements TagService {
 	
 	@Autowired TagRepository tagRepository;
 
@@ -35,7 +35,12 @@ public class TagBOImpl implements TagBo {
 	}
 
 	@Override
-	public void save(Tag tag) {
+	public void create(Tag tag) {
+		tagRepository.save(tag);
+	}
+
+	@Override
+	public void update(Tag tag) {
 		tagRepository.save(tag);
 	}
 

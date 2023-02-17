@@ -10,26 +10,19 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import it.univaq.disim.mwt.mydemy.business.BusinessException;
-import it.univaq.disim.mwt.mydemy.business.CategoriaBO;
-import it.univaq.disim.mwt.mydemy.business.CorsoBO;
-import it.univaq.disim.mwt.mydemy.business.RequestGrid;
-import it.univaq.disim.mwt.mydemy.business.ResponseGrid;
+import it.univaq.disim.mwt.mydemy.business.CategoriaService;
+import it.univaq.disim.mwt.mydemy.business.CorsoService;
 import it.univaq.disim.mwt.mydemy.domain.Categoria;
-import it.univaq.disim.mwt.mydemy.domain.Corso;
 
 @Controller
 public class HomeController {
 	
 	@Autowired
-	private CorsoBO serviceCorso;
+	private CorsoService serviceCorso;
 	
 	@Autowired
-	private CategoriaBO serviceCategoria;
+	private CategoriaService serviceCategoria;
 	
 	@GetMapping("/")
 	String index(Principal principal, Model model) {

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-import it.univaq.disim.mwt.mydemy.business.OrdineBO;
+import it.univaq.disim.mwt.mydemy.business.OrdineService;
 import it.univaq.disim.mwt.mydemy.business.RequestGrid;
 import it.univaq.disim.mwt.mydemy.business.ResponseGrid;
 import it.univaq.disim.mwt.mydemy.domain.Ordine;
@@ -22,7 +22,7 @@ import it.univaq.disim.mwt.mydemy.repository.OrdineRepository;
 
 @Service
 @Transactional
-public class OrdineBoImpl implements OrdineBO {
+public class OrdineServiceImpl implements OrdineService {
 	
 	@Autowired OrdineRepository ordineRepository;
 
@@ -32,7 +32,12 @@ public class OrdineBoImpl implements OrdineBO {
 	}
 
 	@Override
-	public void save(Ordine ordine) {
+	public void create(Ordine ordine) {
+		ordineRepository.save(ordine);
+	}
+
+	@Override
+	public void update(Ordine ordine) {
 		ordineRepository.save(ordine);
 	}
 
@@ -71,7 +76,5 @@ public class OrdineBoImpl implements OrdineBO {
 	public List<Ordine> findByStato(StatoOrdine stato) {
 		return (List<Ordine>) ordineRepository.findByStato(stato);
 	} 
-
-	
 
 }

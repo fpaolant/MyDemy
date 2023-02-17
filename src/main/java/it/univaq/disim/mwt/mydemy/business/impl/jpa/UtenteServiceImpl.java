@@ -15,14 +15,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import it.univaq.disim.mwt.mydemy.business.RequestGrid;
 import it.univaq.disim.mwt.mydemy.business.ResponseGrid;
-import it.univaq.disim.mwt.mydemy.business.UtenteBO;
+import it.univaq.disim.mwt.mydemy.business.UtenteService;
 import it.univaq.disim.mwt.mydemy.domain.Utente;
 import it.univaq.disim.mwt.mydemy.repository.UtenteRepository;
 
 
 @Service
 @Transactional
-public class UtenteBoImpl implements UtenteBO {
+public class UtenteServiceImpl implements UtenteService {
 	
 	@Autowired UtenteRepository utenteRepository;
 	@Autowired
@@ -39,7 +39,11 @@ public class UtenteBoImpl implements UtenteBO {
 	}
 
 	@Override
-	public void save(Utente utente) {
+	public void create(Utente utente) {
+		utenteRepository.save(utente);
+	}
+
+	public void update(Utente utente) {
 		utenteRepository.save(utente);
 	}
 
@@ -49,6 +53,7 @@ public class UtenteBoImpl implements UtenteBO {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public ResponseGrid<Utente> findAllPaginated(RequestGrid requestGrid) {
 		String sortCol = requestGrid.getSortCol();
 				
@@ -90,6 +95,7 @@ public class UtenteBoImpl implements UtenteBO {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public Long count() {
 		return utenteRepository.count();
 	}

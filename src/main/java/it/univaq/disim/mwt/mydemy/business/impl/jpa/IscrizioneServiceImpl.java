@@ -1,27 +1,36 @@
 package it.univaq.disim.mwt.mydemy.business.impl.jpa;
 
+import java.io.File;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
 import it.univaq.disim.mwt.mydemy.business.RequestGrid;
 import it.univaq.disim.mwt.mydemy.business.ResponseGrid;
 import it.univaq.disim.mwt.mydemy.repository.CorsoRepository;
+import org.docx4j.Docx4J;
+import org.docx4j.openpackaging.exceptions.Docx4JException;
+import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
+import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import it.univaq.disim.mwt.mydemy.business.IscrizioneBO;
+import it.univaq.disim.mwt.mydemy.business.IscrizioneService;
 import it.univaq.disim.mwt.mydemy.domain.Corso;
 import it.univaq.disim.mwt.mydemy.domain.Iscrizione;
 import it.univaq.disim.mwt.mydemy.domain.Utente;
 import it.univaq.disim.mwt.mydemy.repository.IscrizioneRepository;
 
+import javax.xml.bind.JAXBException;
+
 
 @Service
 @Transactional
-public class IscrizioneBOImpl implements IscrizioneBO {
+public class IscrizioneServiceImpl implements IscrizioneService {
 	@Autowired IscrizioneRepository iscrizioneRepository;
 	@Autowired
 	private CorsoRepository corsoRepository;
@@ -72,7 +81,11 @@ public class IscrizioneBOImpl implements IscrizioneBO {
 	}
 
 	@Override
-	public void save(Iscrizione iscrizione) {
+	public void create(Iscrizione iscrizione) {
+		iscrizioneRepository.save(iscrizione);
+	}
+	@Override
+	public void update(Iscrizione iscrizione) {
 		iscrizioneRepository.save(iscrizione);
 	}
 
@@ -102,7 +115,8 @@ public class IscrizioneBOImpl implements IscrizioneBO {
 	public float getPercentualeSuperato(Utente creatore) {
 		Long iscrittiTotali = iscrizioneRepository.countByCorsoCreatoreAndCorsoApprovatoIsTrue(creatore);
 		Long iscrittiSuperato = iscrizioneRepository.countBySuperatoIsTrueAndCorsoCreatoreIs(creatore);
-		return (iscrittiSuperato*100 / iscrittiTotali);
+		if(iscrittiTotali>0) return (iscrittiSuperato*100 / iscrittiTotali);
+		else return 0;
 	}
 
 	@Override
@@ -119,5 +133,26 @@ public class IscrizioneBOImpl implements IscrizioneBO {
 	@Transactional(readOnly = true)
 	public Long count(Utente creatore) {
 		return iscrizioneRepository.countByCorsoCreatore(creatore);
+	}
+
+	@Override
+	public void generaCertificato(Iscrizione iscrizione) throws Docx4JException, JAXBException {
+		File templateDoc = new File("src/main/resources/templates/doc/template_certificato_udemy.docx");
+
+		WordprocessingMLPackage template = Docx4J.load(templateDoc);
+
+		MainDocumentPart documentPart = template.getMainDocumentPart();
+
+		HashMap<String, String> mappings = new HashMap<>();
+		mappings.put(iscrizione.getUtente().getNome() + " " + iscrizione.getUtente().getCognome(), "NOMINATIVOSTUDENTE");
+		mappings.put(iscrizione.getCorso().getTitolo(), "NOMECORSO");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/mm/YYYY HH:mm");
+		mappings.put(iscrizione.getCorso().getInizio().format(formatter), "DATAINIZIOCORSO");
+		mappings.put(iscrizione.getCorso().getFine().format(formatter), "DATAFINECORSO");
+		mappings.put(iscrizione.getCorso().getCreatore().getNome() + " " + iscrizione.getCorso().getCreatore().getCognome(), "NOMINATIVOPROFESSORE");
+
+		documentPart.variableReplace(mappings);
+		File exportFile = new File("certificato_" +iscrizione.getCorso().getTitolo() + "_" + iscrizione.getUtente().getNome() + "_" + iscrizione.getUtente().getCognome() + ".docx");
+		template.save(exportFile);
 	}
 }

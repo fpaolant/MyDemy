@@ -2,9 +2,6 @@ package it.univaq.disim.mwt.mydemy.business;
 
 public class BusinessException extends Exception {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	public BusinessException() {

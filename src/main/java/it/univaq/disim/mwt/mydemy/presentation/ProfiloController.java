@@ -1,7 +1,7 @@
 package it.univaq.disim.mwt.mydemy.presentation;
 
-import it.univaq.disim.mwt.mydemy.business.CreatoreInfoBO;
-import it.univaq.disim.mwt.mydemy.business.RuoloBO;
+import it.univaq.disim.mwt.mydemy.business.CreatoreInfoService;
+import it.univaq.disim.mwt.mydemy.business.RuoloService;
 import it.univaq.disim.mwt.mydemy.domain.CreatoreInfo;
 import it.univaq.disim.mwt.mydemy.domain.Ruolo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 
-import it.univaq.disim.mwt.mydemy.business.UtenteBO;
+import it.univaq.disim.mwt.mydemy.business.UtenteService;
 import it.univaq.disim.mwt.mydemy.domain.Utente;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,11 +28,11 @@ import java.util.Optional;
 public class ProfiloController {
 
 	@Autowired
-	private UtenteBO serviceUtente;
+	private UtenteService serviceUtente;
 	@Autowired
-	private RuoloBO serviceRuolo;
+	private RuoloService serviceRuolo;
 	@Autowired
-	private CreatoreInfoBO serviceCreatore;
+	private CreatoreInfoService serviceCreatore;
 
 	@GetMapping
 	public String modificaProfiloStart(Model model) {
@@ -59,7 +59,7 @@ public class ProfiloController {
 		Optional<Utente> utente = serviceUtente.findByID(utenteCorrente.getId());
 		if(utente.isPresent()) {
 			utente.get().setFoto(foto.getBytes());
-			serviceUtente.save(utente.get());
+			serviceUtente.update(utente.get());
 		}
 
 		return "redirect:/common/profilo";
@@ -105,7 +105,7 @@ public class ProfiloController {
 				Utente utente = optionalUtente.get();
 				utente.addRuolo(optionalRuolo.get());
 				utente.setCreatoreInfo(creatoreInfo);
-				serviceUtente.save(utente);
+				serviceUtente.update(utente);
 				Utility.addRole("CREATOR");
 			}
 		}

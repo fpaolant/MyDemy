@@ -7,14 +7,14 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-import it.univaq.disim.mwt.mydemy.business.UtenteBO;
+import it.univaq.disim.mwt.mydemy.business.UtenteService;
 import it.univaq.disim.mwt.mydemy.domain.Utente;
 
 @Component
 public class UserDetailsServiceImpl implements UserDetailsService {
 	
 	@Autowired
-	private UtenteBO service;
+	private UtenteService service;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

@@ -8,11 +8,11 @@
 			Corsi in <i th:text="${categoria.nome}"></i>
 		</h2>
 
-		<h5 class="mb-2" th:if="${sottoCategorie.size()>0}">
+		<h5 class="mb-2" th:if="${categoria.subCategorie.size()>0}">
 			sottocategorie
 		</h5>
-		<div class="row" th:if="${sottoCategorie.size()>0}">
-			<div class="col-md-4 col-sm-6 col-12" th:each="subCat: ${sottoCategorie}">
+		<div class="row" th:if="${categoria.subCategorie.size()>0}">
+			<div class="col-md-4 col-sm-6 col-12" th:each="subCat: ${categoria.subCategorie}">
           <a th:href="@{'/categoria/' + ${subCat.id}}">
             <div class="info-box shadow-none">
               <span class="info-box-icon bg-info"><i th:class="${subCat.icon}"></i></span>

@@ -6,7 +6,6 @@ import lombok.ToString;
 @Data
 @ToString
 public class SearchType {
-	
 	private String value;
 	private boolean regex;
 }

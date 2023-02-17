@@ -25,35 +25,28 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class CorsoAdminController {
 	
 	@Autowired
-	private CorsoBO serviceCorso;
+	private CorsoService serviceCorso;
 	@Autowired
-	private UtenteBO serviceUtente;
+	private UtenteService serviceUtente;
 	@Autowired
-	private RuoloBO serviceRuolo;
+	private RuoloService serviceRuolo;
 	@Autowired
-	private CategoriaBO serviceCategoria;
+	private CategoriaService serviceCategoria;
 	@Autowired
-	private TagBo serviceTag;
-	
-	
-	
+	private TagService serviceTag;
+
 	@GetMapping("/list")
 	public String list() throws BusinessException {
 		return "admin/corso/list";
 	}
-	
 	@PostMapping("/findallpaginated")
 	public @ResponseBody ResponseGrid<Corso> findAllPaginated(@RequestBody RequestGrid requestGrid) {
-		ResponseGrid<Corso> rgc = serviceCorso.findAllPaginated(requestGrid);
-		return rgc;
+		return serviceCorso.findAllPaginated(requestGrid);
 	}
-
 	@GetMapping("/findallpaginated")
 	public @ResponseBody ResponseGrid<Corso> findAllPaginatedget(@RequestBody RequestGrid requestGrid) {
-		ResponseGrid<Corso> rgc = serviceCorso.findAllPaginated(requestGrid);
-		return rgc;
+		return serviceCorso.findAllPaginated(requestGrid);
 	}
-	
 	@GetMapping("/create")
 	public String createStart(Model model) {
 		Corso c = new Corso();
@@ -68,19 +61,17 @@ public class CorsoAdminController {
 		
 		return "/admin/corso/form";
 	}
-	
 	@PostMapping("/create")
 	public String create(@Valid @ModelAttribute("corso") Corso corso, Errors errors) {
 		if (errors.hasErrors()) {
 			return "/admin/corso/form";
 		}
-		serviceCorso.save(corso);
+		serviceCorso.create(corso);
 		return "redirect:/admin/corsi/list";
 	}
-	
 	@GetMapping("/update")
 	public String updateStart(@RequestParam Long id, Model model) {
-		Optional<Corso> corso = serviceCorso.findByID(id);
+		Optional<Corso> corso = serviceCorso.findById(id);
 		if(corso.isPresent()) {
 			Corso c = corso.get();
 			model.addAttribute("corso", c);
@@ -92,43 +83,33 @@ public class CorsoAdminController {
 			List<Categoria> categorie = serviceCategoria.findAll();
 			model.addAttribute("cats", categorie);
 		}
-		
 		return "/admin/corso/form";
 	}
-		
 	@PostMapping("/update")
 	public String update(@Valid @ModelAttribute("corso") Corso corso, Errors errors) {
 		if (errors.hasErrors()) {
 			return "/admin/corso/form";
 		}
-		Corso corsoOld = serviceCorso.findByID(corso.getId()).get();
-		corso.setVersion(corsoOld.getVersion());
 		serviceCorso.update(corso);
-
 		return "redirect:/admin/corsi/list";
 	}
-	
 	@GetMapping("/delete")
-	public String deleteStart(@RequestParam Long id, Model model) {
-		Optional<Corso> corso = serviceCorso.findByID(id);
-		model.addAttribute("corso", corso);
-		return "/admin/corso/form";
-	}
-	
-	@PostMapping("/delete")
-	public String delete(@ModelAttribute("corso") Corso corso, Errors errors) {
-		serviceCorso.delete(corso);
+	public String delete(@RequestParam Long id) {
+		try {
+			serviceCorso.deleteById(id);
+		} catch (BusinessException e) {
+			return "redirect:/error";
+		}
 		return "redirect:/admin/corsi/list";
 	}
-	
 	@GetMapping("/approve")
 	public String approve(@RequestParam Long id) {
-		Optional<Corso> corso = serviceCorso.findByID(id);
+		Optional<Corso> corso = serviceCorso.findById(id);
 		
 		if(corso.isPresent()) {		
 			boolean enabled = corso.get().getApprovato();
 			corso.get().setApprovato(!enabled);
-			serviceCorso.save(corso.get());
+			serviceCorso.update(corso.get());
 		}
 		return "redirect:/admin/corsi/list";
 	}

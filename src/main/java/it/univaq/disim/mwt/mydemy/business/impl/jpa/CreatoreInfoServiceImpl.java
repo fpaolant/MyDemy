@@ -7,20 +7,17 @@ import java.util.Optional;
 import it.univaq.disim.mwt.mydemy.domain.CreatoreInfo;
 import it.univaq.disim.mwt.mydemy.domain.Utente;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import it.univaq.disim.mwt.mydemy.business.CreatoreInfoBO;
-import it.univaq.disim.mwt.mydemy.business.RequestGrid;
-import it.univaq.disim.mwt.mydemy.business.ResponseGrid;
+import it.univaq.disim.mwt.mydemy.business.CreatoreInfoService;
 import it.univaq.disim.mwt.mydemy.repository.CreatoreInfoRepository;
 
 
 @Service
 @Transactional
-public class CreatoreInfoBoImpl implements CreatoreInfoBO {
+public class CreatoreInfoServiceImpl implements CreatoreInfoService {
 	
 	@Autowired
 	CreatoreInfoRepository creatoreInfoRepository;
@@ -36,9 +33,12 @@ public class CreatoreInfoBoImpl implements CreatoreInfoBO {
 	}
 
 	@Override
-	public void save(CreatoreInfo creatoreInfo) {
+	public void create(CreatoreInfo creatoreInfo) {
 		creatoreInfoRepository.save(creatoreInfo);
-		
+	}
+	@Override
+	public void update(CreatoreInfo creatoreInfo) {
+		creatoreInfoRepository.save(creatoreInfo);
 	}
 
 	@Override
@@ -46,31 +46,9 @@ public class CreatoreInfoBoImpl implements CreatoreInfoBO {
 		creatoreInfoRepository.save(nuovoProfilo);
 	}
 
-	/*@Override
-	public ResponseGrid<CreatoreInfo> findAllPaginated(RequestGrid requestGrid) {
-		String sortCol = requestGrid.getSortCol();
-				
-		List<CreatoreInfo> utenti = null;
-		// sort order and value
-		Sort sortCriteria = Sort.by(sortCol);
-		if(requestGrid.getSortDir().equalsIgnoreCase("desc")) sortCriteria.descending();
-		// pageable
-		PageRequest pr = PageRequest.of(requestGrid.getStart(), requestGrid.getLength(), sortCriteria);
-		
-		
-		if("".equals(requestGrid.getSearch().getValue())) {			
-			utenti = creatoreInfoRepository.findAllPaginated(pr);
-		} else {	
-			utenti = creatoreInfoRepository.findAllPaginatedWithSearchValue(ConversionUtility.addPercentSuffix(requestGrid.getSearch().getValue()), pr);
-		}
-		
-		return new ResponseGrid<CreatoreInfo>(requestGrid.getDraw(), utenti.size(), utenti.size(), utenti);
-	}*/
-
 	@Override
 	public void delete(CreatoreInfo creatoreInfo) {
 		creatoreInfoRepository.delete(creatoreInfo);
-		
 	}
 
 	@Override

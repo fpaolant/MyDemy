@@ -1,7 +1,7 @@
 package it.univaq.disim.mwt.mydemy.presentation;
 
 import it.univaq.disim.mwt.mydemy.business.*;
-import it.univaq.disim.mwt.mydemy.business.impl.jpa.IscrizioneBOImpl;
+import it.univaq.disim.mwt.mydemy.business.impl.jpa.IscrizioneServiceImpl;
 import it.univaq.disim.mwt.mydemy.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -21,18 +21,18 @@ import java.util.Optional;
 public class CreatoreController {
 	
 	@Autowired
-	private CorsoBO serviceCorso;
+	private CorsoService serviceCorso;
 	@Autowired
-	private CategoriaBO serviceCategoria;
+	private CategoriaService serviceCategoria;
 	@Autowired
-	private TagBo serviceTag;
+	private TagService serviceTag;
 	@Autowired
-	private IscrizioneBOImpl serviceIscrizione;
+	private IscrizioneServiceImpl serviceIscrizione;
 
 	@Autowired
-	private UtenteBO serviceUtente;
+	private UtenteService serviceUtente;
 	@Autowired
-	private IscrizioneBO iscrizioneService;
+	private IscrizioneService iscrizioneService;
 
 	@GetMapping("/index")
 	public String index(Principal principal, Model model) throws BusinessException {
@@ -87,7 +87,7 @@ public class CreatoreController {
 		Utente creatore = Utility.getUtente();
 		corso.setCreatore(creatore);
 		corso.setApprovato(false);
-		serviceCorso.save(corso);
+		serviceCorso.create(corso);
 
 		return "redirect:/creatore/corsi/list";
 	}
@@ -142,7 +142,7 @@ public class CreatoreController {
 			ci = new CreatoreInfo(titolo, descrizione);
 			utente.setCreatoreInfo(ci);
 		}
-		serviceUtente.save(utente);
+		serviceUtente.update(utente);
 
 		return "redirect:/creatore/profilo";
 	}
@@ -193,7 +193,7 @@ public class CreatoreController {
 		if(iscrizioneOpt.isPresent()) {
 			Iscrizione iscrizione = iscrizioneOpt.get();
 			iscrizione.setSuperato(true);
-			iscrizioneService.save(iscrizione);
+			iscrizioneService.update(iscrizione);
 			// todo invia certificato
 			return "redirect:/creatore/iscritti?id="+iscrizione.getCorso().getId();
 		}

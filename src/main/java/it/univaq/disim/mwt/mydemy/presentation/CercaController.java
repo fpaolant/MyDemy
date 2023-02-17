@@ -17,11 +17,11 @@ import java.util.Optional;
 public class CercaController {
 
     @Autowired
-    private CorsoBO serviceCorso;
+    private CorsoService serviceCorso;
     @Autowired
-    private CategoriaBO serviceCategoria;
+    private CategoriaService serviceCategoria;
     @Autowired
-    private TagBo serviceTag;
+    private TagService serviceTag;
 
     @GetMapping("/")
     public String findEnhancedStart(Model model) {

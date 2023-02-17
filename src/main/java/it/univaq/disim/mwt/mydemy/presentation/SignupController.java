@@ -19,10 +19,10 @@ import java.util.Optional;
 public class SignupController {
 	
 	@Autowired
-	private UtenteBO serviceUtente;
+	private UtenteService serviceUtente;
 
 	@Autowired
-	private RuoloBO serviceRuolo;
+	private RuoloService serviceRuolo;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -59,7 +59,7 @@ public class SignupController {
 		final String password = passwordEncoder.encode(utente.getPassword());
 		utente.setPassword(password);
 
-		serviceUtente.save(utente);
+		serviceUtente.create(utente);
 		return "redirect:/signup/welcome";
 	}
 
