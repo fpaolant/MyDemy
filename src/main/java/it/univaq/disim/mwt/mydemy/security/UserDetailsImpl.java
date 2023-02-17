@@ -24,57 +24,44 @@ public class UserDetailsImpl implements UserDetails {
 		super();
 		this.utente = utente;
 	}
-
 	@Override
 	@Transactional
 	public Collection<GrantedAuthority> getAuthorities() {
-		List<GrantedAuthority> result = new ArrayList<GrantedAuthority>();
-		System.out.println("user: " + utente.getUsername());
+		List<GrantedAuthority> result = new ArrayList<>();
 		for (Ruolo ruolo : utente.getRuoli()) {
-			System.out.println("ruolo: " + ruolo.getCode());
 			result.add(new SimpleGrantedAuthority(ruolo.getCode()));
 		}
 		return result;
 	}
-
 	@Override
 	public String getPassword() {
 		return utente.getPassword();
 	}
-
 	@Override
 	public String getUsername() {
 		return utente.getUsername();
 	}
-
 	@Override
 	public boolean isAccountNonExpired() {
 		return true;
 	}
-
 	@Override
 	public boolean isAccountNonLocked() {
 		return true;
 	}
-
 	@Override
 	public boolean isCredentialsNonExpired() {
 		return true;
 	}
-
 	@Override
 	public boolean isEnabled() {
 		return utente.getEnabled();
 	}
-
 	@Override
 	public String toString() {
 		return "UserDetailsImpl [username=" + utente.getUsername() + " ruolo=" + utente.getRuoli().toString() + "]";
 	}
-
 	public Utente getUtente() {
 		return utente;
 	}
-	
-
 }

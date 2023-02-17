@@ -10,10 +10,12 @@ import it.univaq.disim.mwt.mydemy.business.BusinessException;
 import it.univaq.disim.mwt.mydemy.domain.CreatoreInfo;
 import it.univaq.disim.mwt.mydemy.domain.Ruolo;
 import it.univaq.disim.mwt.mydemy.presentation.Utility;
+import it.univaq.disim.mwt.mydemy.repository.CorsoRepository;
 import it.univaq.disim.mwt.mydemy.repository.IscrizioneRepository;
 import it.univaq.disim.mwt.mydemy.repository.RuoloRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -31,13 +33,16 @@ import org.springframework.web.multipart.MultipartFile;
 @Transactional
 public class UtenteServiceImpl implements UtenteService {
 	
-	@Autowired UtenteRepository utenteRepository;
 	@Autowired
-	IscrizioneRepository iscrizioneRepository;
+	private UtenteRepository utenteRepository;
+	@Autowired
+	private IscrizioneRepository iscrizioneRepository;
 	@Autowired
 	private RuoloRepository ruoloRepository;
+	/*@Autowired
+	private PasswordEncoder passwordEncoder;*/
 	@Autowired
-	private PasswordEncoder passwordEncoder;
+	private CorsoRepository corsoRepository;
 
 	@Override
 	public Utente findByUsername(String username) {
@@ -55,24 +60,35 @@ public class UtenteServiceImpl implements UtenteService {
 		Optional<Ruolo> ruoloUser = ruoloRepository.findByCodeIgnoreCase("USER");
 		utente.addRuolo(ruoloUser.get());
 		// encode password
-		final String password = passwordEncoder.encode(utente.getPassword());
-		utente.setPassword(password);
+		//final String password = "";//passwordEncoder.encode(utente.getPassword());
+		//utente.setPassword(password);
 		utenteRepository.save(utente);
 	}
 
 	public void update(Utente utente) {
 		if(!utente.getPassword().equalsIgnoreCase("")) {
 			// encode password
-			final String password = passwordEncoder.encode(utente.getPassword());
-			utente.setPassword(password);
+			//final String password = "";//passwordEncoder.encode(utente.getPassword());
+			//utente.setPassword(password);
 		}
 
 		utenteRepository.save(utente);
 	}
 
 	@Override
-	public void updateProfilo(Utente nuovoProfilo) {
-		utenteRepository.save(nuovoProfilo);		
+	@Transactional
+	public void updateProfilo(Utente nuovoProfilo) throws BusinessException {
+		Optional<Utente> optionalUtente = utenteRepository.findById(nuovoProfilo.getId());
+		if(optionalUtente.isPresent()) {
+			Utente u = optionalUtente.get();
+			u.setNome(nuovoProfilo.getNome());
+			u.setCognome(nuovoProfilo.getCognome());
+			u.setEmail(nuovoProfilo.getEmail());
+			utenteRepository.save(u);
+		} else {
+			throw new BusinessException("Utente non trovato");
+		}
+
 	}
 
 	@Override
@@ -101,15 +117,34 @@ public class UtenteServiceImpl implements UtenteService {
 	}
 
 	@Override
-	public void delete(Utente utente) {
-		iscrizioneRepository.deleteByUtente(utente);
-		utenteRepository.delete(utente);
+	public void delete(Utente utente) throws BusinessException {
+		if(canBeDeleted(utente)) {
+			iscrizioneRepository.deleteByUtente(utente);
+			utenteRepository.delete(utente);
+		}
 	}
 
 	@Override
-	public void changePassword(Utente utente, String password) {
-		utente.setPassword(password);
-		utenteRepository.save(utente);		
+	public void delete(Long utenteId) throws BusinessException {
+		Optional<Utente> optUtente = utenteRepository.findById(utenteId);
+		if (optUtente.isEmpty()) throw new BusinessException("Utente non trovato");
+
+		if(canBeDeleted(optUtente.get())) {
+			iscrizioneRepository.deleteByUtente(optUtente.get());
+			utenteRepository.deleteById(utenteId);
+		}
+	}
+
+	private boolean canBeDeleted(Utente utente) throws BusinessException {
+		// check if user has role admin (cannot be deleted)
+		if (utente.getRuoli().stream().anyMatch(ruolo -> { return ruolo.getCode().equalsIgnoreCase("ADMIN"); })) {
+			throw new BusinessException("L'Utente possiede il ruolo amministratore e non può essere eliminato, rimuoverlo prima di eliminare");
+		}
+		// check if own course(s) approved
+		if(corsoRepository.findAllByCreatoreOrderByFineDescApprovatoDesc(utente, Pageable.unpaged()).size()>0) {
+			throw new BusinessException("L'Utente è creatore di corsi approvati e non può essere eliminato");
+		}
+		return true;
 	}
 
 	@Override

@@ -48,8 +48,10 @@ public class CorsoServiceImpl implements CorsoService {
 	}
 	@Override
 	@Transactional
-	public void update(Corso corso) {
-		Corso corsoOld = corsoRepository.findById(corso.getId()).get();
+	public void update(Corso corso) throws BusinessException {
+		Optional<Corso> optionalCorso = corsoRepository.findById(corso.getId());
+		if(optionalCorso.isEmpty()) throw new BusinessException("Corso non trovato");
+		Corso corsoOld = optionalCorso.get();
 		corso.setVersion(corsoOld.getVersion());
 		corsoRepository.save(corso);
 	}

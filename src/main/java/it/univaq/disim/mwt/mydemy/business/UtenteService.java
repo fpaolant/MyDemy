@@ -15,15 +15,13 @@ public interface UtenteService {
 	Optional<Utente> findByID(Long id);
 	void create(Utente utente);
 	void update(Utente utente);
-	void updateProfilo(Utente nuovoProfilo);
+	void updateProfilo(Utente nuovoProfilo) throws BusinessException;
 	ResponseGrid<Utente> findAllPaginated(RequestGrid requestGrid);
-	void delete(Utente utente);
-	void changePassword(Utente utente, String password);
+	void delete(Utente utente) throws BusinessException;
+	void delete(Long utenteId) throws BusinessException;
 	List<Utente> findAllByRole(Ruolo ruolo);
 	Long count();
 	void changeProfilePicture(Long userId, MultipartFile foto) throws BusinessException, IOException;
-
 	void becomeCreatore(Long userId, CreatoreInfo infoCreatore) throws BusinessException;
-
 	void enable(Long userId) throws BusinessException;
 }

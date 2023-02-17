@@ -23,7 +23,7 @@ public interface CorsoService {
 
 	void create(Corso corso);
 
-	void update(Corso corso);
+	void update(Corso corso) throws BusinessException;
 	void delete(Corso corso) throws BusinessException;
 
 	void deleteById(Long id) throws BusinessException;

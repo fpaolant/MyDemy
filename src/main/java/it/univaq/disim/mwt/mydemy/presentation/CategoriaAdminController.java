@@ -1,18 +1,11 @@
 package it.univaq.disim.mwt.mydemy.presentation;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import it.univaq.disim.mwt.mydemy.business.BusinessException;
-import it.univaq.disim.mwt.mydemy.business.CorsoService;
-import it.univaq.disim.mwt.mydemy.repository.CorsoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -87,7 +80,7 @@ public class CategoriaAdminController {
 	}
 	
 	@PostMapping("/update")
-	public String update(@Valid @ModelAttribute("categoria") Categoria categoria, Errors errors){
+	public String update(@Valid @ModelAttribute("categoria") Categoria categoria, Errors errors) throws BusinessException {
 		if (errors.hasErrors()) {
 			return "admin/categoria/form";
 		}

@@ -27,13 +27,14 @@ public class CreatoreController {
 	private TagService serviceTag;
 	@Autowired
 	private IscrizioneServiceImpl serviceIscrizione;
-
 	@Autowired
 	private UtenteService serviceUtente;
 	@Autowired
 	private IscrizioneService iscrizioneService;
 	@Autowired
 	private DashboardCreatoreService dashboardCreatoreService;
+	@Autowired
+	private CreatoreInfoService creatoreInfoService;
 
 	@GetMapping("/index")
 	public String index(Principal principal, Model model) throws BusinessException {
@@ -90,7 +91,7 @@ public class CreatoreController {
 			model.addAttribute("tags", tags);
 			List<Categoria> categorie = serviceCategoria.findAll();
 			model.addAttribute("cats", categorie);
-		}
+		} else throw new BusinessException("Corso non trovato");
 
 		return "/creatore/modifica_corso";
 	}
@@ -118,19 +119,9 @@ public class CreatoreController {
 	}
 
 	@PostMapping("/profilo")
-	public String modificaProfilo(@RequestParam String titolo, @RequestParam String descrizione) {
-		Utente utenteSessione = Utility.getUtente();
-		Utente utente = serviceUtente.findByID(utenteSessione.getId()).get();
-
-		CreatoreInfo ci = utente.getCreatoreInfo();
-		if(ci != null) {
-			ci.setTitolo(titolo);
-			ci.setDescrizione(descrizione);
-		} else {
-			ci = new CreatoreInfo(titolo, descrizione);
-			utente.setCreatoreInfo(ci);
-		}
-		serviceUtente.update(utente);
+	public String modificaProfilo(@RequestParam String titolo, @RequestParam String descrizione) throws BusinessException {
+		Utente utente = Utility.getUtente();
+		creatoreInfoService.updateProfilo(utente, titolo, descrizione);
 
 		return "redirect:/creatore/profilo";
 	}

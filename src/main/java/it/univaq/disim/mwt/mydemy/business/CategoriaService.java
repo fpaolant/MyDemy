@@ -13,7 +13,7 @@ public interface CategoriaService {
 	List<Categoria> findAllExceptOne(Categoria categoria);
 	Optional<Categoria> findByID(Long id);
 	void create(Categoria categoria);
-	void update(Categoria categoria);
+	void update(Categoria categoria) throws BusinessException;
 	void setParent(Long id , Long parentId) throws BusinessException;
 	void delete(Long id);
 	int getLevel(Categoria categoria, List<Categoria> categorie);

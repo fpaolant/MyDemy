@@ -1,10 +1,7 @@
 package it.univaq.disim.mwt.mydemy.presentation;
 
 import it.univaq.disim.mwt.mydemy.business.BusinessException;
-import it.univaq.disim.mwt.mydemy.business.CreatoreInfoService;
-import it.univaq.disim.mwt.mydemy.business.RuoloService;
 import it.univaq.disim.mwt.mydemy.domain.CreatoreInfo;
-import it.univaq.disim.mwt.mydemy.domain.Ruolo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
@@ -17,7 +14,6 @@ import it.univaq.disim.mwt.mydemy.business.UtenteService;
 import it.univaq.disim.mwt.mydemy.domain.Utente;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
@@ -27,13 +23,8 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/common/profilo")
 public class ProfiloController {
-
 	@Autowired
 	private UtenteService serviceUtente;
-	@Autowired
-	private RuoloService serviceRuolo;
-	@Autowired
-	private CreatoreInfoService serviceCreatore;
 
 	@GetMapping
 	public String modificaProfiloStart(Model model) throws BusinessException {
@@ -44,12 +35,11 @@ public class ProfiloController {
 		} else {
 			throw new BusinessException("Utente non trovato");
 		}
-
 		return "common/profilo";
 	}
 
 	@PostMapping
-	public String modificaProfilo(@ModelAttribute Utente nuovoProfilo) {
+	public String modificaProfilo(@ModelAttribute Utente nuovoProfilo) throws BusinessException {
 		Utente utente = Utility.getUtente();
 		nuovoProfilo.setId(utente.getId());
 		serviceUtente.updateProfilo(nuovoProfilo);

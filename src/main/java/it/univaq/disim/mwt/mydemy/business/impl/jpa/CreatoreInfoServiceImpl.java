@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.Optional;
 
 
+import it.univaq.disim.mwt.mydemy.business.BusinessException;
 import it.univaq.disim.mwt.mydemy.domain.CreatoreInfo;
 import it.univaq.disim.mwt.mydemy.domain.Utente;
+import it.univaq.disim.mwt.mydemy.repository.UtenteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -21,12 +23,8 @@ public class CreatoreInfoServiceImpl implements CreatoreInfoService {
 	
 	@Autowired
 	CreatoreInfoRepository creatoreInfoRepository;
-
-	@Override
-	public CreatoreInfo findByUtente(Utente utente) {
-		return creatoreInfoRepository.findByUtente(utente);
-	}
-
+	@Autowired
+	private UtenteRepository utenteRepository;
 	@Override
 	public Optional<CreatoreInfo> findByID(Long id) {
 		return creatoreInfoRepository.findById(id);
@@ -42,8 +40,21 @@ public class CreatoreInfoServiceImpl implements CreatoreInfoService {
 	}
 
 	@Override
-	public void updateProfilo(CreatoreInfo nuovoProfilo) {
-		creatoreInfoRepository.save(nuovoProfilo);
+	@Transactional
+	public void updateProfilo(Utente utente, String titolo, String descrizione) throws BusinessException {
+		Optional<Utente> optionalUtente = utenteRepository.findById(utente.getId());
+		if (optionalUtente.isEmpty()) throw new BusinessException("Utente non trovato");
+
+		Utente u = optionalUtente.get();
+		CreatoreInfo ci = optionalUtente.get().getCreatoreInfo();
+		if(ci != null) {
+			ci.setTitolo(titolo);
+			ci.setDescrizione(descrizione);
+		} else {
+			ci = new CreatoreInfo(titolo, descrizione);
+			u.setCreatoreInfo(ci);
+		}
+		utenteRepository.save(u);
 	}
 
 	@Override

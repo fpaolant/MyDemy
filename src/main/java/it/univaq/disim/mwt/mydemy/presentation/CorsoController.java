@@ -30,39 +30,40 @@ public class CorsoController {
 	private UtenteService serviceUtente;
 	
 	@GetMapping(value = {"{id}", "{id}/{flagInsert}"})
-	public String index(@PathVariable Long id, @PathVariable(required = false) boolean flagInsert, Principal principal, Model model) {
+	public String index(@PathVariable Long id, @PathVariable(required = false) boolean flagInsert, Principal principal, Model model) throws BusinessException {
 		Optional<Corso> optCorso = serviceCorso.findById(id);
-		if (optCorso.isPresent()) {
-			Corso corso = optCorso.get();
-			model.addAttribute("corso", corso);
+		if (optCorso.isEmpty()) throw new BusinessException("Corso non trovato");
 
-			boolean iscritto = false;
-			boolean isCreatore = false;
+		Corso corso = optCorso.get();
+		model.addAttribute("corso", corso);
 
-			if(principal != null) { // logged in
-				Utente utente = Utility.getUtente();
-				iscritto = serviceIscrizione.findByUtenteAndCorso(utente, corso).size() > 0;
-				// utente e creatore sono la stessa persona
-				if(corso.getCreatore().equals(utente)) {
-					isCreatore = true;
-				}
+		boolean iscritto = false;
+		boolean isCreatore = false;
+
+		if(principal != null) { // logged in
+			Utente utente = Utility.getUtente();
+			iscritto = serviceIscrizione.findByUtenteAndCorso(utente, corso).size() > 0;
+			// utente e creatore sono la stessa persona
+			if(corso.getCreatore().equals(utente)) {
+				isCreatore = true;
 			}
-			model.addAttribute("iscritto", iscritto);
-			model.addAttribute("isCreatore", isCreatore);
-
-			// numero iscritti al corso
-			int numIscritti = corso.getIscrizioni().size();
-			model.addAttribute("postiRimanenti", corso.getPosti() - numIscritti);
-
-			// numero corsi del creatore
-			int numCorsiCreatore = serviceCorso.findByCreatore(corso.getCreatore()).size();
-			model.addAttribute("numCorsiCreatore", numCorsiCreatore);
-
-			// totale iscritti a tutti i corsi del creatore
-			model.addAttribute("totaleIscrittiCreatore", serviceIscrizione.count(corso.getCreatore()));
-
-			model.addAttribute("notificaIscrizioneSuccesso", flagInsert);
 		}
+		model.addAttribute("iscritto", iscritto);
+		model.addAttribute("isCreatore", isCreatore);
+
+		// numero iscritti al corso
+		int numIscritti = corso.getIscrizioni().size();
+		model.addAttribute("postiRimanenti", corso.getPosti() - numIscritti);
+
+		// numero corsi del creatore
+		int numCorsiCreatore = serviceCorso.findByCreatore(corso.getCreatore()).size();
+		model.addAttribute("numCorsiCreatore", numCorsiCreatore);
+
+		// totale iscritti a tutti i corsi del creatore
+		model.addAttribute("totaleIscrittiCreatore", serviceIscrizione.count(corso.getCreatore()));
+
+		model.addAttribute("notificaIscrizioneSuccesso", flagInsert);
+
 
 		return "public/corso/item";
 	}
@@ -77,7 +78,7 @@ public class CorsoController {
 	}
 	@RequestMapping(value = "/creatorImage/{creatorId}", method = RequestMethod.GET,
 			produces = MediaType.IMAGE_JPEG_VALUE)
-	public void getCreatorImage(@PathVariable Long creatorId, HttpServletResponse response) throws IOException {
+	public void getCreatorImage(@PathVariable Long creatorId, HttpServletResponse response) throws IOException, BusinessException {
 		Optional<Utente> utente = serviceUtente.findByID(creatorId);
 
 		if(utente.isPresent()) {
@@ -87,6 +88,8 @@ public class CorsoController {
 				ClassPathResource res = new ClassPathResource("static/dist/img/user1-128x128.jpg");
 				StreamUtils.copy(res.getInputStream(), response.getOutputStream());
 			}
+		} else {
+			throw new BusinessException("utente non trovato");
 		}
 	}
 	

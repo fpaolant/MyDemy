@@ -20,8 +20,6 @@ public class CercaController {
     private CorsoService serviceCorso;
     @Autowired
     private CategoriaService serviceCategoria;
-    @Autowired
-    private TagService serviceTag;
 
     @GetMapping("/")
     public String findEnhancedStart(Model model) {
@@ -50,6 +48,7 @@ public class CercaController {
         model.addAttribute("categorie", categorie);
         model.addAttribute("categoriaId", categoriaId);
         List<Corso> corsi;
+
         Optional<Categoria> optionalCategoria = serviceCategoria.findByID(categoriaId);
         if (optionalCategoria.isPresent()) {
             corsi = serviceCorso.findAllCriteriaInCategoria(

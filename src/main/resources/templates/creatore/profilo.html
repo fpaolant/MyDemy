@@ -37,9 +37,9 @@
                    <span class="input-group-text" th:text="#{profilo.creatoreInfo.descrizione}"></span>
                  </div>
                  <textarea class="form-control" id="description" rows="5" maxlength="255"
-                              name="descrizione"
-                              placeholder="Descrizione" th:value="${utente.creatoreInfo.descrizione}"
-                              ></textarea>
+					  name="descrizione"
+					  placeholder="Descrizione"
+					  th:text="${utente.creatoreInfo.descrizione}"></textarea>
                  </div>       
 		  </div>
 		  <div class="card-footer">

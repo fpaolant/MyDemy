@@ -33,7 +33,6 @@ import it.univaq.disim.mwt.mydemy.domain.Utente;
 @Controller
 @RequestMapping("/admin/utenti")
 public class UtenteAdminController {
-	
 	@Autowired
 	private UtenteService serviceUtente;
 	@Autowired
@@ -103,11 +102,8 @@ public class UtenteAdminController {
 	}
 	
 	@GetMapping("/delete")
-	public String deleteStart(@RequestParam Long id, Model model) {
-		Optional<Utente> utente = serviceUtente.findByID(id);
-		if(utente.isPresent() && !utente.get().getUsername().equalsIgnoreCase("admin")) {
-			serviceUtente.delete(utente.get());
-		}
+	public String deleteStart(@RequestParam Long id, Model model) throws BusinessException {
+		serviceUtente.delete(id);
 		return "redirect:/admin/utenti/list";
 	}
 	

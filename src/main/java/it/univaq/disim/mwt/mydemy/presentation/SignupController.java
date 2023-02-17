@@ -71,6 +71,4 @@ public class SignupController {
 		return "/common/signupWelcome";
 	}
 	
-	
-	
 }

@@ -2,6 +2,7 @@ package it.univaq.disim.mwt.mydemy.presentation;
 
 import java.util.Optional;
 
+import it.univaq.disim.mwt.mydemy.business.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,13 +17,13 @@ public class CategoriaController {
 	@Autowired
 	private CategoriaService serviceCategoria;
 	@GetMapping("/categoria/{id}")
-	String index(Model model, @PathVariable Long id) {
+	String index(Model model, @PathVariable Long id) throws BusinessException {
 		Optional<Categoria> optCategoria = serviceCategoria.findByID(id);
 		if(optCategoria.isPresent()) {
 		 	model.addAttribute("categoria", optCategoria.get());
 			return "public/categoria/item";
 		} else {
-			return "redirect:/error";
+			throw new BusinessException("Categoria non presente");
 		}
 	}
 

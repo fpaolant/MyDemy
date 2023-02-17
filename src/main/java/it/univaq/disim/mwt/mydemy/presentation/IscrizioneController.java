@@ -1,12 +1,9 @@
 package it.univaq.disim.mwt.mydemy.presentation;
 
 import java.security.Principal;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
-
-import it.univaq.disim.mwt.mydemy.business.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

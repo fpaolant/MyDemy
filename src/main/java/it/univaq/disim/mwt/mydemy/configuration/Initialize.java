@@ -115,7 +115,11 @@ public class Initialize implements ApplicationListener<ApplicationReadyEvent> {
         corso.addWebLink(new WebLink("http://www.youtube.com", "youtube"));
         corso.addTag(tag);
         corso.addCategoria(cat211);
-        corsoService.update(corso);
+        try {
+            corsoService.update(corso);
+        } catch (BusinessException e) {
+            throw new RuntimeException(e);
+        }
 
         // corso 2 java
         Corso corso2 = new Corso("Java introduzione",
@@ -138,7 +142,11 @@ public class Initialize implements ApplicationListener<ApplicationReadyEvent> {
         corso2.addWebLink(new WebLink("http://www.youtube.com", "youtube1"));
         corso2.addTag(tag);
         corso2.addCategoria(cat211);
-        corsoService.update(corso2);
+        try {
+            corsoService.update(corso2);
+        } catch (BusinessException e) {
+            throw new RuntimeException(e);
+        }
 
 
         // corso 3 C++
@@ -160,9 +168,11 @@ public class Initialize implements ApplicationListener<ApplicationReadyEvent> {
                 + "												and argue for its demise, but others ignore.");
         corsoService.create(corso3);
         corso3.addCategoria(cat21);
-        corsoService.update(corso3);
-
-
+        try {
+            corsoService.update(corso3);
+        } catch (BusinessException e) {
+            throw new RuntimeException(e);
+        }
 
 
         // corso 4 C#
@@ -184,7 +194,11 @@ public class Initialize implements ApplicationListener<ApplicationReadyEvent> {
                 + "												and argue for its demise, but others ignore.");
         corsoService.create(corso4);
         corso4.addCategoria(cat21);
-        corsoService.update(corso4);
+        try {
+            corsoService.update(corso4);
+        } catch (BusinessException e) {
+            throw new RuntimeException(e);
+        }
 
 
         // iscrizioni

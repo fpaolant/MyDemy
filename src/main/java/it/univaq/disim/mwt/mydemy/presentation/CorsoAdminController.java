@@ -70,7 +70,7 @@ public class CorsoAdminController {
 		return "redirect:/admin/corsi/list";
 	}
 	@GetMapping("/update")
-	public String updateStart(@RequestParam Long id, Model model) {
+	public String updateStart(@RequestParam Long id, Model model) throws BusinessException {
 		Optional<Corso> corso = serviceCorso.findById(id);
 		if(corso.isPresent()) {
 			Corso c = corso.get();
@@ -82,11 +82,13 @@ public class CorsoAdminController {
 			model.addAttribute("tags", tags);
 			List<Categoria> categorie = serviceCategoria.findAll();
 			model.addAttribute("cats", categorie);
+		} else {
+			throw new BusinessException("Corso non trovato");
 		}
 		return "/admin/corso/form";
 	}
 	@PostMapping("/update")
-	public String update(@Valid @ModelAttribute("corso") Corso corso, Errors errors) {
+	public String update(@Valid @ModelAttribute("corso") Corso corso, Errors errors) throws BusinessException {
 		if (errors.hasErrors()) {
 			return "/admin/corso/form";
 		}
@@ -94,22 +96,20 @@ public class CorsoAdminController {
 		return "redirect:/admin/corsi/list";
 	}
 	@GetMapping("/delete")
-	public String delete(@RequestParam Long id) {
-		try {
-			serviceCorso.deleteById(id);
-		} catch (BusinessException e) {
-			return "redirect:/error";
-		}
+	public String delete(@RequestParam Long id) throws BusinessException {
+		serviceCorso.deleteById(id);
 		return "redirect:/admin/corsi/list";
 	}
 	@GetMapping("/approve")
-	public String approve(@RequestParam Long id) {
+	public String approve(@RequestParam Long id) throws BusinessException {
 		Optional<Corso> corso = serviceCorso.findById(id);
 		
 		if(corso.isPresent()) {		
 			boolean enabled = corso.get().getApprovato();
 			corso.get().setApprovato(!enabled);
 			serviceCorso.update(corso.get());
+		} else {
+			throw new BusinessException("Corso non trovato");
 		}
 		return "redirect:/admin/corsi/list";
 	}

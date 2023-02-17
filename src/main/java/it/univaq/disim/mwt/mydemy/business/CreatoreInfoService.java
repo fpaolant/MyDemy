@@ -7,12 +7,11 @@ import it.univaq.disim.mwt.mydemy.domain.CreatoreInfo;
 import it.univaq.disim.mwt.mydemy.domain.Utente;
 
 public interface CreatoreInfoService {
-	
-	CreatoreInfo findByUtente(Utente utente);
+
 	Optional<CreatoreInfo> findByID(Long id);
 	void create(CreatoreInfo creatoreInfo);
 	void update(CreatoreInfo creatoreInfo);
-	void updateProfilo(CreatoreInfo nuovoProfilo);
 	List<CreatoreInfo> findAll();
+	void updateProfilo(Utente utente, String titolo, String descrizione) throws BusinessException;
 	void delete(CreatoreInfo creatoreInfo);
 }

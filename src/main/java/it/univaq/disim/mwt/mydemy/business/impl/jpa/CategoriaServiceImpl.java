@@ -31,11 +31,13 @@ public class CategoriaServiceImpl implements CategoriaService {
 
 	@Override
 	@Transactional
-	public void update(Categoria categoria) {
+	public void update(Categoria categoria) throws BusinessException {
 		Optional<Categoria> categoriaOld = categoriaRepository.findById(categoria.getId());
 		if(categoriaOld.isPresent()) {
 			categoria.setVersion(categoriaOld.get().getVersion());
 			categoriaRepository.save(categoria);
+		} else {
+			throw new BusinessException("Categoria non presente");
 		}
 		categoriaRepository.save(categoria);
 	}

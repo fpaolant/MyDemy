@@ -34,7 +34,6 @@ public class CreatoreInfo extends BaseEntity {
 	public CreatoreInfo(@NotBlank @Size(max = 20) String titolo, String descrizione) {
 		this.titolo = titolo;
 		this.descrizione = descrizione;
-        this.utente = utente;
 	}
 	
 	@Override
