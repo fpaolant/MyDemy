@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import it.univaq.disim.mwt.mydemy.business.BusinessException;
+import it.univaq.disim.mwt.mydemy.business.*;
 import it.univaq.disim.mwt.mydemy.domain.Categoria;
 import it.univaq.disim.mwt.mydemy.domain.Iscrizione;
 import it.univaq.disim.mwt.mydemy.domain.Utente;
@@ -16,9 +16,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import it.univaq.disim.mwt.mydemy.business.CorsoService;
-import it.univaq.disim.mwt.mydemy.business.RequestGrid;
-import it.univaq.disim.mwt.mydemy.business.ResponseGrid;
 import it.univaq.disim.mwt.mydemy.domain.Corso;
 import it.univaq.disim.mwt.mydemy.repository.CorsoRepository;
 
@@ -37,11 +34,6 @@ public class CorsoServiceImpl implements CorsoService {
 	}
 	@Override
 	@Transactional(readOnly = true)
-	public List<Corso> findAllCorsiApprovati() {
-		return corsoRepository.findByApprovatoIsTrue(PageRequest.of(0,Integer.MAX_VALUE));
-	}
-	@Override
-	@Transactional(readOnly = true)
 	public List<Corso> findAllNextCorsi(PageRequest pageRequest) {
 		return corsoRepository.findByApprovatoIsTrue(pageRequest);
 	}
@@ -55,12 +47,13 @@ public class CorsoServiceImpl implements CorsoService {
 		return corsoRepository.findByTitoloContainingIgnoreCaseAndApprovatoIsTrue(searchString, pageRequest);
 	}
 	@Override
+	@Transactional
 	public void update(Corso corso) {
 		Corso corsoOld = corsoRepository.findById(corso.getId()).get();
 		corso.setVersion(corsoOld.getVersion());
 		corsoRepository.save(corso);
 	}
-	@Override
+	/*@Override
 	@Transactional(readOnly = true)
 	public ResponseGrid<Corso> findAllApprovedPaginated(RequestGrid requestGrid) {
 		String sortCol = requestGrid.getSortCol();
@@ -82,7 +75,7 @@ public class CorsoServiceImpl implements CorsoService {
 		
 		return new ResponseGrid<Corso>(requestGrid.getDraw(), numTotali, corsi.size(), corsi);
 		
-	}
+	}*/
 	@Override
 	@Transactional(readOnly = true)
 	public ResponseGrid<Corso> findAllPaginated(RequestGrid requestGrid) {
@@ -193,6 +186,27 @@ public class CorsoServiceImpl implements CorsoService {
 			}
 		} else {
 			throw new BusinessException("Corso non trovato");
+		}
+	}
+	@Override
+	@Transactional
+	public void proponi(Corso corso, Utente creatore) {
+		corso.setCreatore(creatore);
+		corso.setApprovato(false);
+		corsoRepository.save(corso);
+	}
+	@Override
+	public Iscrizione setSuperato(Long iscrizioneId) throws BusinessException {
+		Optional<Iscrizione> iscrizioneOpt = iscrizioneRepository.findById(iscrizioneId);
+
+		if(iscrizioneOpt.isPresent()) {
+			Iscrizione iscrizione = iscrizioneOpt.get();
+			iscrizione.setSuperato(true);
+			iscrizioneRepository.save(iscrizione);
+			// TODO invia certificato
+			return iscrizione;// return "redirect:/creatore/iscritti?id="+iscrizione.getCorso().getId();
+		} else {
+			throw new BusinessException("Iscrizione non presente");
 		}
 	}
 

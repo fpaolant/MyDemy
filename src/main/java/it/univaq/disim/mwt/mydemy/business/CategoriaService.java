@@ -4,10 +4,11 @@ import java.util.List;
 import java.util.Optional;
 
 import it.univaq.disim.mwt.mydemy.domain.Categoria;
+import org.springframework.data.domain.Pageable;
 
 public interface CategoriaService {
 	List<Categoria> findAll();
-	List<Categoria> findAllRootCategories();
+	List<Categoria> findAllRootCategories(Pageable pageable);
 	List<Categoria> findChildCategories(Categoria categoria);
 	List<Categoria> findAllExceptOne(Categoria categoria);
 	Optional<Categoria> findByID(Long id);

@@ -96,6 +96,14 @@
 		</div>
 		<!-- /.row -->
 
+		<div class="row" th:if="${categoria.corsi.size()==0}">
+			<div class="col-12">
+				<p>Nessun corso pubblicato nella categoria</p>
+			</div>
+			<!-- /.col -->
+		</div>
+		<!-- /.row -->
+
 
 		<div class="row">
 			<div class="col-12"></div>

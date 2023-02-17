@@ -2,10 +2,10 @@ package it.univaq.disim.mwt.mydemy.presentation;
 
 import java.security.Principal;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +17,6 @@ import it.univaq.disim.mwt.mydemy.domain.Categoria;
 
 @Controller
 public class HomeController {
-	
 	@Autowired
 	private CorsoService serviceCorso;
 	
@@ -26,9 +25,8 @@ public class HomeController {
 	
 	@GetMapping("/")
 	String index(Principal principal, Model model) {
-		List<Categoria> categorie = serviceCategoria.findAllRootCategories();
-        List <Categoria> cfiltered = categorie.stream().filter(cat -> "senza categoria".compareTo(cat.getNome()) > 0).collect(Collectors.toList());
-		model.addAttribute("categorie", cfiltered);
+		List<Categoria> categorie = serviceCategoria.findAllRootCategories(Pageable.unpaged());
+        model.addAttribute("categorie", categorie);
 
 		Sort sortCriteria = Sort.by(Sort.Direction.DESC, "inizio");
 		PageRequest pageRequest = PageRequest.of(0, 10, sortCriteria);

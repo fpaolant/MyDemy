@@ -1,5 +1,6 @@
 package it.univaq.disim.mwt.mydemy.presentation;
 
+import it.univaq.disim.mwt.mydemy.business.BusinessException;
 import it.univaq.disim.mwt.mydemy.business.CreatoreInfoService;
 import it.univaq.disim.mwt.mydemy.business.RuoloService;
 import it.univaq.disim.mwt.mydemy.domain.CreatoreInfo;
@@ -35,11 +36,14 @@ public class ProfiloController {
 	private CreatoreInfoService serviceCreatore;
 
 	@GetMapping
-	public String modificaProfiloStart(Model model) {
-		Utente utenteSessione = Utility.getUtente();
-		Utente utente = serviceUtente.findByUsername(utenteSessione.getUsername());
-		
-		model.addAttribute("user", utente);
+	public String modificaProfiloStart(Model model) throws BusinessException {
+		Optional<Utente> optionalUtente = serviceUtente.findByID(Utility.getUtente().getId());
+
+		if (optionalUtente.isPresent()) {
+			model.addAttribute("user", optionalUtente.get());
+		} else {
+			throw new BusinessException("Utente non trovato");
+		}
 
 		return "common/profilo";
 	}
@@ -54,27 +58,20 @@ public class ProfiloController {
 	}
 
 	@PostMapping("/upload")
-	public String changeProfilePicture(@RequestParam("foto") MultipartFile foto) throws IOException, IOException {
+	public String changeProfilePicture(@RequestParam("foto") MultipartFile foto) throws BusinessException, IOException {
 		Utente utenteCorrente = Utility.getUtente();
-		Optional<Utente> utente = serviceUtente.findByID(utenteCorrente.getId());
-		if(utente.isPresent()) {
-			utente.get().setFoto(foto.getBytes());
-			serviceUtente.update(utente.get());
-		}
-
+		serviceUtente.changeProfilePicture(utenteCorrente.getId(), foto);
 		return "redirect:/common/profilo";
 	}
 
 	@RequestMapping(value = "/profileImage", method = RequestMethod.GET,
 			produces = MediaType.IMAGE_JPEG_VALUE)
-	public void showImage(HttpServletResponse response)
-			throws ServletException, IOException {
+	public void showImage(HttpServletResponse response) throws IOException {
 		Utente utenteCorrente = Utility.getUtente();
 		Optional<Utente> utente = serviceUtente.findByID(utenteCorrente.getId());
 
 		if(utente.isPresent()) {
 			if(utente.get().getFoto()!=null) {
-				System.out.println(utente.get().getFoto().length);
 				StreamUtils.copy(utente.get().getFoto(), response.getOutputStream());
 			} else {
 				ClassPathResource res = new ClassPathResource("static/dist/img/user1-128x128.jpg");
@@ -95,20 +92,9 @@ public class ProfiloController {
 	}
 
 	@PostMapping("/diventaCreatoreAction")
-	public String diventaCreatore(@Valid @ModelAttribute("creatoreInfo") CreatoreInfo creatoreInfo) {
+	public String diventaCreatore(@Valid @ModelAttribute("creatoreInfo") CreatoreInfo creatoreInfo) throws BusinessException {
 		Utente currentUtente = Utility.getUtente();
-
-		if(!Utility.userHasRole("CREATOR")) {
-			Optional<Utente> optionalUtente = serviceUtente.findByID(currentUtente.getId());
-			Optional<Ruolo> optionalRuolo = serviceRuolo.findByCode("CREATOR");
-			if(optionalUtente.isPresent() && optionalRuolo.isPresent()) {
-				Utente utente = optionalUtente.get();
-				utente.addRuolo(optionalRuolo.get());
-				utente.setCreatoreInfo(creatoreInfo);
-				serviceUtente.update(utente);
-				Utility.addRole("CREATOR");
-			}
-		}
+		serviceUtente.becomeCreatore(currentUtente.getId(), creatoreInfo);
 
 		return "redirect:/common/profilo/diventaCreatore";
 	}

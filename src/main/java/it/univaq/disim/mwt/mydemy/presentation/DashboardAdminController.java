@@ -13,13 +13,14 @@ import java.util.List;
 @Controller
 @RequestMapping("/admin")
 public class DashboardAdminController {
-
 	@Autowired
 	UtenteService utenteService;
 	@Autowired
     CorsoService corsoService;
 	@Autowired
 	IscrizioneService iscrizioneService;
+	@Autowired
+	DashboardAdminService dashboardAdminService;
 
 	@GetMapping("/index")
 	String index(Model model) {
@@ -41,20 +42,6 @@ public class DashboardAdminController {
 	@RequestMapping(value = "/getVendite", method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponsePieData getVendite() {
-		ResponsePieData entity = new ResponsePieData();
-
-		ResponsePieDataDataset ds = new ResponsePieDataDataset();
-		entity.addDataset(ds);
-
-		List<Corso> corsi = corsoService.findAllCorsiApprovati();
-		corsi.stream().forEach(c->{
-			entity.addLabel(c.getTitolo());
-			ds.addData(iscrizioneService.count(c));
-		});
-
-		return entity;
+		return dashboardAdminService.getVendite();
 	}
-		
-
-	
 }

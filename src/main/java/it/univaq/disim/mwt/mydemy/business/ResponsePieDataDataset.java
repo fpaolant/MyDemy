@@ -8,10 +8,10 @@ import java.util.ArrayList;
 @Data
 @ToString
 public class ResponsePieDataDataset {
-	private ArrayList<Long> data = new ArrayList<>();
+	private ArrayList<Integer> data = new ArrayList<>();
 	private ArrayList<String> backgroundColor = new ArrayList<>();
 
-	public void addData(Long number) {
+	public void addData(int number) {
 		this.data.add(number);
 	}
 	public void addColor(String color) {

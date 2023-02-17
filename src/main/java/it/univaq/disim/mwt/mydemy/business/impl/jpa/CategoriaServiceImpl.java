@@ -8,6 +8,7 @@ import it.univaq.disim.mwt.mydemy.business.BusinessException;
 import it.univaq.disim.mwt.mydemy.business.ResponseCategoryItem;
 import it.univaq.disim.mwt.mydemy.repository.OrdineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -79,8 +80,8 @@ public class CategoriaServiceImpl implements CategoriaService {
 	}
 
 	@Override
-	public List<Categoria> findAllRootCategories() {
-		return (List<Categoria>) categoriaRepository.findByParentIsNull();
+	public List<Categoria> findAllRootCategories(Pageable pageable) {
+		return categoriaRepository.findByParentIsNull(pageable);
 	}
 
 	@Override
@@ -103,7 +104,7 @@ public class CategoriaServiceImpl implements CategoriaService {
 		List<ResponseCategoryItem> entities = new ArrayList<>();
 
 
-		List<Categoria> rootCategorie = categoriaRepository.findByParentIsNull();
+		List<Categoria> rootCategorie = categoriaRepository.findByParentIsNull(Pageable.unpaged());
 
 		List<Categoria> orderedCategorie = new ArrayList<>();
 		for (Categoria categoria: rootCategorie) {

@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,18 +32,21 @@ public class CreatoreController {
 	private UtenteService serviceUtente;
 	@Autowired
 	private IscrizioneService iscrizioneService;
+	@Autowired
+	private DashboardCreatoreService dashboardCreatoreService;
 
 	@GetMapping("/index")
 	public String index(Principal principal, Model model) throws BusinessException {
 		Utente creatore = Utility.getUtente();
 
+		// Iscritti del creatore
 		Long iscrizioniCount = iscrizioneService.count(creatore);
 		model.addAttribute("iscrizioniCount", iscrizioniCount);
 		model.addAttribute("usersCount", iscrizioniCount);
-
+		// Percentuale di superato sul numero di icritti
 		float percSuperato = iscrizioneService.getPercentualeSuperato(creatore);
 		model.addAttribute("percSuperato", String.format("%.0f%%",percSuperato));
-
+		// numero di corsi del creatore
 		int corsiCount = serviceCorso.findByCreatore(creatore).size();
 		model.addAttribute("corsiCount", corsiCount);
 
@@ -54,19 +56,7 @@ public class CreatoreController {
 	@RequestMapping(value = "/getVendite", method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponsePieData getVendite() {
-		Utente creatore = Utility.getUtente();
-		ResponsePieData entity = new ResponsePieData();
-
-		ResponsePieDataDataset ds = new ResponsePieDataDataset();
-		entity.addDataset(ds);
-
-		List<Corso> corsi = serviceCorso.findByCreatore(creatore);
-		corsi.stream().forEach(c->{
-			entity.addLabel(c.getTitolo());
-			ds.addData(iscrizioneService.count(c));
-		});
-
-		return entity;
+		return dashboardCreatoreService.getVendite(Utility.getUtente());
 	}
 
 	@GetMapping("/corsi/proponi")
@@ -85,9 +75,7 @@ public class CreatoreController {
 	public String proponi(@ModelAttribute Corso corso) throws BusinessException {
 		// to do
 		Utente creatore = Utility.getUtente();
-		corso.setCreatore(creatore);
-		corso.setApprovato(false);
-		serviceCorso.create(corso);
+		serviceCorso.proponi(corso,creatore);
 
 		return "redirect:/creatore/corsi/list";
 	}
@@ -173,31 +161,14 @@ public class CreatoreController {
 	}
 
 	@PostMapping("/findallIscrizioniByCorsoPaginated")
-	public @ResponseBody ResponseGrid<Iscrizione> findAllIscrizioniByCorsoPaginated(@RequestParam Long id, @RequestBody RequestGrid requestGrid) {
-		Utente creatore = Utility.getUtente();
-		Optional<Corso> corso = serviceCorso.findByIdAndCreatore(id, creatore);
-
-		if(corso.isPresent()) {
-			ResponseGrid<Iscrizione> iscrizioni = serviceIscrizione.findAllByCorsoPaginated(corso.get(), requestGrid);
-			return iscrizioni;
-		}
-
-		ResponseGrid<Iscrizione> iscrizioniEmpty = new ResponseGrid<>(requestGrid.getDraw(), 0, 0, new ArrayList<Iscrizione>());
-		return iscrizioniEmpty;
+	public @ResponseBody ResponseGrid<Iscrizione> findAllIscrizioniByCorsoPaginated(@RequestParam Long id, @RequestBody RequestGrid requestGrid) throws BusinessException {
+		return serviceIscrizione.findAllByCorsoCreatorePaginated(id, Utility.getUtente(), requestGrid);
 	}
 
 	@GetMapping("/setSuperato")
-	public String approve(@RequestParam Long iscrizioneId) {
-		Optional<Iscrizione> iscrizioneOpt = serviceIscrizione.findById(iscrizioneId);
-
-		if(iscrizioneOpt.isPresent()) {
-			Iscrizione iscrizione = iscrizioneOpt.get();
-			iscrizione.setSuperato(true);
-			iscrizioneService.update(iscrizione);
-			// todo invia certificato
-			return "redirect:/creatore/iscritti?id="+iscrizione.getCorso().getId();
-		}
-		return "redirect:/creatore/corsi/list";
+	public String setSuperato(@RequestParam Long iscrizioneId) throws BusinessException {
+		Iscrizione iscrizione = serviceCorso.setSuperato(iscrizioneId);
+		return "redirect:/creatore/iscritti?id="+iscrizione.getCorso().getId();
 	}
 	
 }

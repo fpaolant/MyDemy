@@ -1,10 +1,13 @@
 package it.univaq.disim.mwt.mydemy.business;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+import it.univaq.disim.mwt.mydemy.domain.CreatoreInfo;
 import it.univaq.disim.mwt.mydemy.domain.Ruolo;
 import it.univaq.disim.mwt.mydemy.domain.Utente;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface UtenteService {
 	
@@ -18,4 +21,9 @@ public interface UtenteService {
 	void changePassword(Utente utente, String password);
 	List<Utente> findAllByRole(Ruolo ruolo);
 	Long count();
+	void changeProfilePicture(Long userId, MultipartFile foto) throws BusinessException, IOException;
+
+	void becomeCreatore(Long userId, CreatoreInfo infoCreatore) throws BusinessException;
+
+	void enable(Long userId) throws BusinessException;
 }

@@ -3,13 +3,12 @@ package it.univaq.disim.mwt.mydemy.presentation;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -40,9 +39,6 @@ public class UtenteAdminController {
 	@Autowired
 	private RuoloService serviceRuolo;
 	
-	@Autowired
-	private PasswordEncoder passwordEncoder;
-	
 	@GetMapping("/list")
 	public String list() throws BusinessException {
 		return "admin/utente/list";
@@ -56,10 +52,7 @@ public class UtenteAdminController {
 	@GetMapping("/create")
 	public String createStart(Model model) {
 		model.addAttribute("utente", new Utente());
-		
-		Predicate<Ruolo> isNotUser = r -> !r.getCode().equalsIgnoreCase("USER");
-		
-		List<Ruolo> ruoli =  serviceRuolo.findAll().stream().filter(isNotUser).collect(Collectors.toList());
+		List<Ruolo> ruoli =  serviceRuolo.findAllAdditionalRoles(PageRequest.of(0, Integer.MAX_VALUE, Sort.by("nome")));
 		model.addAttribute("ruoli", ruoli);
 		return "admin/utente/form";
 	}
@@ -77,12 +70,6 @@ public class UtenteAdminController {
 		if (errors.hasErrors()) {
 			return "admin/utente/form";
 		}
-		// set default user role
-		Optional<Ruolo> ruoloUser = serviceRuolo.findByCode("USER");
-		if(ruoloUser.isPresent()) utente.addRuolo(ruoloUser.get());
-		// encode password
-		final String password = passwordEncoder.encode(utente.getPassword());
-		utente.setPassword(password);
 		
 		serviceUtente.create(utente);
 		return "redirect:/admin/utenti/list";
@@ -90,44 +77,28 @@ public class UtenteAdminController {
 	
 	@GetMapping("/update")
 	public String updateStart(@RequestParam Long id, Model model) {
-		Optional<Utente> utente = serviceUtente.findByID(id);
-		
-		if(utente.isPresent()) {
-			Utente u = utente.get();
-			u.setPassword("");
-			model.addAttribute("utente", u);
-		}
-		
-		Predicate<Ruolo> isNotUser = r -> !r.getCode().equalsIgnoreCase("USER");
-		List<Ruolo> ruoli =  serviceRuolo.findAll().stream().filter(isNotUser).collect(Collectors.toList());
+		Utente u = serviceUtente.findByID(id).get();
+		u.setPassword("");
+		model.addAttribute("utente", u);
+
+		List<Ruolo> ruoli =  serviceRuolo.findAllAdditionalRoles(PageRequest.of(0, Integer.MAX_VALUE, Sort.by("nome")));
 		model.addAttribute("ruoli", ruoli);
 		return "admin/utente/form";
 	}
 	
 	@PostMapping("/update")
 	public String update(@Valid @ModelAttribute("utente") Utente utente, Errors errors) {
-
 		if (errors.hasErrors()) {
 			return "admin/utente/form";
 		}
-		if(!utente.getPassword().equalsIgnoreCase("")) {
-			// encode password
-			final String password = passwordEncoder.encode(utente.getPassword());
-			utente.setPassword(password);
-		}
+		serviceUtente.update(utente);
 		
 		return "admin/utente/form";
 	}
 	
 	@GetMapping("/enable")
-	public String enable(@RequestParam Long id) {
-		Optional<Utente> utente = serviceUtente.findByID(id);
-		
-		if(utente.isPresent() && !utente.get().getUsername().equalsIgnoreCase("admin")) {
-			Boolean enabled = utente.get().getEnabled();
-			utente.get().setEnabled(!enabled);
-			serviceUtente.update(utente.get());
-		}
+	public String enable(@RequestParam Long id) throws BusinessException{
+		serviceUtente.enable(id);
 		return "redirect:/admin/utenti/list";
 	}
 	

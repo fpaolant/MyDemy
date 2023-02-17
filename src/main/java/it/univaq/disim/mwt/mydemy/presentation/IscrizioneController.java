@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 
+import it.univaq.disim.mwt.mydemy.business.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,13 +28,12 @@ public class IscrizioneController {
 	
 	@GetMapping
 	public String index(Principal principal, Model model) {
-			if(principal != null) { // logged in
+			if(principal != null) {
 				Utente utente = Utility.getUtente();
 				List<Iscrizione> iscrizioni = serviceIscrizione.findByUtente(utente);
-
 				model.addAttribute("iscrizioni", iscrizioni);
 			} else {
-				model.addAttribute("iscrizioni", new HashSet<Iscrizione>());
+				return "redirect:loginstart.html";
 			}
 		return "public/iscrizione/index";
 	}
@@ -48,7 +48,7 @@ public class IscrizioneController {
 				// generate business certificate & download TODO
 
 			}
-
+			// TODO getcertificato
 			//model.addAttribute("iscrizioni", iscrizioni);
 		} else {
 			//model.addAttribute("iscrizioni", new HashSet<Iscrizione>());

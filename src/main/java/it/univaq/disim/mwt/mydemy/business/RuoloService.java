@@ -4,11 +4,13 @@ import java.util.List;
 import java.util.Optional;
 
 import it.univaq.disim.mwt.mydemy.domain.Ruolo;
+import org.springframework.data.domain.Pageable;
 
 
 public interface RuoloService {
 	
 	List<Ruolo> findAll();
+	List<Ruolo> findAllAdditionalRoles(Pageable pageable);
 	ResponseGrid<Ruolo> findAllPaginated(RequestGrid requestGrid);
 	List<Ruolo> findByNome(String nome);
 	Optional<Ruolo> findByID(Long id);

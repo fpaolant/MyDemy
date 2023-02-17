@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
+import it.univaq.disim.mwt.mydemy.business.BusinessException;
 import it.univaq.disim.mwt.mydemy.business.RequestGrid;
 import it.univaq.disim.mwt.mydemy.business.ResponseGrid;
 import it.univaq.disim.mwt.mydemy.repository.CorsoRepository;
@@ -42,11 +43,6 @@ public class IscrizioneServiceImpl implements IscrizioneService {
 	}
 
 	@Override
-	public List<Iscrizione> findByCorso(Corso corso) {
-		return iscrizioneRepository.findByCorso(corso);
-	}
-
-	@Override
 	public List<Iscrizione> findByUtenteAndCorso(Utente utente, Corso corso) {
 		return iscrizioneRepository.findByUtenteAndCorsoOrderByDataAsc(utente, corso);
 	}
@@ -56,9 +52,15 @@ public class IscrizioneServiceImpl implements IscrizioneService {
 		return iscrizioneRepository.findByUtenteOrderByDataAsc(utente);
 	}
 
+
 	@Override
 	@Transactional(readOnly = true)
-	public ResponseGrid<Iscrizione> findAllByCorsoPaginated(Corso corso, RequestGrid requestGrid) {
+	public ResponseGrid<Iscrizione> findAllByCorsoCreatorePaginated(Long corsoId, Utente creatore, RequestGrid requestGrid) throws BusinessException {
+		Optional<Corso> optCorso = corsoRepository.findByIdAndCreatore(corsoId, creatore);
+		if(optCorso.isEmpty()) {
+			throw new BusinessException("Corso non trovato");
+		}
+
 		String sortCol = requestGrid.getSortCol();
 
 		List<Iscrizione> iscrizioni = null;
@@ -69,12 +71,12 @@ public class IscrizioneServiceImpl implements IscrizioneService {
 		PageRequest pageRequest = PageRequest.of(requestGrid.getStart(), requestGrid.getLength(), sortCriteria);
 
 		if("".equals(requestGrid.getSearch().getValue())) {
-			iscrizioni = iscrizioneRepository.findAllByCorsoOrderByUtenteCognomeAsc(corso, pageRequest); //.findAll(pageRequest);
+			iscrizioni = iscrizioneRepository.findAllByCorsoOrderByUtenteCognomeAsc(optCorso.get(), pageRequest); //.findAll(pageRequest);
 		} else {
 			//corsi = corsoRepository.findAllPaginatedWithSearchValue(ConversionUtility.addPercentSuffix(requestGrid.getSearch().getValue()), pageRequest);
-			iscrizioni = iscrizioneRepository.findAllByCorsoAndUtenteCognomeContainingIgnoreCaseOrderByUtenteCognomeAsc(corso, requestGrid.getSearch().getValue(), pageRequest);
+			iscrizioni = iscrizioneRepository.findAllByCorsoAndUtenteCognomeContainingIgnoreCaseOrderByUtenteCognomeAsc(optCorso.get(), requestGrid.getSearch().getValue(), pageRequest);
 		}
-		int numTotali = iscrizioneRepository.findAllByCorsoOrderByUtenteCognomeAsc(corso, null).size();
+		int numTotali = iscrizioneRepository.findAllByCorsoOrderByUtenteCognomeAsc(optCorso.get(), null).size();
 
 
 		return new ResponseGrid<Iscrizione>(requestGrid.getDraw(), numTotali, iscrizioni.size(), iscrizioni);
@@ -102,13 +104,13 @@ public class IscrizioneServiceImpl implements IscrizioneService {
 		return (iscrittiSuperato*100 / iscrittiTotali);
 	}
 
-	@Override
+	/*@Override
 	@Transactional(readOnly = true)
 	public float getPercentualeSuperato(Corso corso) {
 		Long iscrittiTotali = iscrizioneRepository.countByCorso(corso);
 		Long iscrittiSuperato = iscrizioneRepository.countBySuperatoIsTrueAndCorsoIs(corso);
 		return (iscrittiSuperato*100 / iscrittiTotali);
-	}
+	}*/
 
 	@Override
 	@Transactional(readOnly = true)
@@ -135,8 +137,8 @@ public class IscrizioneServiceImpl implements IscrizioneService {
 		return iscrizioneRepository.countByCorsoCreatore(creatore);
 	}
 
-	@Override
-	public void generaCertificato(Iscrizione iscrizione) throws Docx4JException, JAXBException {
+
+	private void generaCertificato(Iscrizione iscrizione) throws Docx4JException, JAXBException {
 		File templateDoc = new File("src/main/resources/templates/doc/template_certificato_udemy.docx");
 
 		WordprocessingMLPackage template = Docx4J.load(templateDoc);
