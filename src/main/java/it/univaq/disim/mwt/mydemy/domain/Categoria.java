@@ -23,7 +23,7 @@ public class Categoria extends BaseEntity {
 	@NotNull
 	private String nome;
 
-	@ManyToOne(cascade = { CascadeType.MERGE })
+	@ManyToOne
 	@JoinColumn(referencedColumnName = "id")
 	@JsonBackReference
 	private Categoria parent;
@@ -31,12 +31,11 @@ public class Categoria extends BaseEntity {
 	@Column(length = 30)
 	private String icon = "fa-sharp fa-solid fa-list"; // TODO remove icon field and refactor
 
-	@ManyToMany(cascade = { CascadeType.MERGE }, mappedBy = "categorie")
+	@ManyToMany(mappedBy = "categorie")
 	@JsonBackReference
 	private Set<Corso> corsi = new HashSet<>();
 
-	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE},
-			mappedBy = "parent")
+	@OneToMany(mappedBy = "parent")
 	@OrderBy("nome")
 	private List<Categoria> subCategorie;
 
