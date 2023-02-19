@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<th:block th:fragment="elencoRecensioni">
+    <link rel="stylesheet" type="text/css" th:href="@{/plugins/star-rating/star-rating-svg.css}">
+    <script th:src="@{/plugins/star-rating/jquery.star-rating-svg.min.js}"></script>
+
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title" th:text="#{corso.recensioni}">Recensioni</h3>
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool"
+                        data-card-widget="collapse" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="list-group">
+                        <div class="text-center" th:if="${recensioni.size()==0}">Nessuna recensione</div>
+                    </div>
+                    <!-- list group start -->
+                    <th:block th:insert="fragments/recensioneItem :: recensioneItem"
+                              th:each="recensione, iStat: ${recensioni}"></th:block>
+
+                </div>
+            </div>
+        </div>
+        <!-- list group end -->
+        <br/>
+    </div>
+
+</th:block>
+
+
+</body>
+</html>

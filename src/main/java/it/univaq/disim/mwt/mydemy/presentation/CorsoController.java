@@ -2,13 +2,16 @@ package it.univaq.disim.mwt.mydemy.presentation;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.List;
 import java.util.Optional;
 
 
 import it.univaq.disim.mwt.mydemy.business.*;
 import it.univaq.disim.mwt.mydemy.domain.Corso;
+import it.univaq.disim.mwt.mydemy.domain.Recensione;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,6 +31,8 @@ public class CorsoController {
 	private IscrizioneService serviceIscrizione;
 	@Autowired
 	private UtenteService serviceUtente;
+	@Autowired
+	private RecensioneService serviceRecensione;
 	
 	@GetMapping(value = {"{id}", "{id}/{flagInsert}"})
 	public String index(@PathVariable Long id, @PathVariable(required = false) boolean flagInsert, Principal principal, Model model) throws BusinessException {
@@ -42,7 +47,7 @@ public class CorsoController {
 
 		if(principal != null) { // logged in
 			Utente utente = Utility.getUtente();
-			iscritto = serviceIscrizione.findByUtenteAndCorso(utente, corso).size() > 0;
+			iscritto = serviceIscrizione.findByUtenteAndCorso(utente, corso).isPresent();
 			// utente e creatore sono la stessa persona
 			if(corso.getCreatore().equals(utente)) {
 				isCreatore = true;
@@ -64,6 +69,11 @@ public class CorsoController {
 
 		model.addAttribute("notificaIscrizioneSuccesso", flagInsert);
 
+		List<Recensione> recensioni = serviceRecensione.findByCorso(corso, Pageable.unpaged());
+		model.addAttribute("recensioni", recensioni);
+
+		Double mediaReview = serviceRecensione.calcolaMediaByCorso(corso);
+		model.addAttribute("media", mediaReview);
 
 		return "public/corso/item";
 	}

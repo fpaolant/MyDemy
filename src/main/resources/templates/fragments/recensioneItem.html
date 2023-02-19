@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+    <div class="list-group-item mb-2 shadow" th:fragment="recensioneItem">
+        <script>
+                $(document).ready(function () {
+                $("#rating-corso[(${iStat.index})]").starRating({
+                    totalStars: 5,
+                    initialRating: [(${recensione.voto})],
+                    readOnly: true,
+                    useFullStars: true,
+                    starSize: 15
+                });
+            });
+        </script>
+        <div class="row">
+            <div class="col px-4">
+                <div>
+                    <h5>
+                        <th:block th:text="${recensione.titolo}"></th:block>
+                    </h5>
+                    <div th:id="${'rating-corso' + iStat.index}"></div>
+
+                    <p class="mb-0" th:text="${recensione.descrizione}">consectetuer
+                        adipiscing elit. Aenean commodo ligula eget dolor.</p>
+                    <div class="row">
+                        <div class="col-10">
+                            <div class="user-block">
+                                                    <span class="username">
+                                                        <a href="#"
+                                                           th:text="${recensione.autore}">Jonathan Burke Jr.</a></span>
+                            </div>
+                        </div>
+                    </div><!--row end-->
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>

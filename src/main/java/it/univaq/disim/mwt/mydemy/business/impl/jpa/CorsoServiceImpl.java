@@ -6,17 +6,15 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import it.univaq.disim.mwt.mydemy.business.*;
-import it.univaq.disim.mwt.mydemy.domain.Categoria;
-import it.univaq.disim.mwt.mydemy.domain.Iscrizione;
-import it.univaq.disim.mwt.mydemy.domain.Utente;
+import it.univaq.disim.mwt.mydemy.domain.*;
 import it.univaq.disim.mwt.mydemy.repository.IscrizioneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import it.univaq.disim.mwt.mydemy.domain.Corso;
 import it.univaq.disim.mwt.mydemy.repository.CorsoRepository;
 
 
@@ -121,7 +119,7 @@ public class CorsoServiceImpl implements CorsoService {
 		int numTotali = corsoRepository.findAllByCreatoreOrderByFineDescApprovatoDesc(creatore, null).size();
 
 		corsi.forEach(c->{
-			c.setNumIscritti(iscrizioneRepository.findByCorso(c).size());
+			c.setNumIscritti(c.getIscrizioni().size());
 		});
 		return new ResponseGrid<Corso>(requestGrid.getDraw(), numTotali, corsi.size(), corsi);
 	}
@@ -178,7 +176,7 @@ public class CorsoServiceImpl implements CorsoService {
 		Optional<Corso> optCorso = corsoRepository.findById(corsoId);
 
 		if(optCorso.isPresent()) {
-			if(iscrizioneRepository.findByUtenteAndCorsoOrderByDataAsc(utente, optCorso.get()).size()==0) {
+			if(iscrizioneRepository.findByUtenteAndCorso(utente, optCorso.get()).isEmpty()) {
 				Iscrizione i = new Iscrizione();
 				i.setUtente(utente);
 				i.setCorso(optCorso.get());
@@ -211,6 +209,5 @@ public class CorsoServiceImpl implements CorsoService {
 			throw new BusinessException("Iscrizione non presente");
 		}
 	}
-
 
 }

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="media-recensioni">
+    <link rel="stylesheet" type="text/css" th:href="@{/plugins/star-rating/star-rating-svg.css}">
+    <script th:src="@{/plugins/star-rating/jquery.star-rating-svg.min.js}"></script>
+    <script>
+        $(document).ready(function () {
+            $("#rating-corso-media").starRating({
+                totalStars: 5,
+                initialRating: [(${media})],
+                readOnly: true,
+                useFullStars: true,
+                starSize: 15
+            });
+        });
+    </script>
+    <div class="row" th:if="${recensioni.size()>0}">
+        <div class="col-auto">
+           <div id="rating-corso-media" th:if="${recensioni.size()>0}"></div>
+        </div>
+        <div class="col-6 text-secondary">
+            <th:block th:text="#{corso.numrecensioni(${recensioni.size()})}">recensioni</th:block>
+        </div>
+    </div>
+    <div class="row" th:if="${recensioni.size()==0}">
+        <div class="col-4 text-secondary" th:text="#{corso.nessunaRecensione}">nessuna recensione</div>
+    </div>
+</div>
+</body>
+</html>

@@ -23,6 +23,10 @@ public class RecensioneServiceImpl implements RecensioneService {
 		return recensioneRepository.findByCorsoId(corso.getId(), pageable);
 	}
 	@Override
+	public double calcolaMediaByCorso(Corso corso) {
+		return recensioneRepository.calcolaMediaVotoByCorsoId(corso.getId());
+	}
+	@Override
 	public List<Recensione> findByAutore(Utente autore, Pageable pageable) {
 		return recensioneRepository.findByAutoreId(autore.getId(), pageable);
 	}
