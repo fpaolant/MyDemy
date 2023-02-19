@@ -213,16 +213,13 @@ public class Initialize implements ApplicationListener<ApplicationReadyEvent> {
 
         Iscrizione is1 = new Iscrizione();
         is.setCorso(corso4);
-        is.setSuperato(false);
+        is.setSuperato(true);
         is.setUtente(fabio);
         is.setData(LocalDateTime.of(2023, 9, 21, 12, 30));
         iscrizioneService.create(is);
 
-        try {
-            recensioneService.create(new Recensione("Ottimo", "corso perfetto", 2, LocalDateTime.now(), marco.getUsername(), marco.getId(), corso4.getId()));
-        } catch (DuplicateKeyException e) {
-            System.out.println("esiste già una recensione autore corso");
-        }
+        //recensioneService.create(new Recensione("Ottimo", "corso perfetto", 2, LocalDateTime.now(), marco.getUsername(), marco.getId(), corso4.getId()));
+
 
 
     }
