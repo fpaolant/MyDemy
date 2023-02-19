@@ -1,6 +1,7 @@
 package it.univaq.disim.mwt.mydemy.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,7 +18,7 @@ public interface IscrizioneRepository extends JpaRepository<Iscrizione, Long> {
 
 	List<Iscrizione> findByCorso(Corso corso);
 	List<Iscrizione> findByUtenteOrderByDataAsc(Utente utente);
-	List<Iscrizione> findByUtenteAndCorsoOrderByDataAsc(Utente utente, Corso corso);
+	Optional<Iscrizione> findByUtenteAndCorso(Utente utente, Corso corso);
 	List<Iscrizione> findAllByCorsoOrderByUtenteCognomeAsc(Corso corso, Pageable paging);
 	List<Iscrizione> findAllByCorsoAndUtenteCognomeContainingIgnoreCaseOrderByUtenteCognomeAsc(Corso corso, String needle, Pageable paging);
 	long countBySuperatoIsTrue();

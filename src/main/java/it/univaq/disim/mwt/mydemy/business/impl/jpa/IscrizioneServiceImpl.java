@@ -43,8 +43,8 @@ public class IscrizioneServiceImpl implements IscrizioneService {
 	}
 
 	@Override
-	public List<Iscrizione> findByUtenteAndCorso(Utente utente, Corso corso) {
-		return iscrizioneRepository.findByUtenteAndCorsoOrderByDataAsc(utente, corso);
+	public Optional<Iscrizione> findByUtenteAndCorso(Utente utente, Corso corso) {
+		return iscrizioneRepository.findByUtenteAndCorso(utente, corso);
 	}
 
 	@Override

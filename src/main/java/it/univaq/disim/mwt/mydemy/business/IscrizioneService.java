@@ -13,7 +13,7 @@ import javax.xml.bind.JAXBException;
 public interface IscrizioneService {
 
 	Optional<Iscrizione> findById(Long id);
-	List<Iscrizione> findByUtenteAndCorso(Utente utente, Corso corso);
+	Optional<Iscrizione> findByUtenteAndCorso(Utente utente, Corso corso);
 	List<Iscrizione> findByUtente(Utente utente);
 	ResponseGrid<Iscrizione> findAllByCorsoCreatorePaginated(Long corsoId, Utente creatore, RequestGrid requestGrid) throws BusinessException;
 	float getPercentualeSuperatoTotale();
