@@ -1,7 +1,6 @@
 package it.univaq.disim.mwt.mydemy.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -46,24 +45,17 @@ public class Corso extends BaseEntity {
 	private Integer ore;
 	@Digits(integer=6, fraction=2)
 	private Float prezzo;
-
 	private Boolean attestatoFinale = false;
-
 	@NotNull
 	@OneToOne
 	private Utente creatore;
-
-	@OneToMany(
-			cascade = CascadeType.ALL,
-			orphanRemoval = true
-	)
+	@OneToMany( cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<WebLink> links = new ArrayList<>();
-
 	@Min(1) @Max(500)
 	private int posti;
 	private Boolean approvato = false;
 
-	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "corso_categoria", joinColumns = { @JoinColumn(name = "corso_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "categoria_id") })
 	@JsonManagedReference
