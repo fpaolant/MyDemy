@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="recensioneForm">
+    <link rel="stylesheet" type="text/css" th:href="@{/plugins/star-rating/star-rating-svg.css}">
+    <script th:src="@{/plugins/star-rating/jquery.star-rating-svg.min.js}"></script>
+    <script>
+        $(document).ready(function () {
+            $("#rating-corso").starRating({
+                totalStars: 5,
+                initialRating: 3,
+                minRating: 1,
+                starSize: 25,
+                useFullStars: true,
+                disableAfterRate: false,
+
+                callback: function (currentRating, $el) {
+                    $("#voto").val(currentRating);
+                }
+            });
+        });
+    </script>
+    <div class="row">
+        <div class="col-12">
+            <form th:action="@{${action_url}}" th:object="${recensione}" method="post">
+                <input type="hidden" th:field="*{corsoId}">
+                <div class="form-group row">
+                    <label for="titolo" class="col-2 col-form-label" th:text="#{recensione.titolo}">Titolo</label>
+                    <div class="col-6">
+                        <input type="text" id="titolo" th:field="*{titolo}" class="form-control" minlength="3"
+                               maxlength="100"/>
+                        <span th:if="${#fields.hasErrors('titolo')}" th:each="err: ${#fields.errors('titolo')}"
+                              th:utext="${err}"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="descrizione" class="col-2 col-form-label"
+                           th:text="#{recensione.descrizione}">Descrizione</label>
+                    <div class="col-6">
+              <textarea class="form-control" id="descrizione" th:field="*{descrizione}" rows="10"
+                        maxlength="1000"
+                        placeholder="Inserisci una descrizione"></textarea>
+                        <span th:if="${#fields.hasErrors('descrizione')}"
+                              th:each="err: ${#fields.errors('descrizione')}" th:utext="${err}"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="voto" class="col-2 col-form-label" th:text="#{recensione.voto}">Voto</label>
+                    <div class="col-6">
+                        <input type="hidden" id="voto" th:field="*{voto}"/>
+                        <div id="rating-corso"></div>
+                    </div>
+                </div>
+                <a href="#" th:href="@{${cancel_url}}" class="btn btn-default float-right"
+                   th:text="#{common.cancel}"></a>
+                <button type="submit" class="btn btn-info" th:text="#{common.submit}"></button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

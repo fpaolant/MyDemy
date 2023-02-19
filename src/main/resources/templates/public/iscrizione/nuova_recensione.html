@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layout/layout}">
+<body>
+	<div layout:fragment="content">
+		<section class="content-header">
+			<div class="container-fluid">
+				<div class="row mb-2">
+					<div class="col-sm-6">
+						<h2 th:text="#{recensione.pagina.titolo}">Lascia una recensione</h2>
+					</div>
+					<div class="col-sm-6">
+						<ol class="breadcrumb float-sm-right">
+							<li class="breadcrumb-item"><a href="/" th:href="@{/}">Home</a></li>
+							<li class="breadcrumb-item active" th:text="#{recensione.pagina.titolo}">Lascia una recensione</li>
+						</ol>
+					</div>
+				</div>
+			</div>
+			<!-- /.container-fluid -->
+		</section>
+
+		<h4 th:if="${!recensionePresente}" th:text="#{recensione.pagina.sottotitolo(${corso.titolo})}">Come ti è sembrato Nome del corso</h4>
+		<br/>
+		<th:block th:if="${!recensionePresente}">
+			<div th:replace="~{fragments/recensioneForm.html :: recensioneForm}"></div>
+		</th:block>
+
+		<p th:if="${recensionePresente}" th:text="#{recensione.presente}">Recensione già presente</p>
+
+		<div class="row">
+			<div class="col-12"><br/></div>
+		</div>
+
+	</div>
+</body>
+</html>
