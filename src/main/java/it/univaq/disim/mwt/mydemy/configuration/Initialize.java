@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import javax.transaction.Transactional;
 
+import com.mongodb.DuplicateKeyException;
 import it.univaq.disim.mwt.mydemy.business.*;
 import it.univaq.disim.mwt.mydemy.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -217,7 +218,11 @@ public class Initialize implements ApplicationListener<ApplicationReadyEvent> {
         is.setData(LocalDateTime.of(2023, 9, 21, 12, 30));
         iscrizioneService.create(is);
 
-        recensioneService.create(new Recensione("Ottimo", "corso perfetto", 2, LocalDateTime.now(), marco, corso4));
+        try {
+            recensioneService.create(new Recensione("Ottimo", "corso perfetto", 2, LocalDateTime.now(), marco.getUsername(), marco.getId(), corso4.getId()));
+        } catch (DuplicateKeyException e) {
+            System.out.println("esiste già una recensione autore corso");
+        }
 
 
     }

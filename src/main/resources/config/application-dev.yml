@@ -4,6 +4,15 @@ spring:
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
+  data:
+    mongodb:
+      authentication-database: admin
+      username: mydemy
+      password: mydemy
+      database: mydemy
+      port: 27017
+      host: localhost
+      auto-index-creation: true
   servlet:
     multipart:
       max-file-size: 10MB
