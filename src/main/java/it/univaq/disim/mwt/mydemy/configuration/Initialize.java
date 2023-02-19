@@ -182,7 +182,7 @@ public class Initialize implements ApplicationListener<ApplicationReadyEvent> {
                 LocalDateTime.of(2023, 9, 18, 12, 30),
                 LocalDateTime.of(2023, 9, 30, 12, 30),
                 10, 12, 1000.5f,
-                true, mario, 20, false);
+                true, mario, 20, true);
 
         corso3.setDescrizione("Lorem ipsum represents a long-held tradition for\n"
                 + "												designers, typographers and the like. Some people hate it\n"
@@ -210,13 +210,20 @@ public class Initialize implements ApplicationListener<ApplicationReadyEvent> {
         is.setData(LocalDateTime.of(2023, 9, 29, 12, 30));
         iscrizioneService.create(is);
 
+        Iscrizione is0 = new Iscrizione();
+        is0.setCorso(corso4);
+        is0.setSuperato(true);
+        is0.setUtente(marco);
+        is0.setData(LocalDateTime.of(2023, 11, 29, 12, 30));
+        iscrizioneService.create(is0);
+
 
         Iscrizione is1 = new Iscrizione();
-        is.setCorso(corso4);
-        is.setSuperato(true);
-        is.setUtente(fabio);
-        is.setData(LocalDateTime.of(2023, 9, 21, 12, 30));
-        iscrizioneService.create(is);
+        is1.setCorso(corso4);
+        is1.setSuperato(true);
+        is1.setUtente(fabio);
+        is1.setData(LocalDateTime.of(2023, 9, 21, 12, 30));
+        iscrizioneService.create(is1);
 
         //recensioneService.create(new Recensione("Ottimo", "corso perfetto", 2, LocalDateTime.now(), marco.getUsername(), marco.getId(), corso4.getId()));
 
