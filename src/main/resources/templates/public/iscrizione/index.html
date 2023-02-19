@@ -25,15 +25,6 @@
 			<div class="col-12">
 				<div class="card">
 					<div class="card-header">
-						<!--<div class="card-tools">
-							<ul class="pagination pagination-sm float-right">
-								<li class="page-item"><a class="page-link" href="#">«</a></li>
-								<li class="page-item"><a class="page-link" href="#">1</a></li>
-								<li class="page-item"><a class="page-link" href="#">2</a></li>
-								<li class="page-item"><a class="page-link" href="#">3</a></li>
-								<li class="page-item"><a class="page-link" href="#">»</a></li>
-							</ul>
-						</div> -->
 					</div>
 
 					<div class="card-body p-0">
@@ -46,7 +37,7 @@
 									<th>Iscrizione</th>
 									<th>Progresso</th>
 									<th style="width: 40px">Superato</th>
-									<th style="width: 40px">Certificato</th>
+									<th style="width: 40px">Azioni</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -66,7 +57,10 @@
 										</div>
 									</td>
 									<td><span th:class="${iscrizione.superato}? 'badge bg-success': 'badge bg-warning'" th:text="${iscrizione.superato}? SI: NO">SI</span></td>
-									<td th:text="${iscrizione.superato}? 'link': 'non disponibile'">link cert</td>
+									<td>
+										<th:block text="${iscrizione.superato}? 'link |': 'non disponibile |'"></th:block>
+										<a th:if="${iscrizione.superato}" th:href="@{'/iscrizioni/scriviRecensione?corsoId=' + ${iscrizione.corso.id}}">lascia recensione</a>
+									</td>
 								</tr>
 							</tbody>
 						</table>
