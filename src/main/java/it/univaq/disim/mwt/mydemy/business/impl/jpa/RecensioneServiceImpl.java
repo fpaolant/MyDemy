@@ -4,7 +4,7 @@ import it.univaq.disim.mwt.mydemy.business.RecensioneService;
 import it.univaq.disim.mwt.mydemy.domain.Corso;
 import it.univaq.disim.mwt.mydemy.domain.Recensione;
 import it.univaq.disim.mwt.mydemy.domain.Utente;
-import it.univaq.disim.mwt.mydemy.repository.mongo.RecensioneRepository;
+import it.univaq.disim.mwt.mydemy.repository.RecensioneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

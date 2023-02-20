@@ -1,4 +1,4 @@
-package it.univaq.disim.mwt.mydemy.repository.mongo;
+package it.univaq.disim.mwt.mydemy.repository;
 
 import it.univaq.disim.mwt.mydemy.domain.Recensione;
 import org.springframework.data.domain.Pageable;

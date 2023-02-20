@@ -13,7 +13,7 @@ import it.univaq.disim.mwt.mydemy.presentation.Utility;
 import it.univaq.disim.mwt.mydemy.repository.CorsoRepository;
 import it.univaq.disim.mwt.mydemy.repository.IscrizioneRepository;
 import it.univaq.disim.mwt.mydemy.repository.RuoloRepository;
-import it.univaq.disim.mwt.mydemy.repository.mongo.RecensioneRepository;
+import it.univaq.disim.mwt.mydemy.repository.RecensioneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
