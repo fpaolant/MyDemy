@@ -20,5 +20,5 @@ public interface RecensioneRepository extends MongoRepository<Recensione, String
     @Aggregation(pipeline = {
             "{$match :  { 'corsoId': ?0}}",
             "{$group: { _id: '', total: {$avg: $voto }}}" })
-    double calcolaMediaVotoByCorsoId(Long corsoId);
+    Double calcolaMediaVotoByCorsoId(Long corsoId);
 }

@@ -8,23 +8,21 @@
         $(document).ready(function () {
             $("#rating-corso-media").starRating({
                 totalStars: 5,
-                initialRating: [(${media})],
+                initialRating: [(${(media!=null)? media: 0})],
                 readOnly: true,
                 useFullStars: true,
                 starSize: 15
             });
         });
     </script>
-    <div class="row" th:if="${recensioni.size()>0}">
+    <div class="row">
         <div class="col-auto">
-           <div id="rating-corso-media" th:if="${recensioni.size()>0}"></div>
+           <div id="rating-corso-media"></div>
         </div>
         <div class="col-6 text-secondary">
-            <th:block th:text="#{corso.numrecensioni(${recensioni.size()})}">recensioni</th:block>
+            <th:block th:text="#{corso.numrecensioni(${recensioni.size()})}" th:if="${recensioni.size()>0}">recensioni</th:block>
+            <th:block th:text="#{corso.nessunaRecensione}" th:if="${recensioni.size()==0}">nessuna recensione</th:block>
         </div>
-    </div>
-    <div class="row" th:if="${recensioni.size()==0}">
-        <div class="col-4 text-secondary" th:text="#{corso.nessunaRecensione}">nessuna recensione</div>
     </div>
 </div>
 </body>

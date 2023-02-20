@@ -23,7 +23,7 @@ public class RecensioneServiceImpl implements RecensioneService {
 		return recensioneRepository.findByCorsoId(corso.getId(), pageable);
 	}
 	@Override
-	public double calcolaMediaByCorso(Corso corso) {
+	public Double calcolaMediaByCorso(Corso corso) {
 		return recensioneRepository.calcolaMediaVotoByCorsoId(corso.getId());
 	}
 	@Override
