@@ -20,6 +20,8 @@ public class CercaController {
     private CorsoService serviceCorso;
     @Autowired
     private CategoriaService serviceCategoria;
+    @Autowired
+    private RecensioneService serviceRecensione;
 
     @GetMapping("/")
     public String findEnhancedStart(Model model) {
@@ -32,6 +34,7 @@ public class CercaController {
     @PostMapping("/")
     public String find(@RequestParam String searchString, Model model) {
         model.addAttribute("searchString", searchString);
+        model.addAttribute("serviceRecensione", serviceRecensione);
         List<Corso> corsi = serviceCorso.findByTitoloContainingIgnoreCase(searchString, PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.ASC, "titolo"));
         model.addAttribute("corsi", corsi);
         List<Categoria> categorie = serviceCategoria.findAll();
@@ -56,6 +59,7 @@ public class CercaController {
         } else {
             corsi = serviceCorso.findAllCriteria(searchString, PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.ASC, orderBy));
         }
+        model.addAttribute("serviceRecensione", serviceRecensione);
         model.addAttribute("corsi", corsi);
         return "common/risultati-ricerca";
     }

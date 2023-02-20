@@ -20,4 +20,6 @@ public interface RecensioneService {
 	void deleteById(String id);
 	void deleteByAutore(Utente autore);
 	Double calcolaMediaByCorso(Corso corso);
+
+	Long countByCorsoId(Long corsoId);
 }

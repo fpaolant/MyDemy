@@ -58,4 +58,8 @@ public class RecensioneServiceImpl implements RecensioneService {
 	public void deleteByAutore(Utente autore) {
 		recensioneRepository.deleteByAutoreId(autore.getId());
 	}
+	@Override
+	public Long countByCorsoId(Long corsoId) {
+		return recensioneRepository.countByCorsoId(corsoId);
+	}
 }

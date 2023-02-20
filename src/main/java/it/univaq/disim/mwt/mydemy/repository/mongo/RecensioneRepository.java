@@ -4,7 +4,6 @@ import it.univaq.disim.mwt.mydemy.domain.Recensione;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -21,4 +20,6 @@ public interface RecensioneRepository extends MongoRepository<Recensione, String
             "{$match :  { 'corsoId': ?0}}",
             "{$group: { _id: '', total: {$avg: $voto }}}" })
     Double calcolaMediaVotoByCorsoId(Long corsoId);
+
+    Long countByCorsoId(Long corsoId);
 }
