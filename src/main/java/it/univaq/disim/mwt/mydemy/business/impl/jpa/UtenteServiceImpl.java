@@ -13,11 +13,11 @@ import it.univaq.disim.mwt.mydemy.presentation.Utility;
 import it.univaq.disim.mwt.mydemy.repository.CorsoRepository;
 import it.univaq.disim.mwt.mydemy.repository.IscrizioneRepository;
 import it.univaq.disim.mwt.mydemy.repository.RuoloRepository;
+import it.univaq.disim.mwt.mydemy.repository.mongo.RecensioneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,10 +39,11 @@ public class UtenteServiceImpl implements UtenteService {
 	private IscrizioneRepository iscrizioneRepository;
 	@Autowired
 	private RuoloRepository ruoloRepository;
-	/*@Autowired
-	private PasswordEncoder passwordEncoder;*/
+
 	@Autowired
 	private CorsoRepository corsoRepository;
+	@Autowired
+	private RecensioneRepository recensioneRepository;
 
 	@Override
 	public Utente findByUsername(String username) {
@@ -117,14 +118,17 @@ public class UtenteServiceImpl implements UtenteService {
 	}
 
 	@Override
+	@Transactional
 	public void delete(Utente utente) throws BusinessException {
 		if(canBeDeleted(utente)) {
+			recensioneRepository.deleteByAutoreId(utente.getId());
 			iscrizioneRepository.deleteByUtente(utente);
 			utenteRepository.delete(utente);
 		}
 	}
 
 	@Override
+	@Transactional
 	public void delete(Long utenteId) throws BusinessException {
 		Optional<Utente> optUtente = utenteRepository.findById(utenteId);
 		if (optUtente.isEmpty()) throw new BusinessException("Utente non trovato");
@@ -160,7 +164,6 @@ public class UtenteServiceImpl implements UtenteService {
 
 	@Override
 	public void changeProfilePicture(Long userId, MultipartFile foto) throws BusinessException, IOException {
-
 		Optional<Utente> utente = utenteRepository.findById(userId);
 		if(utente.isPresent()) {
 			utente.get().setFoto(foto.getBytes());
