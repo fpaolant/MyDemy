@@ -2,13 +2,13 @@ package it.univaq.disim.mwt.mydemy.presentation;
 
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -37,6 +37,9 @@ public class UtenteAdminController {
 	private UtenteService serviceUtente;
 	@Autowired
 	private RuoloService serviceRuolo;
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	
 	@GetMapping("/list")
 	public String list() throws BusinessException {
@@ -69,6 +72,10 @@ public class UtenteAdminController {
 		if (errors.hasErrors()) {
 			return "admin/utente/form";
 		}
+		// encode password
+		final String password = passwordEncoder.encode(utente.getPassword());
+		utente.setPassword(password);
+
 		
 		serviceUtente.create(utente);
 		return "redirect:/admin/utenti/list";
@@ -89,6 +96,11 @@ public class UtenteAdminController {
 	public String update(@Valid @ModelAttribute("utente") Utente utente, Errors errors) {
 		if (errors.hasErrors()) {
 			return "admin/utente/form";
+		}
+		if(!utente.getPassword().equalsIgnoreCase("")) {
+			// encode password
+			final String password = passwordEncoder.encode(utente.getPassword());
+			utente.setPassword(password);
 		}
 		serviceUtente.update(utente);
 		
