@@ -37,13 +37,15 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-4" th:each="categoria: ${categorie}">
+        <div class="col-md-4 col-lg-3 col-xl-3" th:each="categoria: ${categorie}">
             <a th:href="@{'/categoria/' + ${categoria.id}}">
                 <div class="info-box shadow-none">
-                    <span class="info-box-icon bg-info"><i class="" th:classappend="${categoria.icon}"></i></span>
+                    <span class="info-box-icon bg-info"><i class="fa-sharp fa-solid fa-list"></i></span>
 
                     <div class="info-box-content">
                         <span class="info-box-text" th:text="${categoria.nome}">Informatica</span>
+                        <span class="info-box-number" th:if="${categoria.subCategorie.size()}>0"
+                              th:text="${categoria.subCategorie.size()} + ' categorie presenti'">n.corsi</span>
                         <span class="info-box-number" th:if="${categoria.corsi.size()}>0"
                               th:text="${categoria.corsi.size()} + ' corsi presenti'">n.corsi</span>
                     </div>
@@ -51,8 +53,6 @@
             </a>
         </div>
     </div>
-
-
     <!-- /.content -->
 </div>
 

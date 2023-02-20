@@ -3,23 +3,47 @@
 	xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layout/layout}">
 <body>
 	<div layout:fragment="content">
+		<section class="content-header">
+			<div class="container-fluid">
+				<div class="row mb-2">
+					<div class="col-sm-6">
+						<h2>
+							<th:block th:text="#{common.corsiin}">Corsi in</th:block> <i th:text="${categoria.nome}"></i>
+						</h2>
+					</div>
+					<div class="col-sm-6">
+						<ol class="breadcrumb float-sm-right">
+							<li class="breadcrumb-item"><a href="/" th:href="@{/}">Home</a></li>
+							<li class="breadcrumb-item" th:text="#{common.categoria}">Categoria</li>
+							<li class="breadcrumb-item" th:if="${categoria.parent!=NULL}">
+								<a th:href="@{'/categoria/' + ${categoria.parent.id}}" th:text="${categoria.parent.nome}"></a>
+							</li>
+							<li class="breadcrumb-item active" th:text="${categoria.nome}"> nome categoria </li>
+						</ol>
+					</div>
+				</div>
+			</div>
+			<!-- /.container-fluid -->
+		</section>
 
-		<h2>
-			Corsi in <i th:text="${categoria.nome}"></i>
-		</h2>
 
-		<h5 class="mb-2" th:if="${categoria.subCategorie.size()>0}">
-			sottocategorie
-		</h5>
 		<div class="row" th:if="${categoria.subCategorie.size()>0}">
-			<div class="col-md-4 col-sm-6 col-12" th:each="subCat: ${categoria.subCategorie}">
+			<div class="col-auto">
+				<h5 class="pl-2 mb-2" th:text="#{common.subcategorie}">sottocategorie</h5>
+			</div>
+		</div>
+
+
+
+		<div class="row" th:if="${categoria.subCategorie.size()>0}">
+			<div class="col-md-4 col-lg-3 col-xl-3" th:each="subCat: ${categoria.subCategorie}">
           <a th:href="@{'/categoria/' + ${subCat.id}}">
             <div class="info-box shadow-none">
-              <span class="info-box-icon bg-info"><i th:class="${subCat.icon}"></i></span>
+              <span class="info-box-icon bg-info"><i th:class="fa-sharp fa-solid fa-list"></i></span>
 
               <div class="info-box-content">
                 <span class="info-box-text" th:text="${subCat.nome}">Informatica</span>
-                <span class="info-box-number" th:text="${subCat.corsi.size()} + ' corsi presenti'">n.corsi</span>
+                <span class="info-box-number" th:text="#{common.ncorsipresenti(${subCat.corsi.size()})}">n.corsi</span>
               </div>
               <!-- /.info-box-content -->
             </div>
@@ -31,16 +55,19 @@
 		</div>
 		<!-- /.row -->
 
+		<div class="row" th:if="${categoria.corsi.size()>0}">
+			<div class="col-auto">
+				<h5 class="pl-2 mb-2 mt-3" th:text="#{corsi.titolo}">corsi</h5>
+			</div>
+		</div>
 
 		<div class="row">
-			<div class="col-4" th:each="corso: ${categoria.corsi}">
+			<div class="col-md-4 col-lg-3 col-xl-3" th:each="corso: ${categoria.corsi}">
 				<a th:href="@{'/corso/' + ${corso.id}}"> <!-- Widget: user widget style 1 -->
 					<div class="card card-widget widget-user shadow">
 						<!-- Add the bg color to the header using any of the bg-* classes -->
 						<div class="ribbon-wrapper" th:if="${corso.attestatoFinale}">
-							<div class="ribbon bg-success">
-								Attestato
-							</div>
+							<div class="ribbon bg-success" th:text="#{corso.attestatoFinaleShort}"></div>
 						</div>
 						<div class="widget-user-header bg-info">
 							<h3 class="widget-user-username"
@@ -59,15 +86,15 @@
 								<div class="col-4 border-right">
 									<div class="description-block">
 										<h5 class="description-header" th:text="${corso.crediti}">3,200</h5>
-										<span class="description-text">CREDITI</span>
+										<span class="description-text text-uppercase" th:text="#{corso.crediti}">CREDITI</span>
 									</div>
 									<!-- /.description-block -->
 								</div>
 								<!-- /.col -->
 								<div class="col-4">
 									<div class="description-block">
-										<h5 class="description-header" th:text="${corso.prezzo}">35</h5>
-										<span class="description-text">PREZZO</span>
+										<h5 class="description-header text-success" th:text="${corso.prezzo}">35</h5>
+										<span class="description-text text-uppercase text-success" th:text="#{corso.prezzo}">PREZZO</span>
 									</div>
 									<!-- /.description-block -->
 								</div>
@@ -75,7 +102,7 @@
 								<div class="col-4 border-right">
 									<div class="description-block">
 										<h5 class="description-header" th:text="${corso.ore}">13,000</h5>
-										<span class="description-text">ORE TOTALI</span>
+										<span class="description-text text-uppercase" th:text="#{corso.ore}">ORE</span>
 									</div>
 									<!-- /.description-block -->
 								</div>
@@ -89,25 +116,22 @@
 
 
 
-
-
 			</div>
 			<!-- /.col -->
 		</div>
 		<!-- /.row -->
 
-		<div class="row" th:if="${categoria.corsi.size()==0}">
+		<div class="row mt-2 mb-2" th:if="${categoria.corsi.size()==0}">
 			<div class="col-12">
-				<p>Nessun corso pubblicato nella categoria</p>
+				<p th:text="#{common.nessuncorsoincategoria}">Nessun corso pubblicato nella categoria</p>
 			</div>
 			<!-- /.col -->
 		</div>
 		<!-- /.row -->
 
+		<a class="mt-2 mb-4" th:if="${categoria.parent!=NULL}" th:href="@{'/categoria/' + ${categoria.parent.id}}" th:text="#{common.backto(${categoria.parent.nome})}">Torna a</a>
 
-		<div class="row">
-			<div class="col-12"></div>
-		</div>
+
 	</div>
 </body>
 </html>

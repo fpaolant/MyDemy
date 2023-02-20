@@ -3,7 +3,7 @@
    <body>
 
       <div class="scrolling-wrapper row flex-row flex-nowrap mt-4 pb-4 pt-2" th:fragment="slidercorsi">
-         <div class="col-5" th:each="corso: ${corsi}">
+         <div class="col-md-4 col-lg-3 col-xl-3" th:each="corso: ${corsi}">
             <a th:href="@{'/corso/' + ${corso.id}}"> <!-- Widget: user widget style 1 -->
                <div class="card card-block card-widget widget-user shadow">
                   <!-- Add the bg color to the header using any of the bg-* classes -->
@@ -29,23 +29,23 @@
                         <div class="col-4 border-right">
                            <div class="description-block">
                               <h5 class="description-header" th:text="${corso.crediti}">3,200</h5>
-                              <span class="description-text">CREDITI</span>
+                              <span class="description-text text-uppercase" th:text="#{corso.crediti}">CREDITI</span>
+                           </div>
+                           <!-- /.description-block -->
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-4">
+                           <div class="description-block border-right">
+                              <h5 class="description-header text-success" th:text="${corso.prezzo}">35</h5>
+                              <span class="description-text text-success text-uppercase" th:text="#{corso.prezzo}">PREZZO</span>
                            </div>
                            <!-- /.description-block -->
                         </div>
                         <!-- /.col -->
                         <div class="col-4">
                            <div class="description-block">
-                              <h5 class="description-header" th:text="${corso.prezzo}">35</h5>
-                              <span class="description-text">PREZZO</span>
-                           </div>
-                           <!-- /.description-block -->
-                        </div>
-                        <!-- /.col -->
-                        <div class="col-4 border-right">
-                           <div class="description-block">
                               <h5 class="description-header" th:text="${corso.ore}">13,000</h5>
-                              <span class="description-text">ORE TOTALI</span>
+                              <span class="description-text text-uppercase" th:text="#{corso.ore}">ORE</span>
                            </div>
                            <!-- /.description-block -->
                         </div>
@@ -58,12 +58,6 @@
             </a>
 
          </div>
-
-
-
-
-
-
       </div>
    </body>
 </html>
