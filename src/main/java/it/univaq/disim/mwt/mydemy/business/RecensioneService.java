@@ -18,5 +18,6 @@ public interface RecensioneService {
 	void create(Recensione recensione);
 	void delete(Recensione recensione);
 	void deleteById(String id);
+	void deleteByAutore(Utente autore);
 	double calcolaMediaByCorso(Corso corso);
 }

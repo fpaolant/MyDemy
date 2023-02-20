@@ -54,4 +54,8 @@ public class RecensioneServiceImpl implements RecensioneService {
 	public void deleteById(String id) {
 		recensioneRepository.deleteById(id);
 	}
+	@Override
+	public void deleteByAutore(Utente autore) {
+		recensioneRepository.deleteByAutoreId(autore.getId());
+	}
 }
