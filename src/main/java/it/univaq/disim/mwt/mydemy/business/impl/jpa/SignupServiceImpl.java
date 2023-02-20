@@ -44,5 +44,14 @@ public class SignupServiceImpl implements SignupService {
 		utenteRepository.save(utente);
 	}
 
+	@Override
+	public void changePassword(Utente utente, String password) throws BusinessException {
+		Optional<Utente> optUtente = utenteRepository.findById(utente.getId());
+		if(optUtente.isEmpty()) throw new BusinessException("Utente non trovato");
+		Utente u = optUtente.get();
+		u.setPassword(passwordEncoder.encode(password));
+		utenteRepository.save(u);
+	}
+
 
 }

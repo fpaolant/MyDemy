@@ -1,6 +1,7 @@
 package it.univaq.disim.mwt.mydemy.presentation;
 
 import it.univaq.disim.mwt.mydemy.business.BusinessException;
+import it.univaq.disim.mwt.mydemy.business.SignupService;
 import it.univaq.disim.mwt.mydemy.domain.CreatoreInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -8,6 +9,9 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StreamUtils;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import it.univaq.disim.mwt.mydemy.business.UtenteService;
@@ -16,6 +20,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.Optional;
@@ -25,6 +32,9 @@ import java.util.Optional;
 public class ProfiloController {
 	@Autowired
 	private UtenteService serviceUtente;
+
+	@Autowired
+	private SignupService serviceSignup;
 
 	@GetMapping
 	public String modificaProfiloStart(Model model) throws BusinessException {
@@ -87,6 +97,19 @@ public class ProfiloController {
 		serviceUtente.becomeCreatore(currentUtente.getId(), creatoreInfo);
 
 		return "redirect:/common/profilo/diventaCreatore";
+	}
+
+	@GetMapping("/cambiopassword")
+	public String cambioPasswordStart() {
+		return "common/cambioPassword";
+	}
+
+	@PostMapping("/cambiopassword")
+	public String cambioPassword(@RequestParam String password) throws BusinessException {
+		Utente currentUtente = Utility.getUtente();
+		serviceSignup.changePassword(currentUtente, password);
+
+		return "redirect:/common/profilo/cambiopassword";
 	}
 
 }
