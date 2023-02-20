@@ -183,7 +183,7 @@ public class Initialize implements ApplicationListener<ApplicationReadyEvent> {
                 10, 12, 1000.5f,
                 true, mario, 20, true);
 
-        corso3.setDescrizione("Lorem ipsum represents a long-held tradition for\n"
+        corso4.setDescrizione("Lorem ipsum represents a long-held tradition for\n"
                 + "												designers, typographers and the like. Some people hate it\n"
                 + "												and argue for its demise, but others ignore.Lorem ipsum represents a long-held tradition for\n"
                 + "												designers, typographers and the like. Some people hate it\n"
