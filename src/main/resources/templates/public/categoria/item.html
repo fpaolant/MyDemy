@@ -39,7 +39,7 @@
 			<div class="col-md-4 col-lg-3 col-xl-3" th:each="subCat: ${categoria.subCategorie}">
           <a th:href="@{'/categoria/' + ${subCat.id}}">
             <div class="info-box shadow-none">
-              <span class="info-box-icon bg-info"><i th:class="fa-sharp fa-solid fa-list"></i></span>
+              <span class="info-box-icon bg-info"><i class="fas fa-book"></i></span>
 
               <div class="info-box-content">
                 <span class="info-box-text" th:text="${subCat.nome}">Informatica</span>
@@ -121,7 +121,7 @@
 		</div>
 		<!-- /.row -->
 
-		<div class="row mt-2 mb-2" th:if="${categoria.corsi.size()==0}">
+		<div class="row pl-2 mt-2 mb-2" th:if="${categoria.corsi.size()==0}">
 			<div class="col-12">
 				<p th:text="#{common.nessuncorsoincategoria}">Nessun corso pubblicato nella categoria</p>
 			</div>

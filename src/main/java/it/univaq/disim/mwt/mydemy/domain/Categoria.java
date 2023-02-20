@@ -28,9 +28,6 @@ public class Categoria extends BaseEntity {
 	@JsonBackReference
 	private Categoria parent;
 
-	@Column(length = 30)
-	private String icon = "fa-sharp fa-solid fa-list"; // TODO remove icon field and refactor
-
 	@ManyToMany(mappedBy = "categorie")
 	@JsonBackReference
 	private Set<Corso> corsi = new HashSet<>();
@@ -41,11 +38,10 @@ public class Categoria extends BaseEntity {
 
 	public Categoria() { super(); }
 
-	public Categoria(@NotBlank String nome, Categoria parent, String icon) {
+	public Categoria(@NotBlank String nome, Categoria parent) {
 		super();
 		this.nome = nome;
 		this.parent = parent;
-		this.icon = icon;
 	}
 
 	@Override
@@ -75,7 +71,7 @@ public class Categoria extends BaseEntity {
 
 	@Override
 	public String toString() {
-		return "Categoria [nome=" + nome + ", parentCategory=" + parent + ", icon=" + icon + ", id=" + getId() + "]";
+		return "Categoria [nome=" + nome + ", parentCategory=" + parent + ", id=" + getId() + "]";
 	}
 	
 

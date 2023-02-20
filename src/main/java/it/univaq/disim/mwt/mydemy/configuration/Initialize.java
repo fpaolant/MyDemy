@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 
 import javax.transaction.Transactional;
 
-import com.mongodb.DuplicateKeyException;
 import it.univaq.disim.mwt.mydemy.business.*;
 import it.univaq.disim.mwt.mydemy.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,20 +72,20 @@ public class Initialize implements ApplicationListener<ApplicationReadyEvent> {
         utenteService.create(mario);
 
         // create corso
-        Categoria cat = new Categoria("senza categoria", null, "fas fa-th");
+        Categoria cat = new Categoria("senza categoria", null);
         categoriaService.create(cat);
 
-        Categoria cat2 = new Categoria("Informatica", null, "fas fa-desktop");
+        Categoria cat2 = new Categoria("Informatica", null);
         categoriaService.create(cat2);
 
-        Categoria cat21 = new Categoria("Sviluppo", cat2, "fas fa-desktop");
+        Categoria cat21 = new Categoria("Sviluppo", cat2);
         categoriaService.create(cat21);
 
 
-        Categoria cat211 = new Categoria("Java", cat21, "fas fa-coffee");
+        Categoria cat211 = new Categoria("Java", cat21);
         categoriaService.create(cat211);
 
-        Categoria cat4 = new Categoria("Economia", null, "fas fa-dollar-sign");
+        Categoria cat4 = new Categoria("Economia", null);
         categoriaService.create(cat4);
 
         Tag tag = new Tag("java");
