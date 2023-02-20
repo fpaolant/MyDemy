@@ -16,4 +16,5 @@ public interface UtenteRepository extends JpaRepository<Utente, Long> {
 	Utente findByUsername(final String username);
 
 	List<Utente> findByRuoli_(Ruolo ruolo);
+
 }
