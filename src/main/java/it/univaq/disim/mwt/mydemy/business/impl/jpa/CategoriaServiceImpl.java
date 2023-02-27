@@ -6,7 +6,6 @@ import java.util.Optional;
 
 import it.univaq.disim.mwt.mydemy.business.BusinessException;
 import it.univaq.disim.mwt.mydemy.business.ResponseCategoryItem;
-import it.univaq.disim.mwt.mydemy.repository.OrdineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -21,8 +20,6 @@ import it.univaq.disim.mwt.mydemy.repository.CategoriaRepository;
 @Transactional
 public class CategoriaServiceImpl implements CategoriaService {
 	@Autowired CategoriaRepository categoriaRepository;
-	@Autowired
-	private OrdineRepository ordineRepository;
 
 	@Override
 	public void create(Categoria categoria) {
