@@ -14,7 +14,7 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">corsi</li>
+                        <li class="breadcrumb-item active" th:text="${corso.titolo}">nome corso</li>
                     </ol>
                 </div>
             </div>
@@ -27,14 +27,14 @@
         <div class="col-9">
             <div th:if="${notificaIscrizioneSuccesso}" class="alert alert-success alert-dismissible">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                <h5><i class="icon fas fa-check"></i> Complimenti!</h5>
-                Iscrizione avvenuta con successo
+                <h5><i class="icon fas fa-check"></i> <th:block th:text="#{common.complimenti}">Complimenti!</th:block></h5>
+                <th:block th:text="#{corso.iscrizione.success}">Iscrizione avvenuta con successo</th:block>
             </div>
             <div class="row" th:if="${corso.attestatoFinale}">
                 <div class="col-12">
                     <div class="callout callout-success">
-                        <h5>Attestato finale</h5>
-                        <p>Questo corso prevede un attestato finale.</p>
+                        <h5 th:text="#{corso.attestatoFinale}">Attestato finale</h5>
+                        <p th:text="#{corso.attestatoFinaleDescr}">Questo corso prevede un attestato finale.</p>
                     </div>
                 </div>
             </div>
@@ -59,7 +59,7 @@
                         <div class="col-12 col-sm-6">
                             <div class="info-box bg-light">
                                 <div class="info-box-content">
-                                    <span class="info-box-text text-center text-muted">Inizio</span>
+                                    <span class="info-box-text text-center text-muted" th:text="#{common.fine}">Inizio</span>
                                     <span class="info-box-number text-center text-muted mb-0"
                                           th:text="${#temporals.format(corso.inizio, 'dd/MM/yyyy HH:mm')}">10 gennaio 2023</span>
                                 </div>
@@ -68,7 +68,7 @@
                         <div class="col-12 col-sm-6">
                             <div class="info-box bg-light">
                                 <div class="info-box-content">
-                                    <span class="info-box-text text-center text-muted">Fine</span>
+                                    <span class="info-box-text text-center text-muted" th:text="#{common.fine}">Fine</span>
                                     <span class="info-box-number text-center text-muted mb-0"
                                           th:text="${#temporals.format(corso.fine, 'dd/MM/yyyy HH:mm')}">11 gennaio 2023</span>
                                 </div>
@@ -81,7 +81,7 @@
                                 <div class="col-12 col-sm-4">
                                     <div class="info-box bg-light">
                                         <div class="info-box-content">
-                                            <span class="info-box-text text-center text-muted">ORE</span>
+                                            <span class="info-box-text text-center text-muted text-uppercase" th:text="#{corso.ore}">ORE</span>
                                             <span class="info-box-number text-center text-muted mb-0"
                                                   th:text="${corso.ore}">10</span>
                                         </div>
@@ -90,7 +90,7 @@
                                 <div class="col-12 col-sm-4">
                                     <div class="info-box bg-light">
                                         <div class="info-box-content">
-                                            <span class="info-box-text text-center text-muted">CREDITI</span>
+                                            <span class="info-box-text text-center text-muted text-uppercase" th:text="#{corso.crediti}">CREDITI</span>
                                             <span class="info-box-number text-center text-muted mb-0"
                                                   th:text="${corso.crediti}">20</span>
                                         </div>
@@ -99,7 +99,7 @@
                                 <div class="col-12 col-sm-4">
                                     <div class="info-box bg-light">
                                         <div class="info-box-content">
-                                            <span class="info-box-text text-center text-muted">POSTI</span>
+                                            <span class="info-box-text text-center text-muted text-uppercase" th:text="#{corso.posti}">POSTI</span>
                                             <span th:if="${corso.posti==postiRimanenti}"
                                                   class="info-box-number text-center text-muted mb-0"
                                                   th:text="${corso.posti}">20</span> <span
@@ -113,7 +113,7 @@
 
                             <div class="row" th:if="${corso.descrizione!=''}">
                                 <div class="col-12">
-                                    <h4>Descrizione</h4>
+                                    <h4 th:text="#{corso.descrizione}">Descrizione</h4>
                                     <div class="post">
                                         <p th:text="${corso.descrizione}"></p>
                                     </div>
