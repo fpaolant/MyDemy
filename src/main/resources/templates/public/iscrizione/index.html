@@ -58,8 +58,10 @@
 									</td>
 									<td><span th:class="${iscrizione.superato}? 'badge bg-success': 'badge bg-warning'" th:text="${iscrizione.superato}? SI: NO">SI</span></td>
 									<td>
-										<th:block text="${iscrizione.superato}? 'link |': 'non disponibile |'"></th:block>
-										<a th:if="${iscrizione.superato}" th:href="@{'/iscrizioni/scriviRecensione?corsoId=' + ${iscrizione.corso.id}}">lascia recensione</a>
+										<th:block th:if="${iscrizione.superato}">
+											<a th:href="@{'/iscrizioni/getCertificato?iscrizioneId=' + ${iscrizione.id}}">certificato</a> |
+											<a th:href="@{'/iscrizioni/scriviRecensione?corsoId=' + ${iscrizione.corso.id}}">lascia recensione</a>
+										</th:block>
 									</td>
 								</tr>
 							</tbody>

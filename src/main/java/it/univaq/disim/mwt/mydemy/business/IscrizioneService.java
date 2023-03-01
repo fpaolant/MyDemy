@@ -1,12 +1,13 @@
 package it.univaq.disim.mwt.mydemy.business;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
 import it.univaq.disim.mwt.mydemy.domain.Corso;
 import it.univaq.disim.mwt.mydemy.domain.Iscrizione;
 import it.univaq.disim.mwt.mydemy.domain.Utente;
-import org.docx4j.openpackaging.exceptions.Docx4JException;
 
 import javax.xml.bind.JAXBException;
 
@@ -24,4 +25,6 @@ public interface IscrizioneService {
 	Long count();
 	Long count(Corso corso);
 	Long count(Utente creatore);
+
+	File generaCertificato(Utente utente, Long iscrizioneId) throws IOException, BusinessException;
 }

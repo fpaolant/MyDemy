@@ -1,5 +1,8 @@
 package it.univaq.disim.mwt.mydemy.presentation;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
@@ -10,7 +13,13 @@ import it.univaq.disim.mwt.mydemy.business.RecensioneService;
 import it.univaq.disim.mwt.mydemy.domain.Corso;
 import it.univaq.disim.mwt.mydemy.domain.Recensione;
 import it.univaq.disim.mwt.mydemy.repository.IscrizioneRepository;
+import it.univaq.disim.mwt.mydemy.repository.UtenteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -32,6 +41,8 @@ public class IscrizioneController {
 	private CorsoService serviceCorso;
 	@Autowired
 	private RecensioneService serviceRecensione;
+	@Autowired
+	private UtenteRepository utenteRepository;
 
 
 	@GetMapping
@@ -83,21 +94,24 @@ public class IscrizioneController {
 	}
 
 	@GetMapping("getCertificato")
-	public String getCerificato(@RequestParam Long iscrizioneId, Principal principal, Model model) {
+	public ResponseEntity<Resource> getCertificato(@RequestParam Long iscrizioneId, Principal principal) throws IOException, BusinessException {
 		if(principal != null) { // logged in
 			Utente utente = Utility.getUtente();
-			Optional<Iscrizione> iscrizione = serviceIscrizione.findById(iscrizioneId);
-
-			if(iscrizione.isPresent() && iscrizione.get().getSuperato() && iscrizione.get().getUtente().equals(utente)) {
-				// generate business certificate & download TODO
-
-			}
-			// TODO getcertificato
-			//model.addAttribute("iscrizioni", iscrizioni);
+				File fileCertificato = serviceIscrizione.generaCertificato(utente, iscrizioneId);
+				InputStreamResource resource = new InputStreamResource(new FileInputStream(fileCertificato));
+				HttpHeaders header = new HttpHeaders();
+				header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileCertificato.getName());
+				header.add("Cache-Control", "no-cache, no-store, must-revalidate");
+				header.add("Pragma", "no-cache");
+				header.add("Expires", "0");
+				return ResponseEntity.ok()
+						.headers(header)
+						.contentLength(fileCertificato.length())
+						.contentType(MediaType.parseMediaType("application/octet-stream"))
+						.body(resource);
 		} else {
-			//model.addAttribute("iscrizioni", new HashSet<Iscrizione>());
+			throw new BusinessException("Utente non loggato");
 		}
-		return "public/iscrizione/index";
 	}
 	
 	
