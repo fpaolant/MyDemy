@@ -109,6 +109,7 @@ public class Initialize implements ApplicationListener<ApplicationReadyEvent> {
                 + "												and argue for its demise, but others ignore.Lorem ipsum represents a long-held tradition for\n"
                 + "												designers, typographers and the like. Some people hate it\n"
                 + "												and argue for its demise, but others ignore.");
+        corso.setLiveUrl("https://www.youtube.com/embed/9SGDpanrc8U");
         corsoService.create(corso);
 
         corso.addWebLink(new WebLink("http://www.google.com", "google"));
@@ -138,6 +139,7 @@ public class Initialize implements ApplicationListener<ApplicationReadyEvent> {
                 + "												and argue for its demise, but others ignore.Lorem ipsum represents a long-held tradition for\n"
                 + "												designers, typographers and the like. Some people hate it\n"
                 + "												and argue for its demise, but others ignore.");
+        corso2.setLiveUrl("https://www.youtube.com/embed/hfl3n1RqLQE");
         corsoService.create(corso2);
         corso2.addWebLink(new WebLink("http://www.youtube.com", "youtube1"));
         corso2.addTag(tag);
@@ -166,6 +168,7 @@ public class Initialize implements ApplicationListener<ApplicationReadyEvent> {
                 + "												and argue for its demise, but others ignore.Lorem ipsum represents a long-held tradition for\n"
                 + "												designers, typographers and the like. Some people hate it\n"
                 + "												and argue for its demise, but others ignore.");
+        corso3.setLiveUrl("https://www.youtube.com/embed/32jPsN3C9cw");
         corsoService.create(corso3);
         corso3.addCategoria(cat21);
         try {
@@ -192,6 +195,7 @@ public class Initialize implements ApplicationListener<ApplicationReadyEvent> {
                 + "												and argue for its demise, but others ignore.Lorem ipsum represents a long-held tradition for\n"
                 + "												designers, typographers and the like. Some people hate it\n"
                 + "												and argue for its demise, but others ignore.");
+        corso4.setLiveUrl("https://www.youtube.com/embed/5OzKY_thSJU");
         corsoService.create(corso4);
         corso4.addCategoria(cat21);
         try {

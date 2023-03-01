@@ -17,9 +17,9 @@ import groovyjarjarantlr4.v4.runtime.misc.NotNull;
 @Entity
 @Getter
 @Setter
-@ToString
+@ToString(exclude = {"corso", "utente"})
 @Table(uniqueConstraints = {
-                @UniqueConstraint(name = "UniqueCorsoAndUtente", columnNames = { "corso_id", "utente_id" })})
+        @UniqueConstraint(name = "UniqueCorsoAndUtente", columnNames = { "corso_id", "utente_id" })})
 public class Iscrizione extends BaseEntity {
 	
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })

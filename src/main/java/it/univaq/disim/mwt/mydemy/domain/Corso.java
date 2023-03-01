@@ -14,6 +14,7 @@ import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
+import org.hibernate.validator.constraints.URL;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -51,6 +52,9 @@ public class Corso extends BaseEntity {
 	private Utente creatore;
 	@OneToMany( cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<WebLink> links = new ArrayList<>();
+	@Column(length = 200)
+	@URL(regexp = "^(http|https).*")
+	private String liveUrl;
 	@Min(1) @Max(500)
 	private int posti;
 	private Boolean approvato = false;

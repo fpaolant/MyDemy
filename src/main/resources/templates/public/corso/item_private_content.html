@@ -14,6 +14,13 @@
                 </div>
             </div>
           <div class="card-body box-profile">
+              <h5>Live</h5>
+              <div class="row">
+                  <div class="col-12 text-center">
+                      <iframe width="560" height="315" th:src="${corso.liveUrl}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                  </div>
+              </div>
+
               <p th:text="#{corso.links.riservati}">Di seguito trovi i link riservati agli iscritti</p>
 
               <div class="row">
