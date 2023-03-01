@@ -8,7 +8,7 @@
                <div class="card card-block card-widget widget-user shadow">
                   <!-- Add the bg color to the header using any of the bg-* classes -->
                   <div class="ribbon-wrapper" th:if="${corso.attestatoFinale}">
-                     <div class="ribbon bg-success">
+                     <div class="ribbon bg-success text-uppercase" th:text="#{corso.attestatoFinaleShort}">
                         Attestato
                      </div>
                   </div>

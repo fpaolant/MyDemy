@@ -19,7 +19,7 @@
     <!-- Prossimi corsi -->
     <div class="row">
         <div class="col-12">
-            <h3 class="mb-2">Prossimamente <small><i>corsi che si terranno prossimamente</i></small></h3>
+            <h3 class="mb-2"><th:block th:text="#{home.prossimamente}">Prossimamente</th:block> <small><i th:text="#{home.nextcorsi}">corsi che si terranno a breve</i></small></h3>
         </div>
     </div>
     <div th:replace="~{fragments/slidercorsi :: slidercorsi}"></div>
@@ -33,7 +33,8 @@
     <!-- Categorie -->
     <div class="row">
         <div class="col-12">
-            <h3 class="mb-2">Categorie <small><i>categorie di corsi</i></small></h3>
+            <h3 class="mb-2"><th:block th:text="#{categorie.titolo}">Categorie</th:block>
+                <small><i th:text="#{home.categoriecorsi}">categorie di corsi</i></small></h3>
         </div>
     </div>
     <div class="row">
@@ -45,9 +46,9 @@
                     <div class="info-box-content">
                         <span class="info-box-text" th:text="${categoria.nome}">Informatica</span>
                         <span class="info-box-number" th:if="${categoria.subCategorie.size()}>0"
-                              th:text="${categoria.subCategorie.size()} + ' categorie presenti'">n.corsi</span>
+                              th:text="#{common.ncategoriepresenti(${categoria.subCategorie.size()})}">n.categorie</span>
                         <span class="info-box-number" th:if="${categoria.corsi.size()}>0"
-                              th:text="${categoria.corsi.size()} + ' corsi presenti'">n.corsi</span>
+                              th:text="#{common.ncorsipresenti(${categoria.corsi.size()})}">n.corsi</span>
                     </div>
                 </div>
             </a>
