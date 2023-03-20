@@ -90,7 +90,7 @@
                                        class="form-control" autocomplete="off" required/>
                                 <input th:if="${utente.id!=null}" type="password" id="password" minlength="5" maxlength="30" name="password" value=""
                                        class="form-control" autocomplete="off"
-                                       th:placeholder="#{utente.pwdplaceholder}" required/>
+                                       th:placeholder="#{utente.pwdplaceholder}" />
                                 <span th:if="${#fields.hasErrors('password')}"
                                       th:each="err: ${#fields.errors('password')}" th:utext="${err}"></span>
                             </div>
