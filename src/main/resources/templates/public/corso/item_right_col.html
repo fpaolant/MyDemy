@@ -35,7 +35,7 @@
         </div>
         <div class="card-body box-profile">
             <span sec:authorize="isAuthenticated()">
-                <a th:if="${iscritto}" href="#" class="btn btn-primary btn-block disabled"><b th:text="#{iscrizione.presente}">Sei già iscritto :)</b></a>
+                <a th:if="${iscritto}" href="#" class="btn btn-primary btn-block disabled"><b th:text="#{iscrizione.presente}">Sei iscritto :)</b></a>
 
                 <form th:if="${!iscritto} and ${postiRimanenti}>0 and ${!isCreatore}" th:action="@{/corso/iscrivi}"
                       method="POST">

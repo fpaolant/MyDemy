@@ -84,7 +84,6 @@ public class UtenteAdminController {
 	@GetMapping("/update")
 	public String updateStart(@RequestParam Long id, Model model) {
 		Utente u = serviceUtente.findByID(id).get();
-		u.setPassword("");
 		model.addAttribute("utente", u);
 
 		List<Ruolo> ruoli =  serviceRuolo.findAllAdditionalRoles(PageRequest.of(0, Integer.MAX_VALUE, Sort.by("nome")));
