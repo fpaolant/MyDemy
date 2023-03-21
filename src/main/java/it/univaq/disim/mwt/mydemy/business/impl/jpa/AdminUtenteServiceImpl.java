@@ -1,19 +1,11 @@
 package it.univaq.disim.mwt.mydemy.business.impl.jpa;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-
-import it.univaq.disim.mwt.mydemy.business.BusinessException;
+import it.univaq.disim.mwt.mydemy.business.*;
 import it.univaq.disim.mwt.mydemy.domain.CreatoreInfo;
 import it.univaq.disim.mwt.mydemy.domain.Ruolo;
+import it.univaq.disim.mwt.mydemy.domain.Utente;
 import it.univaq.disim.mwt.mydemy.presentation.Utility;
-import it.univaq.disim.mwt.mydemy.repository.CorsoRepository;
-import it.univaq.disim.mwt.mydemy.repository.IscrizioneRepository;
-import it.univaq.disim.mwt.mydemy.repository.RuoloRepository;
-import it.univaq.disim.mwt.mydemy.repository.RecensioneRepository;
+import it.univaq.disim.mwt.mydemy.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,18 +13,16 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import it.univaq.disim.mwt.mydemy.business.RequestGrid;
-import it.univaq.disim.mwt.mydemy.business.ResponseGrid;
-import it.univaq.disim.mwt.mydemy.business.UtenteService;
-import it.univaq.disim.mwt.mydemy.domain.Utente;
-import it.univaq.disim.mwt.mydemy.repository.UtenteRepository;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
-@Transactional
-public class UtenteServiceImpl implements UtenteService {
+public class AdminUtenteServiceImpl implements AdminUtenteService {
 	
 	@Autowired
 	private UtenteRepository utenteRepository;
@@ -46,6 +36,8 @@ public class UtenteServiceImpl implements UtenteService {
 	@Autowired
 	private RecensioneRepository recensioneRepository;
 
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@Override
 	public Utente findByUsername(String username) {
@@ -62,6 +54,11 @@ public class UtenteServiceImpl implements UtenteService {
 		// set default user role
 		Optional<Ruolo> ruoloUser = ruoloRepository.findByCodeIgnoreCase("USER");
 		utente.addRuolo(ruoloUser.get());
+
+		// encode password
+		final String password = passwordEncoder.encode(utente.getPassword());
+		utente.setPassword(password);
+
 		utenteRepository.save(utente);
 	}
 
@@ -72,23 +69,18 @@ public class UtenteServiceImpl implements UtenteService {
 
 		if(optionalUtente.isEmpty()) throw new BusinessException("Utente non trovato");
 
-		utenteRepository.save(utente);
-	}
-
-	@Override
-	@Transactional
-	public void updateProfilo(Utente nuovoProfilo) throws BusinessException {
-		Optional<Utente> optionalUtente = utenteRepository.findById(nuovoProfilo.getId());
-		if(optionalUtente.isPresent()) {
-			Utente u = optionalUtente.get();
-			u.setNome(nuovoProfilo.getNome());
-			u.setCognome(nuovoProfilo.getCognome());
-			u.setEmail(nuovoProfilo.getEmail());
-			utenteRepository.save(u);
+		if(!utente.getPassword().equalsIgnoreCase("")) {
+			// encode password
+			final String password = passwordEncoder.encode(utente.getPassword());
+			// System.out.println("password inviata codificata:" + utente.getPassword());
+			utente.setPassword(password);
 		} else {
-			throw new BusinessException("Utente non trovato");
+
+			// System.out.println("imposto la password precedente " + optionalUtente.get().getPassword());
+			utente.setPassword(optionalUtente.get().getPassword());
 		}
 
+		utenteRepository.save(utente);
 	}
 
 	@Override
@@ -150,45 +142,6 @@ public class UtenteServiceImpl implements UtenteService {
 		return true;
 	}
 
-	@Override
-	public List<Utente> findAllByRole(Ruolo ruolo) {
-		return utenteRepository.findByRuoli_(ruolo);
-	}
-
-	@Override
-	@Transactional(readOnly = true)
-	public Long count() {
-		return utenteRepository.count();
-	}
-
-	@Override
-	public void changeProfilePicture(Long userId, MultipartFile foto) throws BusinessException, IOException {
-		Optional<Utente> utente = utenteRepository.findById(userId);
-		if(utente.isPresent()) {
-			utente.get().setFoto(foto.getBytes());
-			utenteRepository.save(utente.get());
-		} else {
-			throw new BusinessException("utente non trovato");
-		}
-	}
-
-	@Override
-	@Transactional
-	public void becomeCreatore(Long userId, CreatoreInfo infoCreatore) throws BusinessException {
-		Optional<Utente> optionalUtente = utenteRepository.findById(userId);
-		if(optionalUtente.isPresent()) {
-			Utente utente = optionalUtente.get();
-			Ruolo ruoloCreatore = ruoloRepository.findByCodeIgnoreCase("CREATOR").get();
-			if(!utente.getRuoli().contains(ruoloCreatore)) {
-				utente.addRuolo(ruoloCreatore);
-				utente.setCreatoreInfo(infoCreatore);
-				utenteRepository.save(utente);
-				Utility.addRole(ruoloCreatore.getCode());
-			}
-		} else {
-			throw new BusinessException("utente non presente");
-		}
-	}
 	@Override
 	@Transactional
 	public void enable(Long userId) throws BusinessException {

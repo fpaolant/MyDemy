@@ -88,7 +88,7 @@
                             <div class="col-sm-6">
                                 <input th:if="${utente.id==null}" type="password" id="password" minlength="5" maxlength="30" th:field="*{password}"
                                        class="form-control" autocomplete="off" required/>
-                                <input th:if="${utente.id!=null}" type="password" id="password" minlength="5" maxlength="30" name="password" value=""
+                                <input th:if="${utente.id!=null}" type="text" id="password" minlength="5" maxlength="30" name="password" value=""
                                        class="form-control" autocomplete="off"
                                        th:placeholder="#{utente.pwdplaceholder}" />
                                 <span th:if="${#fields.hasErrors('password')}"

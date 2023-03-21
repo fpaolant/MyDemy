@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import it.univaq.disim.mwt.mydemy.business.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -22,11 +23,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import it.univaq.disim.mwt.mydemy.business.BusinessException;
-import it.univaq.disim.mwt.mydemy.business.RequestGrid;
-import it.univaq.disim.mwt.mydemy.business.ResponseGrid;
-import it.univaq.disim.mwt.mydemy.business.RuoloService;
-import it.univaq.disim.mwt.mydemy.business.UtenteService;
 import it.univaq.disim.mwt.mydemy.domain.Ruolo;
 import it.univaq.disim.mwt.mydemy.domain.Utente;
 
@@ -34,13 +30,12 @@ import it.univaq.disim.mwt.mydemy.domain.Utente;
 @RequestMapping("/admin/utenti")
 public class UtenteAdminController {
 	@Autowired
-	private UtenteService serviceUtente;
+	private AdminUtenteService serviceUtente;
 	@Autowired
 	private RuoloService serviceRuolo;
 
-	@Autowired
-	private PasswordEncoder passwordEncoder;
-	
+
+
 	@GetMapping("/list")
 	public String list() throws BusinessException {
 		return "admin/utente/list";
@@ -72,11 +67,7 @@ public class UtenteAdminController {
 		if (errors.hasErrors()) {
 			return "admin/utente/form";
 		}
-		// encode password
-		final String password = passwordEncoder.encode(utente.getPassword());
-		utente.setPassword(password);
 
-		
 		serviceUtente.create(utente);
 		return "redirect:/admin/utenti/list";
 	}
@@ -92,18 +83,13 @@ public class UtenteAdminController {
 	}
 	
 	@PostMapping("/update")
-	public String update(@Valid @ModelAttribute("utente") Utente utente, Errors errors) {
-		if (errors.hasErrors()) {
+	public String update(@Valid @ModelAttribute("utente") Utente utente, Errors errors) throws BusinessException {
+		if (errors.hasErrors() && !errors.getFieldError().getField().equalsIgnoreCase("password")) {
 			return "admin/utente/form";
 		}
-		if(!utente.getPassword().equalsIgnoreCase("")) {
-			// encode password
-			final String password = passwordEncoder.encode(utente.getPassword());
-			utente.setPassword(password);
-		}
+
 		serviceUtente.update(utente);
-		
-		return "admin/utente/form";
+		return "redirect:/admin/utenti/list";
 	}
 	
 	@GetMapping("/enable")

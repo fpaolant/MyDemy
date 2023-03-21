@@ -14,7 +14,7 @@ public interface UtenteService {
 	Utente findByUsername(String username);
 	Optional<Utente> findByID(Long id);
 	void create(Utente utente);
-	void update(Utente utente);
+	void update(Utente utente) throws BusinessException;
 	void updateProfilo(Utente nuovoProfilo) throws BusinessException;
 	ResponseGrid<Utente> findAllPaginated(RequestGrid requestGrid);
 	void delete(Utente utente) throws BusinessException;

@@ -41,8 +41,6 @@ public class IscrizioneController {
 	private CorsoService serviceCorso;
 	@Autowired
 	private RecensioneService serviceRecensione;
-	@Autowired
-	private UtenteRepository utenteRepository;
 
 
 	@GetMapping

@@ -28,7 +28,7 @@ public class CreatoreController {
 	@Autowired
 	private IscrizioneServiceImpl serviceIscrizione;
 	@Autowired
-	private UtenteService serviceUtente;
+	private UtenteService utenteService;
 	@Autowired
 	private IscrizioneService iscrizioneService;
 	@Autowired
@@ -112,7 +112,9 @@ public class CreatoreController {
 	@GetMapping("/profilo")
 	public String modificaProfiloStart(Model model) throws BusinessException {
 		Utente utenteSessione = Utility.getUtente();
-		Utente utente = serviceUtente.findByID(utenteSessione.getId()).get();
+		Optional<Utente> optUtente = utenteService.findByID(utenteSessione.getId());
+		if(optUtente.isEmpty()) throw new BusinessException();
+		Utente utente = optUtente.get();
 		model.addAttribute("utente", utente);
 
 		return "creatore/profilo";
