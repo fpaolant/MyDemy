@@ -55,6 +55,7 @@ public class RuoloServiceImpl implements RuoloService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<Ruolo> findAllAdditionalRoles(Pageable pageable) {
 		return ruoloRepository.findAllByCodeIsNot("USER", pageable);
 	}
