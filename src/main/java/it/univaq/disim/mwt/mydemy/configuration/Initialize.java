@@ -18,7 +18,7 @@ import it.univaq.disim.mwt.mydemy.domain.CreatoreInfo;
 public class Initialize implements ApplicationListener<ApplicationReadyEvent> {
 
     @Autowired
-    UtenteService utenteService;
+    AdminUtenteService utenteService;
     @Autowired
     RuoloService ruoloService;
     @Autowired
@@ -42,32 +42,30 @@ public class Initialize implements ApplicationListener<ApplicationReadyEvent> {
     @Transactional
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
+
+
+        /*
         // insert dummy data
         // String nome, @NotBlank String cognome, @Email String email, @NotBlank String username,@NotBlank String password, Boolean enabled, Set<Ruolo> ruoli
         Ruolo adminRole = new Ruolo("admin", "ADMIN", "amministratore del sistema");
-        Ruolo userRole = new Ruolo("user", "USER", "utente del sistema");
         Ruolo creatorRole = new Ruolo("creator", "CREATOR", "creatore di corsi");
         ruoloService.create(adminRole);
-        ruoloService.create(userRole);
         ruoloService.create(creatorRole);
 
         // set admin default
-        Utente fabio = new Utente("Fabio", "Paolantonio", "fabiopaolantonio@gmail.com", "admin", passwordEncoder.encode("admin"), true);
+        Utente fabio = new Utente("Fabio", "Paolantonio", "fabiopaolantonio@gmail.com", "admin", "admin", true);
         fabio.setCreatoreInfo(new CreatoreInfo("Software Developer", ""));
         fabio.addRuolo(adminRole);
-        fabio.addRuolo(userRole);
         fabio.addRuolo(creatorRole);
         utenteService.create(fabio);
 
         // set other users
-        Utente marco = new Utente("Marco", "Giarrusso", "marco.giarrusso@univaq.it", "magiar", passwordEncoder.encode("magiar"), true);
-        marco.addRuolo(userRole);
+        Utente marco = new Utente("Marco", "Giarrusso", "marco.giarrusso@univaq.it", "magiar", "magiar", true);
         utenteService.create(marco);
 
-        Utente mario = new Utente("Mario", "Rossi", "fabiopaolantonio@gmail.com", "mario", passwordEncoder.encode("mario"), true);
+        Utente mario = new Utente("Mario", "Rossi", "fabiopaolantonio@gmail.com", "mario", "mario", true);
         mario.setCreatoreInfo(new CreatoreInfo("Finance Director", ""));
         mario.addRuolo(adminRole);
-        mario.addRuolo(userRole);
         mario.addRuolo(creatorRole);
         utenteService.create(mario);
 
@@ -229,7 +227,8 @@ public class Initialize implements ApplicationListener<ApplicationReadyEvent> {
         iscrizioneService.create(is1);
 
         //recensioneService.create(new Recensione("Ottimo", "corso perfetto", 2, LocalDateTime.now(), marco.getUsername(), marco.getId(), corso4.getId()));
-
+        //recensioneService.create(new Recensione("Ottimo", "corso perfetto", 2, LocalDateTime.now(), "mario", new Long(3), new Long(1)));
+*/
 
 
     }
