@@ -50,7 +50,7 @@ public class Utente extends BaseEntity {
 	@OneToOne(cascade = CascadeType.ALL)
 	private CreatoreInfo creatoreInfo;
 
-	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
+	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
 	@JoinTable(name = "utente_ruolo", joinColumns = { @JoinColumn(name = "utente_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "ruolo_id") })
 	private Set<Ruolo> ruoli = new HashSet<>();
