@@ -1,7 +1,6 @@
 package it.univaq.disim.mwt.mydemy.business.impl.jpa;
 
 import it.univaq.disim.mwt.mydemy.business.*;
-import it.univaq.disim.mwt.mydemy.domain.Ruolo;
 import it.univaq.disim.mwt.mydemy.domain.Utente;
 import it.univaq.disim.mwt.mydemy.repository.RuoloRepository;
 import it.univaq.disim.mwt.mydemy.repository.UtenteRepository;

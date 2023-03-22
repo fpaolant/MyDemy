@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import it.univaq.disim.mwt.mydemy.domain.*;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
 public interface CorsoService {
 	List<Corso> findAllNextCorsi(PageRequest pageRequest);

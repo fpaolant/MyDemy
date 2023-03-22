@@ -2,21 +2,15 @@ package it.univaq.disim.mwt.mydemy.business.impl.jpa;
 
 
 import it.univaq.disim.mwt.mydemy.business.*;
-import it.univaq.disim.mwt.mydemy.domain.Categoria;
 import it.univaq.disim.mwt.mydemy.domain.Corso;
-import it.univaq.disim.mwt.mydemy.domain.Iscrizione;
 import it.univaq.disim.mwt.mydemy.domain.Utente;
 import it.univaq.disim.mwt.mydemy.repository.CorsoRepository;
 import it.univaq.disim.mwt.mydemy.repository.IscrizioneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 
 @Service

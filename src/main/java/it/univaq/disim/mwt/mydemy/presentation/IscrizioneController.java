@@ -12,8 +12,6 @@ import it.univaq.disim.mwt.mydemy.business.CorsoService;
 import it.univaq.disim.mwt.mydemy.business.RecensioneService;
 import it.univaq.disim.mwt.mydemy.domain.Corso;
 import it.univaq.disim.mwt.mydemy.domain.Recensione;
-import it.univaq.disim.mwt.mydemy.repository.IscrizioneRepository;
-import it.univaq.disim.mwt.mydemy.repository.UtenteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;

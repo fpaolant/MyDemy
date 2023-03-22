@@ -9,7 +9,6 @@ import it.univaq.disim.mwt.mydemy.domain.Corso;
 import it.univaq.disim.mwt.mydemy.domain.Iscrizione;
 import it.univaq.disim.mwt.mydemy.domain.Utente;
 
-import javax.xml.bind.JAXBException;
 
 public interface IscrizioneService {
 

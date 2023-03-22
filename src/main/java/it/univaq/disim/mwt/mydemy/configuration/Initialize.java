@@ -1,18 +1,15 @@
 package it.univaq.disim.mwt.mydemy.configuration;
 
-import java.time.LocalDateTime;
 
 import javax.transaction.Transactional;
 
 import it.univaq.disim.mwt.mydemy.business.*;
-import it.univaq.disim.mwt.mydemy.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import it.univaq.disim.mwt.mydemy.domain.CreatoreInfo;
 
 @Component
 public class Initialize implements ApplicationListener<ApplicationReadyEvent> {
