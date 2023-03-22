@@ -14,11 +14,11 @@ import it.univaq.disim.mwt.mydemy.domain.Utente;
 public class UserDetailsServiceImpl implements UserDetailsService {
 	
 	@Autowired
-	private UtenteService service;
+	private UtenteService serviceUtente;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Utente utente = service.findByUsername(username);
+		Utente utente = serviceUtente.findByUsername(username);
 		
 		if(utente == null) {
 			throw new UsernameNotFoundException("utente " + username + " non trovato");

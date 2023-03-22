@@ -1,10 +1,7 @@
 package it.univaq.disim.mwt.mydemy.business.impl.jpa;
 
 import it.univaq.disim.mwt.mydemy.business.*;
-import it.univaq.disim.mwt.mydemy.domain.CreatoreInfo;
-import it.univaq.disim.mwt.mydemy.domain.Ruolo;
 import it.univaq.disim.mwt.mydemy.domain.Utente;
-import it.univaq.disim.mwt.mydemy.presentation.Utility;
 import it.univaq.disim.mwt.mydemy.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -13,9 +10,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -40,6 +35,7 @@ public class AdminUtenteServiceImpl implements AdminUtenteService {
 	private PasswordEncoder passwordEncoder;
 
 	@Override
+	@Transactional(readOnly = true)
 	public Utente findByUsername(String username) {
 		return utenteRepository.findByUsername(username);
 	}
@@ -51,10 +47,6 @@ public class AdminUtenteServiceImpl implements AdminUtenteService {
 
 	@Override
 	public void create(Utente utente) {
-		// set default user role
-		Optional<Ruolo> ruoloUser = ruoloRepository.findByCodeIgnoreCase("USER");
-		utente.addRuolo(ruoloUser.get());
-
 		// encode password
 		final String password = passwordEncoder.encode(utente.getPassword());
 		utente.setPassword(password);
@@ -62,12 +54,15 @@ public class AdminUtenteServiceImpl implements AdminUtenteService {
 		utenteRepository.save(utente);
 	}
 
-	@Transactional
+
 	@Override
+	@Transactional
 	public void update(Utente utente) throws BusinessException {
 		Optional<Utente> optionalUtente = utenteRepository.findById(utente.getId());
 
 		if(optionalUtente.isEmpty()) throw new BusinessException("Utente non trovato");
+
+		utente.setVersion(optionalUtente.get().getVersion());
 
 		if(!utente.getPassword().equalsIgnoreCase("")) {
 			// encode password
@@ -75,11 +70,8 @@ public class AdminUtenteServiceImpl implements AdminUtenteService {
 			// System.out.println("password inviata codificata:" + utente.getPassword());
 			utente.setPassword(password);
 		} else {
-
-			// System.out.println("imposto la password precedente " + optionalUtente.get().getPassword());
 			utente.setPassword(optionalUtente.get().getPassword());
 		}
-
 		utenteRepository.save(utente);
 	}
 
