@@ -32,10 +32,6 @@ public class SignupServiceImpl implements SignupService {
 		if(utenteRepository.findByUsername(utente.getUsername())!=null) {
 			throw new BusinessException("Username non disponibile");
 		}
-		// set default user role
-		utente.setRuoli(new HashSet<>());
-		Optional<Ruolo> ruoloUser = ruoloRepository.findByCodeIgnoreCase("USER");
-		if(ruoloUser.isPresent()) utente.addRuolo(ruoloUser.get());
 
 		// encode password
 		final String password = passwordEncoder.encode(utente.getPassword());

@@ -28,6 +28,7 @@ public class UserDetailsImpl implements UserDetails {
 	@Transactional
 	public Collection<GrantedAuthority> getAuthorities() {
 		List<GrantedAuthority> result = new ArrayList<>();
+		result.add(new SimpleGrantedAuthority("USER"));
 		for (Ruolo ruolo : utente.getRuoli()) {
 			result.add(new SimpleGrantedAuthority(ruolo.getCode()));
 		}
