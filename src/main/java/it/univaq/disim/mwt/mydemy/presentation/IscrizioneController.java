@@ -66,13 +66,11 @@ public class IscrizioneController {
 		if(!recensionePresente) {
 			Recensione nuovaRecensione = new Recensione();
 			nuovaRecensione.setCorsoId(corsoId);
-			System.out.println("recensione lasciata " + recensionePresente);
 			model.addAttribute("corso", corso.get());
 			model.addAttribute("recensione", nuovaRecensione);
 			model.addAttribute("action_url", "/iscrizioni/scriviRecensione");
 			model.addAttribute("cancel_url", "/iscrizioni");
 		}
-		System.out.println("recensione lasciata " + recensionePresente);
 		model.addAttribute("recensionePresente", recensionePresente);
 		return "public/iscrizione/nuova_recensione";
 	}

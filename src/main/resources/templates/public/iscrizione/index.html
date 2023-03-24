@@ -58,9 +58,11 @@
 									</td>
 									<td><span th:class="${iscrizione.superato}? 'badge bg-success': 'badge bg-warning'" th:text="${iscrizione.superato}? SI: NO">SI</span></td>
 									<td>
+										<th:block th:if="${iscrizione.superato && iscrizione.getCorso().getAttestatoFinale()}">
+											<a th:href="@{'/iscrizioni/getCertificato?iscrizioneId=' + ${iscrizione.id}}">certificato</a> &nbsp;
+										</th:block>
 										<th:block th:if="${iscrizione.superato}">
-											<a th:href="@{'/iscrizioni/getCertificato?iscrizioneId=' + ${iscrizione.id}}">certificato</a> |
-											<a th:href="@{'/iscrizioni/scriviRecensione?corsoId=' + ${iscrizione.corso.id}}">lascia recensione</a>
+										 &nbsp; <a th:href="@{'/iscrizioni/scriviRecensione?corsoId=' + ${iscrizione.corso.id}}">lascia recensione</a>
 										</th:block>
 									</td>
 								</tr>
