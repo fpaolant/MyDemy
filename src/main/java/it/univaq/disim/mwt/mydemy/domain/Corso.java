@@ -5,9 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -51,7 +49,7 @@ public class Corso extends BaseEntity {
 	@OneToOne
 	private Utente creatore;
 	@OneToMany( cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<WebLink> links = new ArrayList<>();
+	private Set<WebLink> links = new HashSet<>();
 	@Column(length = 200)
 	@URL(regexp = "^(http|https).*")
 	private String liveUrl;

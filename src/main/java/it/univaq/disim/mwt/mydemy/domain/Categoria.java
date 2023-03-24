@@ -9,7 +9,6 @@ import javax.validation.constraints.*;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -34,7 +33,7 @@ public class Categoria extends BaseEntity {
 
 	@OneToMany(mappedBy = "parent")
 	@OrderBy("nome")
-	private List<Categoria> subCategorie;
+	private Set<Categoria> subCategorie;
 
 	public Categoria() { super(); }
 
