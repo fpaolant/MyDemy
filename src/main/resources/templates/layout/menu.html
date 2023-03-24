@@ -6,11 +6,21 @@
 	<aside class="main-sidebar sidebar-dark-primary elevation-4"
 		th:fragment="menu">
 		<!-- Brand Logo -->
-		<a href="#" th:href="@{/}" class="brand-link"> <!--<img src="#" th:src="@{/dist/img/logomydemy.png}" alt="My Demy Logo" class="brand-image img-circle elevation-3" style="opacity: .8"> -->
+		<a href="#" th:href="@{/}" class="brand-link">
+			<img src="#" th:src="@{/dist/img/logo-mydemy.png}" alt="My Demy Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
 			<span class="brand-text font-weight-light">MyDemy</span>
 		</a>
 
 		<div class="sidebar">
+			<!-- Sidebar user panel (optional) -->
+			<div class="user-panel mt-3 pb-3 mb-3 d-flex" sec:authorize="isAuthenticated()">
+				<div class="image">
+					<img src="dist/img/user2-160x160.jpg" th:src="@{/common/profilo/profileImage}" class="img-circle elevation-2" alt="User Image">
+				</div>
+				<div class="info">
+					<a href="#" th:href="@{/common/profilo}" class="d-block" sec:authentication="principal.username">Alexander Pierce</a>
+				</div>
+			</div>
 			<nav class="mt-2">
 				<ul class="nav nav-pills nav-sidebar flex-column"
 					data-widget="treeview" role="menu" data-accordion="false"
